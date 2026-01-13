@@ -15,7 +15,7 @@ class AuthController {
             const user = await userRepository.findByEmail(email)
 
             if (user) {
-                return res.send(`Usuario con email ${email} ya registrado`)
+                return res.status(400).json({message: `Usuario con email ${email} ya registrado`})
             }
 
             const hashedPassword = await bcrypt.hash(password, 10)
@@ -24,16 +24,20 @@ class AuthController {
 
             const token_generated = jwt.sign({ email }, process.env.SECRET_KEY, { expiresIn: '1h' })
 
-            mail_transporter.sendMail({
-                from: process.env.EMAIL_USER,
-                to: email,
-                subject: 'Verificacion de cuenta - UTN SLACK',
-                html: `<h1>Gracias por registrarte en UTN SLACK</h1>
-                       <p>Por favor, haz click en el siguiente enlace para verificar tu cuenta:</p>
-                       <a href="http://localhost:3000/api/auth/verify-email?verification_email_token=${token_generated}">Verificar cuenta</a>` 
-            })
+            try {
+                await mail_transporter.sendMail({
+                    from: process.env.EMAIL_USER,
+                    to: email,
+                    subject: 'Verificacion de cuenta - UTN SLACK',
+                    html: `<h1>Gracias por registrarte en UTN SLACK</h1>
+                           <p>Por favor, haz click en el siguiente enlace para verificar tu cuenta:</p>
+                           <a href="http://localhost:3000/api/auth/verify-email?verification_email_token=${token_generated}">Verificar cuenta</a>`
+                })
+            } catch (error) {
+                return res.status(500).json({ message: 'Error al enviar el email de verificacion', error: error.message })
+            }
 
-            return res.status(201).json({message:'Usuario creado con exito'})
+            return res.status(201).json({ message: 'Usuario registrado con exito. Te enviamos un email de verificacion.' })
         }
         catch (error) {
             return res.status(500).json({ message: 'Error al registrarse', error: error.message })
@@ -46,21 +50,21 @@ class AuthController {
 
             const userFounded = await userRepository.findByIdentifier(identifier)
 
-            if(!userFounded){
+            if (!userFounded) {
                 return res.status(401).json({ message: 'Credenciales incorrectas' })
             }
 
             const passwordHashed = await bcrypt.compare(password, userFounded.password)
 
-            if(!passwordHashed){
+            if (!passwordHashed) {
                 return res.status(401).json({ message: 'Credenciales incorrectas' })
             }
 
-            if(identifier == '' || password == ''){
+            if (identifier == '' || password == '') {
                 return res.status(400).json({ message: 'Email o contraseña vacios' })
             }
 
-            if(!userFounded.email_verified){
+            if (!userFounded.verify_email) {
                 return res.status(401).json({ message: 'Por favor, verifica tu email antes de iniciar sesion' })
             }
 
@@ -76,10 +80,10 @@ class AuthController {
     }
 
     async verifyEmail(req, res) {
-        try{
+        try {
             const { verification_email_token } = req.query
 
-            if(!verification_email_token){
+            if (!verification_email_token) {
                 return res.status(400).json({ message: 'Token de verificacion no proporcionado' })
             }
 
@@ -87,11 +91,11 @@ class AuthController {
 
             const user = await userRepository.findByEmail(decoded.email)
 
-            if(!user){
+            if (!user) {
                 return res.status(404).json({ message: 'Usuario no encontrado' })
             }
 
-            if(user.verify_email){
+            if (user.verify_email) {
                 return res.status(400).json({ message: 'Email ya verificado' })
             }
 
@@ -99,7 +103,7 @@ class AuthController {
 
             return res.status(200).json({ message: 'Email verificado con exito' })
         }
-        catch(error){
+        catch (error) {
             return res.status(500).json({ message: 'Error al verificar el email', error: error.message })
         }
     }

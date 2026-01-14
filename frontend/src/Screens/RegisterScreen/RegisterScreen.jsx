@@ -1,23 +1,21 @@
 import { useForm } from "react-hook-form";
-import { registerService } from "../../services/authService";
-import useRequest from "../../hooks/useRequest";
+import { useContext } from "react";
+import { AuthContext } from "../../../context/AuthContext";
 
 const RegisterScreen = () => {
 
     const { register, handleSubmit, reset, formState: { errors } } = useForm()
 
-    const { loading, sendRequest, error, response } = useRequest()
+    const { loading, registerUser, error, response } = useContext(AuthContext)
 
     async function formSubmit(data) {
-        sendRequest(() => {
-            return registerService(data)
-        })
+        await registerUser(data)
         reset()
     }
 
     return (
         <section>
-            {loading ? (<p>Loading...</p>) : (
+            {loading.register ? (<p>Loading...</p>) : (
                 <div>
                     <h1>RegisterScreen</h1>
                     <form onSubmit={handleSubmit(formSubmit)}>
@@ -40,9 +38,8 @@ const RegisterScreen = () => {
                         <button type="submit">Registrarse</button>
                     </form>
 
-                    {error && <p>{error}</p>}
-
-                    {response && <p>{response}</p>}
+                    {error.register && <p>{error.register}</p>}
+                    {response.register && <p>{response.register}</p>}
                 </div>
             )}
         </section>

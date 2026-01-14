@@ -8,3 +8,11 @@ const api = axios.create({
 export const registerService = (data) => {
     return api.post('/api/auth/register', data)
 }
+
+export const loginService = (data) => {
+    return api.post('/api/auth/login', data)
+}
+
+export const dashboardUserService = () => {
+    return api.get('/api/auth/dashboard-user')
+}

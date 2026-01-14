@@ -72,7 +72,7 @@ class AuthController {
 
             res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production', samesite: process.env.NODE_ENV === 'production' ? 'none' : 'lax' })
 
-            return res.status(200).json({ message: 'Sesion iniciada con exito' })
+            return res.status(200).json({ message: 'Sesion iniciada con exito', user: userFounded })
         }
         catch (error) {
             return res.status(500).json({ message: 'Error al iniciar sesion', error: error.message })
@@ -105,6 +105,20 @@ class AuthController {
         }
         catch (error) {
             return res.status(500).json({ message: 'Error al verificar el email', error: error.message })
+        }
+    }
+
+    async dashboardUser(req, res) {
+        try{
+            const userId = req.user.id
+            const user = await userRepository.findById(userId)
+            if(!user) {
+                return res.status(404).json({ authorized: false })
+            }
+            return res.status(200).json({ message: 'Dashboard del usuario', user: user })
+        }
+        catch(error){
+            return res.status(500).json({ message: 'Error al obtener el dashboard del usuario', error: error.message })
         }
     }
 }

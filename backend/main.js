@@ -3,6 +3,8 @@ import express from 'express'
 import authRouter from "./routes/auth-routes.js"
 import cors from 'cors'
 import dotenv from 'dotenv'
+import cookieParser from "cookie-parser";
+
 
 dotenv.config()
 
@@ -13,6 +15,7 @@ const app = express()
 
 //Habilita a mi servidor a recibir json por body
 app.use(express.json())
+app.use(cookieParser());
 
 app.use(cors(
     {

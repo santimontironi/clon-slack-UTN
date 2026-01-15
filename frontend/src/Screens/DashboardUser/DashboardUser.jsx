@@ -1,6 +1,6 @@
 import { useContext } from "react"
-import { AuthContext } from "../../../context/AuthContext"
-import Loader from "../../../components/Loader"
+import { AuthContext } from "../../context/AuthContext"
+import Loader from "../../components/Loader"
 
 const DashboardUser = () => {
 

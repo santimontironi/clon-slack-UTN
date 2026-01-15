@@ -12,10 +12,16 @@ class AuthController {
         try {
             const { email, password, username } = req.body
 
-            const user = await userRepository.findByEmail(email)
+            const userEmail = await userRepository.findByEmail(email)
 
-            if (user) {
+            const userUsername = await userRepository.findByUsername(username)
+
+            if (userEmail) {
                 return res.status(400).json({message: `Usuario con email ${email} ya registrado`})
+            }
+
+            if (userUsername) {
+                return res.status(400).json({message: `Usuario con username ${username} ya registrado`})
             }
 
             const hashedPassword = await bcrypt.hash(password, 10)

@@ -23,6 +23,11 @@ class UserRepository{
         return user
     }
 
+    async findByUsername(username){
+        const user = await User.findOne({username})
+        return user
+    }
+
     async deleteUser(idUser){
         const userDeleted = await User.findByIdAndDelete(idUser)
 

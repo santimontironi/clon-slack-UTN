@@ -29,6 +29,21 @@ class WorkspaceController {
             return res.status(500).json({ message: 'Error al obtener los workspaces', error: error.message })
         }
     }
+
+    async leaveWorkspace(req,res){
+        try{
+            const {idWorkspace} = req.params
+
+            const user = req.user
+
+            const workspace = await workspaceRepository.leaveWorkspace(idWorkspace, user.id)
+
+            return res.status(200).json({ message: 'Workspace abandonado con exito', workspace: workspace })
+        }
+        catch(error){
+            return res.status(500).json({ message: 'Error al abandonar el workspace', error: error.message })
+        }
+    }
 }
 
 const workspaceController = new WorkspaceController()

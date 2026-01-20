@@ -8,7 +8,7 @@ class WorkspaceController {
 
             const user = req.user
 
-            const workspace = await workspaceRepository.createWorkspace(user.id, title, description, image)
+            const workspace = await workspaceRepository.createWorkspace(user.id, title, image, description)
 
             return res.status(200).json({ message: 'Workspace creado con exito', workspace: workspace })
         }
@@ -22,6 +22,10 @@ class WorkspaceController {
             const user = req.user
 
             const workspaces = await workspaceRepository.getMyWorkspaces(user.id)
+
+            if(workspaces.length === 0) {
+                return res.status(404).json({ message: 'No se encontraron workspaces.' })
+            }
 
             return res.status(200).json({ message: 'Workspaces obtenidos con exito', workspaces: workspaces })
         }

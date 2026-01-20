@@ -2,7 +2,7 @@ import useRequest from "./useRequest";
 import { loginService } from "../services/authService";
 
 export function useLogin() {
-    const { loading, error, sendRequest } = useRequest();
+    const { loading, error, sendRequest, response } = useRequest();
 
     const login = async (data) => {
         return await sendRequest(() =>
@@ -10,5 +10,5 @@ export function useLogin() {
         );
     };
 
-    return { login, loading, error };
+    return { login, loading, error, response };
 }

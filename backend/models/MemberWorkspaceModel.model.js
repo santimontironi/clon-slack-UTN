@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const MembersWorkspace = mongoose.model('MembersWorkspace', new mongoose.Schema({
+const MembersWorkspace = new mongoose.Schema({
     fk_id_user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
@@ -21,6 +21,7 @@ const MembersWorkspace = mongoose.model('MembersWorkspace', new mongoose.Schema(
         default: 'user',
         required: true
     }
-}))
+})
 
-export default mongoose.model('MembersWorkspace', MembersWorkspace)
+const MemberWorkspaceModel = mongoose.model('MembersWorkspace', MembersWorkspace)
+export default MemberWorkspaceModel

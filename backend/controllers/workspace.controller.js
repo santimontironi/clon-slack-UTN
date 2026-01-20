@@ -48,6 +48,25 @@ class WorkspaceController {
             return res.status(500).json({ message: 'Error al abandonar el workspace', error: error.message })
         }
     }
+
+    async deleteWorkspace(req,res){
+        try{
+            const {idWorkspace} = req.params
+
+            const member = await workspaceRepository.findWorkspaceByIdAndUser(idWorkspace, req.user.id)
+
+            if(member.role !== 'owner') {
+                return res.status(403).json({ message: 'No tienes permiso para eliminar el workspace.' })
+            }
+
+            const workspace = await workspaceRepository.deleteWorkspace(idWorkspace)
+
+            return res.status(200).json({ message: 'Workspace eliminado con exito', workspace: workspace })
+        }
+        catch(error){
+            return res.status(500).json({ message: 'Error al eliminar el workspace', error: error.message })
+        }
+    }
 }
 
 const workspaceController = new WorkspaceController()

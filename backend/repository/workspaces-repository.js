@@ -3,9 +3,11 @@ import MemberWorkspaceModel from "../models/MemberWorkspaceModel.model.js";
 
 class WorkspaceRepository {
     async getMyWorkspaces(idUser) {
-        const workspaces = await MemberWorkspaceModel.find({ fk_id_user: idUser }).populate('fk_id_workspace')
-        
-        return workspaces
+        const workspaces = await MemberWorkspaceModel.find({ fk_id_user: idUser }).populate({path:'fk_id_workspace', match: { active: true }})
+
+        const workspacesFilter = workspaces.filter(workspace => workspace.fk_id_workspace !== null)
+
+        return workspacesFilter
     }
 
     async createWorkspace(fk_id_owner, title, description, image) {
@@ -19,9 +21,19 @@ class WorkspaceRepository {
         return member
     }
 
+    async findWorkspaceByIdAndUser(idWorkspace, idUser) {
+        const workspace = await MemberWorkspaceModel.findOne({ fk_id_workspace: idWorkspace, fk_id_user: idUser }).populate({path:'fk_id_workspace', match: { active: true }})
+        return workspace
+    }
+
     async leaveWorkspace(fk_id_workspace, fk_id_user) {
         const memberLeave = await MemberWorkspaceModel.findOneAndDelete({ fk_id_workspace, fk_id_user })
         return memberLeave
+    }
+
+    async deleteWorkspace(idWorkspace) {
+        const workspace = await Workspace.findByIdAndUpdate(idWorkspace, { active: false })
+        return workspace
     }
 }
 

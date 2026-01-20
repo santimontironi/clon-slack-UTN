@@ -1,20 +1,21 @@
-import { useContext } from "react"
-import { AuthContext } from "../../context/AuthContext"
-import Loader from "../../components/Loader"
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
+import Loader from "../../components/Loader";
 
 const DashboardUser = () => {
+  const { user, checkingSession } = useContext(AuthContext);
 
-  const {user,loading} = useContext(AuthContext)
-  
+  if (checkingSession) {
+    return <Loader />;
+  }
+
   return (
     <section>
-      {loading.dashboard ? <Loader/> : (
-        <div>
-          HOLA {user.username}
-        </div>
-      )}
+      <div>
+        HOLA {user?.username}
+      </div>
     </section>
-  )
-}
+  );
+};
 
-export default DashboardUser
+export default DashboardUser;

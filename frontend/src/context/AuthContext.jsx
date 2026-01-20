@@ -42,7 +42,6 @@ export const AuthContextProvider = ({ children }) => {
         <AuthContext.Provider
             value={{
                 user,
-                isAuthenticated: !!user,
                 checkingSession,
                 loginSession,
                 logout

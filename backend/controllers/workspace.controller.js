@@ -149,6 +149,12 @@ class WorkspaceController {
         try {
             const { idWorkspace } = req.params
 
+            const member = req.member
+
+            if(!member) {
+                return res.status(403).json({ message: 'No tienes permiso para obtener el workspace.' })
+            }
+
             const workspace = await workspaceRepository.getWorkspaceById(idWorkspace)
 
             return res.status(200).json({ message: 'Workspace encontrado con exito', workspace })

@@ -78,7 +78,10 @@ class AuthController {
 
             res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production', samesite: process.env.NODE_ENV === 'production' ? 'none' : 'lax' })
 
-            return res.status(200).json({ message: 'Sesion iniciada con exito', user: userFounded })
+            const userObject = userFounded.toObject()
+            delete userObject.password
+
+            return res.status(200).json({ message: 'Sesion iniciada con exito', user: userObject })
         }
         catch (error) {
             return res.status(500).json({ message: 'Error al iniciar sesion', error: error.message })

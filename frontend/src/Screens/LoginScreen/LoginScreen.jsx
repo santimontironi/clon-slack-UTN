@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import Loader from "../../components/Loader";
 import { useLogin } from "../../hook/useLogin";
+import "./LoginScreen.css";
 
 const LoginScreen = () => {
   const { user, loginSession } = useContext(AuthContext);
@@ -30,33 +31,82 @@ const LoginScreen = () => {
   if (loading) return <Loader />;
 
   return (
-    <section>
-      <h1>Login</h1>
-
-      <form onSubmit={handleSubmit(formSubmit)}>
-        <div>
-          <label htmlFor="identifier">Usuario o email</label>
-          <input
-            id="identifier"
-            {...register("identifier", { required: "Campo obligatorio" })}
-          />
-          {errors.identifier && <p>{errors.identifier.message}</p>}
+    <section className="login-container">
+      <div className="login-card">
+        <div className="login-header">
+          <svg className="slack-logo" viewBox="0 0 124 124" fill="none">
+            <path d="M26.3996 78.3999C26.3996 84.8999 21.0996 90.1999 14.5996 90.1999C8.09961 90.1999 2.79961 84.8999 2.79961 78.3999C2.79961 71.8999 8.09961 66.5999 14.5996 66.5999H26.3996V78.3999Z" fill="#E01E5A" />
+            <path d="M32.2996 78.3999C32.2996 71.8999 37.5996 66.5999 44.0996 66.5999C50.5996 66.5999 55.8996 71.8999 55.8996 78.3999V109.6C55.8996 116.1 50.5996 121.4 44.0996 121.4C37.5996 121.4 32.2996 116.1 32.2996 109.6V78.3999Z" fill="#E01E5A" />
+            <path d="M44.0996 26.4001C37.5996 26.4001 32.2996 21.1001 32.2996 14.6001C32.2996 8.1001 37.5996 2.8001 44.0996 2.8001C50.5996 2.8001 55.8996 8.1001 55.8996 14.6001V26.4001H44.0996Z" fill="#36C5F0" />
+            <path d="M44.0996 32.2999C50.5996 32.2999 55.8996 37.5999 55.8996 44.0999C55.8996 50.5999 50.5996 55.8999 44.0996 55.8999H12.8996C6.39961 55.8999 1.09961 50.5999 1.09961 44.0999C1.09961 37.5999 6.39961 32.2999 12.8996 32.2999H44.0996Z" fill="#36C5F0" />
+            <path d="M97.5996 44.0999C97.5996 37.5999 102.9 32.2999 109.4 32.2999C115.9 32.2999 121.2 37.5999 121.2 44.0999C121.2 50.5999 115.9 55.8999 109.4 55.8999H97.5996V44.0999Z" fill="#2EB67D" />
+            <path d="M91.6996 44.0999C91.6996 50.5999 86.3996 55.8999 79.8996 55.8999C73.3996 55.8999 68.0996 50.5999 68.0996 44.0999V12.8999C68.0996 6.3999 73.3996 1.0999 79.8996 1.0999C86.3996 1.0999 91.6996 6.3999 91.6996 12.8999V44.0999Z" fill="#2EB67D" />
+            <path d="M79.8996 97.5999C86.3996 97.5999 91.6996 102.9 91.6996 109.4C91.6996 115.9 86.3996 121.2 79.8996 121.2C73.3996 121.2 68.0996 115.9 68.0996 109.4V97.5999H79.8996Z" fill="#ECB22E" />
+            <path d="M79.8996 91.7001C73.3996 91.7001 68.0996 86.4001 68.0996 79.9001C68.0996 73.4001 73.3996 68.1001 79.8996 68.1001H111.1C117.6 68.1001 122.9 73.4001 122.9 79.9001C122.9 86.4001 117.6 91.7001 111.1 91.7001H79.8996Z" fill="#ECB22E" />
+          </svg>
+          <h1>Inicia sesión en Slack</h1>
+          <p className="login-subtitle">
+            Te sugerimos usar la <strong>dirección de correo electrónico que usas en el trabajo</strong>.
+          </p>
         </div>
 
-        <div>
-          <label htmlFor="password">Contraseña</label>
-          <input
-            type="password"
-            id="password"
-            {...register("password", { required: "Campo obligatorio" })}
-          />
-          {errors.password && <p>{errors.password.message}</p>}
+        <form onSubmit={handleSubmit(formSubmit)} className="login-form">
+          <div className="form-group">
+            <label htmlFor="identifier">Correo electrónico o nombre de usuario</label>
+            <input
+              id="identifier"
+              type="text"
+              placeholder="nombre@empresa.com"
+              className={errors.identifier ? "input-error" : ""}
+              {...register("identifier", { required: "Introduce tu correo electrónico o nombre de usuario." })}
+            />
+            {errors.identifier && (
+              <p className="error-message">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path d="M8 0C3.6 0 0 3.6 0 8C0 12.4 3.6 16 8 16C12.4 16 16 12.4 16 8C16 3.6 12.4 0 8 0ZM8 12C7.4 12 7 11.6 7 11C7 10.4 7.4 10 8 10C8.6 10 9 10.4 9 11C9 11.6 8.6 12 8 12ZM9 9H7V4H9V9Z" fill="#E8912D" />
+                </svg>
+                {errors.identifier.message}
+              </p>
+            )}
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="password">Contraseña</label>
+            <input
+              type="password"
+              id="password"
+              placeholder="Introduce tu contraseña"
+              className={errors.password ? "input-error" : ""}
+              {...register("password", { required: "Introduce tu contraseña." })}
+            />
+            {errors.password && (
+              <p className="error-message">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path d="M8 0C3.6 0 0 3.6 0 8C0 12.4 3.6 16 8 16C12.4 16 16 12.4 16 8C16 3.6 12.4 0 8 0ZM8 12C7.4 12 7 11.6 7 11C7 10.4 7.4 10 8 10C8.6 10 9 10.4 9 11C9 11.6 8.6 12 8 12ZM9 9H7V4H9V9Z" fill="#E8912D" />
+                </svg>
+                {errors.password.message}
+              </p>
+            )}
+          </div>
+
+          <button type="submit" className="submit-button">
+            Iniciar sesión con correo electrónico
+          </button>
+
+          {error && (
+            <div className="alert alert-error">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M8 0C3.6 0 0 3.6 0 8C0 12.4 3.6 16 8 16C12.4 16 16 12.4 16 8C16 3.6 12.4 0 8 0ZM8 12C7.4 12 7 11.6 7 11C7 10.4 7.4 10 8 10C8.6 10 9 10.4 9 11C9 11.6 8.6 12 8 12ZM9 9H7V4H9V9Z" fill="#E01E5A" />
+              </svg>
+              {error}
+            </div>
+          )}
+        </form>
+  
+        <div className="login-footer">
+          <p>¿Primera vez en Slack? <a href="/register">Crea una cuenta</a></p>
         </div>
-
-        <button type="submit">Iniciar sesión</button>
-      </form>
-
-      {error && <p>{error}</p>}
+      </div>
     </section>
   );
 };

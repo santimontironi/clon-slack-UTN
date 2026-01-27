@@ -1,10 +1,11 @@
 import Workspace from "../models/Workspace.model.js";
 import MemberWorkspaceModel from "../models/MemberWorkspaceModel.model.js";
 import Channel from "../models/Channel.model.js";
+import ChannelMessage from "../models/ChannelMessage.model.js";
 
 class WorkspaceRepository {
     async getMyWorkspaces(idUser) {
-        const workspaces = await MemberWorkspaceModel.find({ fk_id_user: idUser }).populate({path:'fk_id_workspace', match: { active: true }})
+        const workspaces = await MemberWorkspaceModel.find({ fk_id_user: idUser }).populate({ path: 'fk_id_workspace', match: { active: true } })
 
         const workspacesFilter = workspaces.filter(workspace => workspace.fk_id_workspace !== null)
 
@@ -23,7 +24,7 @@ class WorkspaceRepository {
     }
 
     async findWorkspaceByIdAndUser(idWorkspace, idUser) {
-        const workspace = await MemberWorkspaceModel.findOne({ fk_id_workspace: idWorkspace, fk_id_user: idUser }).populate({path:'fk_id_workspace', match: { active: true }})
+        const workspace = await MemberWorkspaceModel.findOne({ fk_id_workspace: idWorkspace, fk_id_user: idUser }).populate({ path: 'fk_id_workspace', match: { active: true } })
         return workspace
     }
 
@@ -38,7 +39,7 @@ class WorkspaceRepository {
     }
 
     async getWorkspaceById(idWorkspace) {
-        const workspace = await Workspace.findById(idWorkspace).populate({path:'fk_id_owner', match: { active: true }})
+        const workspace = await Workspace.findById(idWorkspace).populate({ path: 'fk_id_owner', match: { active: true } })
         return workspace
     }
 
@@ -48,8 +49,23 @@ class WorkspaceRepository {
     }
 
     async workspacesChannels(idWorkspace) {
-        const channels = await Channel.find({ fk_id_workspace: idWorkspace }).populate({path:'fk_id_workspace', match: { active: true }})
+        const channels = await Channel.find({ fk_id_workspace: idWorkspace }).populate({ path: 'fk_id_workspace', match: { active: true } })
         return channels
+    }
+
+    async createChannel(fk_id_workspace, title, description) {
+        const channel = await Channel.create({ fk_id_workspace, title, description })
+        return channel
+    }
+
+    async createMessage(fk_id_channel, fk_id_member, message) {
+        const newMessage = await ChannelMessage.create({
+            fk_id_channel,
+            fk_id_member,
+            message
+        })
+
+        return newMessage
     }
 }
 

@@ -117,8 +117,8 @@ class WorkspaceController {
         }
     }
 
-    async addMember(req,res){
-        try{
+    async addMember(req, res) {
+        try {
             const { email, role } = req.body
 
             const { idWorkspace } = req.params
@@ -133,13 +133,13 @@ class WorkspaceController {
 
             return res.status(200).json({ message: 'Miembro agregado con exito', member: newMember })
         }
-        catch(error){
+        catch (error) {
             return res.status(500).json({ message: 'Error al agregar el miembro', error: error.message })
         }
     }
 
-    async checkInvitation(req,res){
-        try{
+    async checkInvitation(req, res) {
+        try {
             const { token } = req.params
 
             if (!token) {
@@ -154,13 +154,13 @@ class WorkspaceController {
 
             return res.status(200).json({ message: 'Invitacion verificada con exito', member: newMember })
         }
-        catch(error){
+        catch (error) {
             return res.status(500).json({ message: 'Error al verificar la invitacion', error: error.message })
         }
     }
 
-    async workspaceById(req,res){
-        try{
+    async workspaceById(req, res) {
+        try {
             const { idWorkspace } = req.params
 
             const member = workspaceRepository.findWorkspaceByIdAndUser(idWorkspace, req.user.id)
@@ -173,13 +173,13 @@ class WorkspaceController {
 
             return res.status(200).json({ message: 'Workspace encontrado con exito', workspace: workspace })
         }
-        catch(error){
+        catch (error) {
             return res.status(500).json({ message: 'Error al obtener el workspace', error: error.message })
         }
     }
 
-    async deleteMember(req,res){
-        try{
+    async deleteMember(req, res) {
+        try {
             const { idMember } = req.params
 
             const member = await workspaceRepository.findWorkspaceByIdAndUser(idMember, req.user.id)
@@ -192,13 +192,13 @@ class WorkspaceController {
 
             return res.status(200).json({ message: 'Miembro eliminado con exito', member: memberToDelete })
         }
-        catch(error){
+        catch (error) {
             return res.status(500).json({ message: 'Error al eliminar el miembro', error: error.message })
         }
     }
 
-    async getWorkspacesChannels(req,res){
-        try{
+    async getWorkspacesChannels(req, res) {
+        try {
             const { idWorkspace } = req.params
 
             const member = await workspaceRepository.findWorkspaceByIdAndUser(idWorkspace, req.user.id)
@@ -211,8 +211,61 @@ class WorkspaceController {
 
             return res.status(200).json({ message: 'Canales obtenidos con exito', channels: channels })
         }
-        catch(error){
+        catch (error) {
             return res.status(500).json({ message: 'Error al obtener los canales', error: error.message })
+        }
+    }
+
+    async createChannel(req, res) {
+        try {
+            const { idWorkspace } = req.params
+
+            const member = await workspaceRepository.findWorkspaceByIdAndUser(idWorkspace, req.user.id)
+
+            if (member.role !== 'owner' && member.role !== 'admin') {
+                return res.status(403).json({ message: 'No tienes permiso para crear canales.' })
+            }
+
+            const channel = await workspaceRepository.createChannel(idWorkspace, req.body.name)
+
+            return res.status(200).json({ message: 'Canal creado con exito', channel: channel })
+        }
+        catch (error) {
+            return res.status(500).json({ message: 'Error al crear el canal', error: error.message })
+        }
+    }
+
+    async createMessage(req, res) {
+        try {
+            const { idWorkspace, idChannel } = req.params
+            const { message } = req.body
+
+            // Verifica que el user pertenece al workspace
+            const member = await workspaceRepository.findWorkspaceByIdAndUser(
+                idWorkspace,
+                req.user.id
+            )
+
+            if (!member) {
+                return res.status(403).json({ message: 'No perteneces a este workspace.' })
+            }
+
+            const newMessage = await workspaceRepository.createMessage(
+                idChannel,
+                member._id, 
+                message
+            )
+
+            return res.status(201).json({
+                message: 'Mensaje creado con éxito',
+                data: newMessage
+            })
+
+        } catch (error) {
+            return res.status(500).json({
+                message: 'Error al crear el mensaje',
+                error: error.message
+            })
         }
     }
 }

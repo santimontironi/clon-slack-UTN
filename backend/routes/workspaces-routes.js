@@ -12,6 +12,8 @@ router.get('/:idWorkspace/caanales', verifyToken, workspaceController.getWorkspa
 router.post('/create-workspace', verifyToken, workspaceController.createWorkspace)
 router.post('/:idWorkspace/enviar-invitacion', verifyToken, workspaceController.sendInvitation)
 router.post('/:idWorkspace/agregar-miembro', verifyToken, workspaceController.addMember)
+router.post('/:idWorkspace/canal', verifyToken, workspaceController.createChannel)
+router.post('/:idWorkspace/canales/:idChannel/mensaje', verifyToken, workspaceController.createMessage)
 
 router.delete('/:idWorkspace/abandonar', verifyToken, workspaceController.leaveWorkspace)
 router.delete('/:idWorkspace/eliminar', verifyToken, workspaceController.deleteWorkspace)

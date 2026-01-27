@@ -1,5 +1,6 @@
 import Workspace from "../models/Workspace.model.js";
 import MemberWorkspaceModel from "../models/MemberWorkspaceModel.model.js";
+import Channel from "../models/Channel.model.js";
 
 class WorkspaceRepository {
     async getMyWorkspaces(idUser) {
@@ -34,6 +35,21 @@ class WorkspaceRepository {
     async deleteWorkspace(idWorkspace) {
         const workspace = await Workspace.findByIdAndUpdate(idWorkspace, { active: false })
         return workspace
+    }
+
+    async getWorkspaceById(idWorkspace) {
+        const workspace = await Workspace.findById(idWorkspace).populate({path:'fk_id_owner', match: { active: true }})
+        return workspace
+    }
+
+    async deleteMember(idMember) {
+        const member = await MemberWorkspaceModel.findByIdAndDelete(idMember)
+        return member
+    }
+
+    async workspacesChannels(idWorkspace) {
+        const channels = await Channel.find({ fk_id_workspace: idWorkspace }).populate({path:'fk_id_workspace', match: { active: true }})
+        return channels
     }
 }
 

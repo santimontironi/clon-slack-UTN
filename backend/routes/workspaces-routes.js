@@ -5,8 +5,15 @@ import { Router } from "express";
 const router = Router()
 
 router.get('/my-workspaces', verifyToken, workspaceController.getMyWorkspaces)
+router.get('/check-invitation', verifyToken, workspaceController.checkInvitation)
+router.get('/:idWorkspace', verifyToken, workspaceController.workspaceById)
+router.get('/:idWorkspace/caanales', verifyToken, workspaceController.getWorkspacesChannels)
+
 router.post('/create-workspace', verifyToken, workspaceController.createWorkspace)
-router.delete('/leave-workspace/:idWorkspace', verifyToken, workspaceController.leaveWorkspace)
-router.delete('/delete-workspace/:idWorkspace', verifyToken, workspaceController.deleteWorkspace)
+router.post('/:idWorkspace/enviar-invitacion', verifyToken, workspaceController.sendInvitation)
+router.post('/:idWorkspace/agregar-miembro', verifyToken, workspaceController.addMember)
+
+router.delete('/:idWorkspace/abandonar', verifyToken, workspaceController.leaveWorkspace)
+router.delete('/:idWorkspace/eliminar', verifyToken, workspaceController.deleteWorkspace)
 
 export default router

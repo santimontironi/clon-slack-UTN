@@ -1,21 +1,25 @@
-import workspaceController from "../controllers/workspace.controller.js";
-import { verifyToken } from "../middlewares/verify-token.js";
-import { Router } from "express";
+import workspaceController from "../controllers/workspace.controller.js"
+import { verifyToken } from "../middlewares/verify-token.js"
+import { memberMiddleware } from "../middlewares/member-middleware.js"
+import { Router } from "express"
 
 const router = Router()
 
 router.get('/my-workspaces', verifyToken, workspaceController.getMyWorkspaces)
-router.get('/check-invitation', verifyToken, workspaceController.checkInvitation)
-router.get('/:idWorkspace', verifyToken, workspaceController.workspaceById)
-router.get('/:idWorkspace/caanales', verifyToken, workspaceController.getWorkspacesChannels)
-
 router.post('/create-workspace', verifyToken, workspaceController.createWorkspace)
-router.post('/:idWorkspace/enviar-invitacion', verifyToken, workspaceController.sendInvitation)
-router.post('/:idWorkspace/agregar-miembro', verifyToken, workspaceController.addMember)
-router.post('/:idWorkspace/canal', verifyToken, workspaceController.createChannel)
-router.post('/:idWorkspace/canales/:idChannel/mensaje', verifyToken, workspaceController.createMessage)
 
+router.get('/:idWorkspace', verifyToken, memberMiddleware, workspaceController.workspaceById)
+router.delete('/:idWorkspace/eliminar', verifyToken, memberMiddleware, workspaceController.deleteWorkspace)
+
+router.post('/:idWorkspace/enviar-invitacion', verifyToken, memberMiddleware, workspaceController.sendInvitation)
+router.post('/:idWorkspace/agregar-miembro', verifyToken, memberMiddleware, workspaceController.addMember)
 router.delete('/:idWorkspace/abandonar', verifyToken, workspaceController.leaveWorkspace)
-router.delete('/:idWorkspace/eliminar', verifyToken, workspaceController.deleteWorkspace)
+
+router.get('/check-invitation/:token', workspaceController.checkInvitation)
+
+router.get('/:idWorkspace/canales', verifyToken, memberMiddleware, workspaceController.getWorkspacesChannels)
+router.post('/:idWorkspace/canales', verifyToken, memberMiddleware, workspaceController.createChannel)
+
+router.post('/:idWorkspace/canales/:idChannel/mensaje', verifyToken, memberMiddleware, workspaceController.createMessage)
 
 export default router

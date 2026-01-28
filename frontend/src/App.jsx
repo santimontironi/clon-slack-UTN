@@ -4,6 +4,7 @@ import LoginScreen from "./Screens/LoginScreen/LoginScreen";
 import { AuthContextProvider } from "./context/AuthContext";
 import SecurityRoutes from "./components/SecurityRoutes";
 import DashboardUser from "./Screens/DashboardUser/DashboardUser";
+import { WorkspaceContextProvider } from "./context/WorkspaceContext";
 
 const App = () => {
   return (
@@ -15,7 +16,9 @@ const App = () => {
 
           <Route path="/home" element={
               <SecurityRoutes>
-                <DashboardUser />
+                <WorkspaceContextProvider>
+                  <DashboardUser />
+                </WorkspaceContextProvider>
               </SecurityRoutes>
             }
           />

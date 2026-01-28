@@ -22,7 +22,7 @@ const LoginScreen = () => {
   async function formSubmit(data) {
     try {
       const res = await login(data);
-      loginSession(res.data.user);
+      loginSession(res.user);
     } catch (err) {
       reset();
     }

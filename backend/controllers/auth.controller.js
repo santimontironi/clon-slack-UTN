@@ -37,7 +37,7 @@ class AuthController {
                     subject: 'Verificacion de cuenta - UTN SLACK',
                     html: `<h1>Gracias por registrarte en UTN SLACK</h1>
                            <p>Por favor, haz click en el siguiente enlace para verificar tu cuenta:</p>
-                           <a href="http://localhost:3000/api/auth/verify-email?verification_email_token=${token_generated}">Verificar cuenta</a>`
+                           <a href="${process.env.BACKEND_URL}/api/auth/verify-email?verification_email_token=${token_generated}">Verificar cuenta</a>`
                 })
             } catch (error) {
                 return res.status(500).json({ message: 'Error al enviar el email de verificacion', error: error.message })

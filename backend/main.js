@@ -16,13 +16,15 @@ app.use(express.json())
 //Habilita a mi servidor a recibir cookies
 app.use(cookieParser());
 
-//Habilita a mi servidor a recibir cookies
-app.use(cors(
-    {
-        origin: process.env.FRONTEND_URL,
-        credentials: true
-    }
-))
+//Configurar CORS
+app.use(cors({
+    origin: [
+        process.env.FRONTEND_URL
+    ],
+    credentials: true,
+    methods: ["GET", "POST", "PATCH", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"]
+}))
 
 //Rutas
 app.use("/api/auth", authRouter)

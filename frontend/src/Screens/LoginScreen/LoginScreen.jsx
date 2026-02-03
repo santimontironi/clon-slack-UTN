@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
@@ -6,7 +6,8 @@ import Loader from "../../components/Loader";
 import "./LoginScreen.css";
 
 const LoginScreen = () => {
-  const { user, login, loginLoading, loginError } = useContext(AuthContext);
+  const { user, login, loading } = useContext(AuthContext);
+  const [loginError, setLoginError] = useState(null);
 
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
   const navigate = useNavigate();
@@ -19,13 +20,16 @@ const LoginScreen = () => {
 
   async function formSubmit(data) {
     try {
+      setLoginError(null);
       await login(data);
     } catch (err) {
+      const message = err?.response?.data?.message || "Error al iniciar sesión";
+      setLoginError(message);
       reset();
     }
   }
 
-  if (loginLoading) return <Loader />;
+  if (loading.login) return <Loader />;
 
   return (
     <section className="login-container">

@@ -5,10 +5,10 @@ import Loader from "../../components/Loader";
 import "./DashboardUser.css";
 
 const DashboardUser = () => {
-  const { user, checkingSession } = useContext(AuthContext);
-  const { workspaces, loading } = useContext(WorkspaceContext);
+  const { user, loading: authLoading } = useContext(AuthContext);
+  const { workspaces, loading: workspaceLoading } = useContext(WorkspaceContext);
 
-  if (checkingSession || loading) {
+  if (authLoading.session || workspaceLoading.workspaces) {
     return <Loader />;
   }
 

@@ -1,5 +1,4 @@
 import { createContext, useState, useEffect } from "react";
-import useRequest from "../hook/useRequest";
 import { loginService, registerService, dashboardUserService } from "../services/authService";
 
 export const AuthContext = createContext();
@@ -7,26 +6,25 @@ export const AuthContext = createContext();
 export const AuthContextProvider = ({ children }) => {
 
     const [user, setUser] = useState(null);
-    const [checkingSession, setCheckingSession] = useState(true);
-
-    const loginRequest = useRequest();
-    const registerRequest = useRequest();
-    const sessionRequest = useRequest();
+    const [loading, setLoading] = useState({
+        session: true,
+        login: false,
+        register: false
+    });
 
     useEffect(() => {
         async function loadSession() {
             try {
-                const data = await sessionRequest.sendRequest(() => dashboardUserService());
-
-                if (data?.authorized) {
-                    setUser(data.user);
+                const res = await dashboardUserService();
+                if (res.data.authorized) {
+                    setUser(res.data.user);
                 } else {
                     setUser(null);
                 }
             } catch {
                 setUser(null);
             } finally {
-                setCheckingSession(false);
+                setLoading(prev => ({ ...prev, session: false }));
             }
         }
 
@@ -42,29 +40,37 @@ export const AuthContextProvider = ({ children }) => {
     };
 
     const login = async (data) => {
-        const res = await loginRequest.sendRequest(() => loginService(data));
-        loginSession(res.user);
-        return res;
+        setLoading(prev => ({ ...prev, login: true }));
+        try {
+            const res = await loginService(data);
+            const responseData = res.data;
+            loginSession(responseData.user);
+            return responseData;
+        } finally {
+            setLoading(prev => ({ ...prev, login: false }));
+        }
     };
 
     const register = async (data) => {
-        return await registerRequest.sendRequest(() => registerService(data));
+        setLoading(prev => ({ ...prev, register: true }));
+        try {
+            const res = await registerService(data);
+            const responseData = res.data;
+            return responseData;
+        } finally {
+            setLoading(prev => ({ ...prev, register: false }));
+        }
     };
 
     return (
         <AuthContext.Provider
             value={{
                 user,
-                checkingSession,
+                loading,
                 loginSession,
                 logout,
                 login,
-                register,
-                loginLoading: loginRequest.loading,
-                loginError: loginRequest.error,
-                registerLoading: registerRequest.loading,
-                registerError: registerRequest.error,
-                registerResponse: registerRequest.response
+                register
             }}
         >
             {children}

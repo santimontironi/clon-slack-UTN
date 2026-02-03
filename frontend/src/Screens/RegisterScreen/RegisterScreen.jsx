@@ -1,26 +1,33 @@
 import { useForm } from "react-hook-form";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import Loader from "../../components/Loader";
 import "./RegisterScreen.css";
 
 const RegisterScreen = () => {
-    const { register: registerUser, registerLoading, registerError, registerResponse } = useContext(AuthContext);
+    const { register: registerUser, loading } = useContext(AuthContext);
+    const [registerError, setRegisterError] = useState(null);
+    const [registerResponse, setRegisterResponse] = useState(null);
 
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
 
     async function formSubmit(data) {
         try {
-            await registerUser(data);
+            setRegisterError(null);
+            setRegisterResponse(null);
+            const result = await registerUser(data);
+            setRegisterResponse(result.message);
             reset();
-        } catch {
+        } catch (err) {
+            const message = err?.response?.data?.message || "Error al registrarse";
+            setRegisterError(message);
             reset();
         }
     }
 
     return (
         <section className="register-container">
-            {registerLoading ? <Loader /> : (
+            {loading.register ? <Loader /> : (
 
                 <div className="register-card">
                     <div className="register-header">

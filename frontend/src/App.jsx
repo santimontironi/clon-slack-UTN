@@ -11,6 +11,7 @@ const App = () => {
     <BrowserRouter>
       <AuthContextProvider>
         <Routes>
+
           <Route path="/" element={<LoginScreen />} />
           <Route path="/registro" element={<RegisterScreen />} />
 

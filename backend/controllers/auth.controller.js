@@ -17,11 +17,11 @@ class AuthController {
             const userUsername = await userRepository.findByUsername(username)
 
             if (userEmail) {
-                return res.status(400).json({message: `Usuario con email ${email} ya registrado`})
+                return res.status(400).json({ message: `Usuario con email ${email} ya registrado` })
             }
 
             if (userUsername) {
-                return res.status(400).json({message: `Usuario con username ${username} ya registrado`})
+                return res.status(400).json({ message: `Usuario con username ${username} ya registrado` })
             }
 
             const hashedPassword = await bcrypt.hash(password, 10)
@@ -74,9 +74,15 @@ class AuthController {
                 return res.status(401).json({ message: 'Por favor, verifica tu email antes de iniciar sesion' })
             }
 
-            const token = jwt.sign({ id: userFounded._id }, process.env.SECRET_KEY)
+            const token = jwt.sign({ id: userFounded._id.toString() }, process.env.SECRET_KEY, { expiresIn: '1d' })
 
-            res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production', samesite: process.env.NODE_ENV === 'production' ? 'none' : 'lax' })
+            res.cookie('token', token, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+                path: '/',
+                maxAge: 1000 * 60 * 60 * 24
+            })
 
             const userObject = userFounded.toObject()
             delete userObject.password
@@ -118,15 +124,17 @@ class AuthController {
     }
 
     async dashboardUser(req, res) {
-        try{
+        try {
             const userId = req.user.id
             const user = await userRepository.findById(userId)
-            if(!user) {
+
+            if (!user) {
                 return res.status(404).json({ authorized: false })
             }
-            return res.status(200).json({ message: 'Dashboard del usuario', user: user })
+
+            return res.status(200).json({ message: 'Dashboard del usuario', authorized: true, user: user })
         }
-        catch(error){
+        catch (error) {
             return res.status(500).json({ message: 'Error al obtener el dashboard del usuario', error: error.message })
         }
     }

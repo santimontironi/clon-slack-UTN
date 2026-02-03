@@ -2,11 +2,10 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
-import Loader from "../../components/Loader";
 import "./LoginScreen.css";
 
 const LoginScreen = () => {
-  const { user, login, loading } = useContext(AuthContext);
+  const { user, login } = useContext(AuthContext);
   const [loginError, setLoginError] = useState(null);
 
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
@@ -28,8 +27,6 @@ const LoginScreen = () => {
       reset();
     }
   }
-
-  if (loading.login) return <Loader />;
 
   return (
     <section className="login-container">

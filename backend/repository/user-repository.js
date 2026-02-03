@@ -12,6 +12,11 @@ class UserRepository{
 
         return userCreaed
     }
+
+    async findById(id){
+        const user = await User.findById(id)
+        return user
+    }
     
     async findByIdentifier(identifier){
         const user = await User.findOne({ $or: [{ email: identifier }, { username: identifier }] })

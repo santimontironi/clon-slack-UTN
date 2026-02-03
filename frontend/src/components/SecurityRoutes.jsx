@@ -4,9 +4,9 @@ import { Navigate } from "react-router-dom";
 import Loader from "./Loader";
 
 const SecurityRoutes = ({ children }) => {
-    const { user, checkingSession } = useContext(AuthContext);
+    const { user, loading} = useContext(AuthContext);
 
-    if (checkingSession) {
+    if (loading.session) {
         return <Loader />;
     }
    

@@ -8,3 +8,7 @@ const api = axios.create({
 export const getMyWorkspacesService = () => {
     return api.get('/api/workspaces/my-workspaces')
 }
+
+export const createWorkspaceService = (workspaceData) => {
+    return api.post('/api/workspaces/create-workspace', workspaceData)
+}

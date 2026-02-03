@@ -22,7 +22,7 @@ app.use(cookieParser());
 //Habilita a mi servidor a recibir cookies
 app.use(cors(
     {
-        origin: process.env.FRONTEND_URL_DEV,
+        origin: process.env.FRONTEND_URL,
         credentials: true
     }
 ))

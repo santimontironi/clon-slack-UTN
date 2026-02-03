@@ -20,8 +20,6 @@ app.use(cors({
     allowedHeaders: ["Content-Type", "Authorization"]
 }))
 
-app.options("*", cors())
-
 //Habilita a mi servidor a recibir json por body
 app.use(express.json())
 

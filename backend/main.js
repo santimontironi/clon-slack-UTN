@@ -10,12 +10,6 @@ dotenv.config()
 //Crear un servidor web (Express app)
 const app = express()
 
-//Habilita a mi servidor a recibir json por body
-app.use(express.json())
-
-//Habilita a mi servidor a recibir cookies
-app.use(cookieParser());
-
 //Configurar CORS
 app.use(cors({
     origin: [
@@ -25,6 +19,14 @@ app.use(cors({
     methods: ["GET", "POST", "PATCH", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"]
 }))
+
+app.options("*", cors())
+
+//Habilita a mi servidor a recibir json por body
+app.use(express.json())
+
+//Habilita a mi servidor a recibir cookies
+app.use(cookieParser());
 
 //Rutas
 app.use("/api/auth", authRouter)

@@ -1,7 +1,7 @@
 import app from "./main.js";
 import { connectMongoDB } from "./config/mongoDB.config.js"
 
-export const startServer = async () => {
+const startServer = async () => {
     try{
         await connectMongoDB()
         app.listen(
@@ -15,3 +15,5 @@ export const startServer = async () => {
         console.error("Error starting server:", error);
     }
 }
+
+export default startServer

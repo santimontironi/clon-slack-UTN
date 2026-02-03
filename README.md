@@ -58,10 +58,13 @@ git clone https://github.com/tu-usuario/slack-clone-mern.git
 cd slack-clone-mern
 cd backend
 npm install
-PORT=3000
-MONGO_URL = URL local
-JWT_SECRET = crear una
-FRONTEND_URL = http://localhost:5173
+```
+- PORT=3000
+- MONGO_URL = URL local
+- JWT_SECRET = crear una
+- FRONTEND_URL = http://localhost:5173
+
+```bash
 npm run dev
 El backend quedará ejecutándose en:
 http://localhost:3000
@@ -70,6 +73,4 @@ npm install
 npm run dev
 El frontend quedará ejecutándose en:
 http://localhost:5173
-
-git clone https://github.com/tu-usuario/slack-clone-mern.git
-cd slack-clone-mern
+```

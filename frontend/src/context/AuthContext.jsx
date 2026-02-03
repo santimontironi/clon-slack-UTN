@@ -36,8 +36,6 @@ export const AuthContextProvider = ({ children }) => {
                     setUser(res.data.user);
                 }
             } catch (error) {
-                console.error("Error loading session:", error);
-                console.log(error?.response?.data?.message)
                 setUser(null);
             } finally {
                 setLoading(prev => ({ ...prev, session: false }));

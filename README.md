@@ -36,7 +36,6 @@ La aplicación permite a los usuarios:
 - Enviar y recibir mensajes en tiempo real
 - Gestionar perfiles de usuario
 - Autenticación segura mediante JWT
-- Comunicación instantánea usando WebSockets
 
 El sistema está dividido en **frontend y backend**, siguiendo una arquitectura cliente-servidor.
 

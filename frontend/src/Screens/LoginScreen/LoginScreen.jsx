@@ -3,32 +3,29 @@ import { AuthContext } from "../../context/AuthContext";
 import { useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import Loader from "../../components/Loader";
-import { useLogin } from "../../hook/useLogin";
 import "./LoginScreen.css";
 
 const LoginScreen = () => {
-  const { user, loginSession } = useContext(AuthContext);
-  const { login, loading, error } = useLogin();
+  const { user, login, loginLoading, loginError } = useContext(AuthContext);
 
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (user) {
-      navigate("/home");
+      navigate("/inicio");
     }
   }, [user, navigate]);
 
   async function formSubmit(data) {
     try {
-      const res = await login(data);
-      loginSession(res.user);
+      await login(data);
     } catch (err) {
       reset();
     }
   }
 
-  if (loading) return <Loader />;
+  if (loginLoading) return <Loader />;
 
   return (
     <section className="login-container">
@@ -93,18 +90,18 @@ const LoginScreen = () => {
             Iniciar sesión con correo electrónico
           </button>
 
-          {error && (
+          {loginError && (
             <div className="alert alert-error">
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                 <path d="M8 0C3.6 0 0 3.6 0 8C0 12.4 3.6 16 8 16C12.4 16 16 12.4 16 8C16 3.6 12.4 0 8 0ZM8 12C7.4 12 7 11.6 7 11C7 10.4 7.4 10 8 10C8.6 10 9 10.4 9 11C9 11.6 8.6 12 8 12ZM9 9H7V4H9V9Z" fill="#E01E5A" />
               </svg>
-              {error}
+              {loginError}
             </div>
           )}
         </form>
   
         <div className="login-footer">
-          <p>¿Primera vez en Slack? <a href="/register">Crea una cuenta</a></p>
+          <p>¿Primera vez en Slack? <a href="/registro">Crea una cuenta</a></p>
         </div>
       </div>
     </section>

@@ -84,9 +84,9 @@ const DashboardUser = () => {
               </div>
               <h2>Crea tu primer espacio de trabajo</h2>
               <p>Los espacios de trabajo son donde tu equipo se comunica. Son mejores cuando están organizados por un objetivo común, como un proyecto, tema o departamento.</p>
-              <button className="create-workspace-button">
+              <a href="/crear-workspace" className="create-workspace-button">
                 Crear un espacio de trabajo
-              </button>
+              </a>
             </div>
           )}
         </main>

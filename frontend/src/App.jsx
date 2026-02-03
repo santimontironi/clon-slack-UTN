@@ -12,9 +12,9 @@ const App = () => {
       <AuthContextProvider>
         <Routes>
           <Route path="/" element={<LoginScreen />} />
-          <Route path="/register" element={<RegisterScreen />} />
+          <Route path="/registro" element={<RegisterScreen />} />
 
-          <Route path="/home" element={
+          <Route path="/inicio" element={
               <SecurityRoutes>
                 <WorkspaceContextProvider>
                   <DashboardUser />

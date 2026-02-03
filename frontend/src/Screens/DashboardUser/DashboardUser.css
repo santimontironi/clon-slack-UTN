@@ -208,7 +208,7 @@
 }
 
 .create-workspace-button {
-    padding: 12px 24px;
+    padding: 14px 24px;
     background: #611f69;
     color: white;
     border: none;
@@ -218,6 +218,7 @@
     cursor: pointer;
     transition: background 0.2s ease;
     font-family: inherit;
+    text-decoration: none;
 }
 
 .create-workspace-button:hover {

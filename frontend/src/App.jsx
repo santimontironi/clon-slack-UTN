@@ -5,6 +5,7 @@ import { AuthContextProvider } from "./context/AuthContext";
 import SecurityRoutes from "./components/SecurityRoutes";
 import DashboardUser from "./Screens/DashboardUser/DashboardUser";
 import { WorkspaceContextProvider } from "./context/WorkspaceContext";
+import CreateWorkspace from "./Screens/CreateWorkspace/CreateWorkspace";
 
 const App = () => {
   return (
@@ -16,13 +17,21 @@ const App = () => {
           <Route path="/registro" element={<RegisterScreen />} />
 
           <Route path="/inicio" element={
-              <SecurityRoutes>
-                <WorkspaceContextProvider>
-                  <DashboardUser />
-                </WorkspaceContextProvider>
-              </SecurityRoutes>
-            }
-          />
+            <SecurityRoutes>
+              <WorkspaceContextProvider>
+                <DashboardUser />
+              </WorkspaceContextProvider>
+            </SecurityRoutes>
+          }/>
+
+          <Route path="/crear-workspace" element={
+            <SecurityRoutes>
+              <WorkspaceContextProvider>
+                <CreateWorkspace />
+              </WorkspaceContextProvider>
+            </SecurityRoutes>
+          }/>
+
         </Routes>
       </AuthContextProvider>
     </BrowserRouter>

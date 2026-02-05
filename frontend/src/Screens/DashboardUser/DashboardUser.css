@@ -221,6 +221,59 @@
     text-decoration: none;
 }
 
+.workspace-add-card {
+    background: #fafafa;
+    border: 2px dashed #d1d1d1;
+    border-radius: 12px;
+    padding: 24px;
+    min-height: 180px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+
+    text-decoration: none;
+    color: #616061;
+    font-weight: 700;
+    font-size: 15px;
+
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.workspace-add-card:hover {
+    background: #ffffff;
+    border-color: #611f69;
+    color: #611f69;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+}
+
+.workspace-add-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    background: #ffffff;
+    border: 2px solid #e0e0e0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: all 0.2s ease;
+}
+
+.workspace-add-card:hover .workspace-add-icon {
+    border-color: #611f69;
+    background: #f8f0fa;
+}
+
+.workspace-add-text {
+    text-align: center;
+}
+
 .create-workspace-button:hover {
     background: #4a154b;
 }

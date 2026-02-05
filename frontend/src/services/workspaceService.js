@@ -10,5 +10,9 @@ export const getMyWorkspacesService = () => {
 }
 
 export const createWorkspaceService = (workspaceData) => {
-    return api.post('/api/workspaces/create-workspace', workspaceData)
+    return api.post('/api/workspaces/create-workspace', workspaceData, { headers: { 'Content-Type': 'multipart/form-data' } })
+}
+
+export const deleteWorkspaceService = (idWorkspace) => {
+    return api.delete(`/api/workspaces/${idWorkspace}/eliminar`)
 }

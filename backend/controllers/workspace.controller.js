@@ -2,19 +2,34 @@ import workspaceRepository from "../repository/workspaces-repository.js"
 import userRepository from "../repository/user-repository.js"
 import jwt from "jsonwebtoken"
 import mail_transporter from "../config/mail.config.js"
+import cloudinary from "../config/cloudinary.js"
 
 class WorkspaceController {
 
     async createWorkspace(req, res) {
         try {
-            const { title, description, image } = req.body
+            const { title, description } = req.body
             const user = req.user
+            let imageUrl = null
+
+            // si hay un archivo, subirlo a Cloudinary
+            if (req.file) {
+                const b64 = Buffer.from(req.file.buffer).toString('base64')
+                const dataURI = `data:${req.file.mimetype};base64,${b64}`
+                
+                const result = await cloudinary.uploader.upload(dataURI, {
+                    folder: 'workspaces',
+                    resource_type: 'auto'
+                })
+                
+                imageUrl = result.secure_url
+            }
 
             const workspace = await workspaceRepository.createWorkspace(
                 user.id,
                 title,
-                image,
-                description
+                description,
+                imageUrl
             )
 
             return res.status(200).json({ message: 'Workspace creado con exito', workspace })
@@ -28,11 +43,19 @@ class WorkspaceController {
             const user = req.user
             const workspaces = await workspaceRepository.getMyWorkspaces(user.id)
 
+            const workspacesFormat = workspaces.map((member) => ({
+                _id: member.fk_id_workspace._id,
+                title: member.fk_id_workspace.title,
+                description: member.fk_id_workspace.description,
+                image: member.fk_id_workspace.image,
+                created_at: member.fk_id_workspace.created_at
+            }))
+
             if (workspaces.length === 0) {
                 return res.status(404).json({ message: 'No se encontraron workspaces.' })
             }
 
-            return res.status(200).json({ message: 'Workspaces obtenidos con exito', workspaces })
+            return res.status(200).json({ message: 'Workspaces obtenidos con exito', workspaces: workspacesFormat })
         } catch (error) {
             return res.status(500).json({ message: 'Error al obtener los workspaces', error: error.message })
         }
@@ -99,7 +122,7 @@ class WorkspaceController {
                 from: process.env.EMAIL_USER,
                 to: email,
                 subject: 'Invitacion a workspace - UTN SLACK',
-                html: `<a href="http://localhost:3000/api/workspace/invite/${token}">Unirse</a>`
+                html: `<a href="${process.env.BACKEND_URL}/api/workspace/invite/${token}">Unirse</a>`
             })
 
             return res.status(200).json({ message: 'Invitación enviada con éxito' })

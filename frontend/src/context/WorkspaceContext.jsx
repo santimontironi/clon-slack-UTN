@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from "react";
-import { getMyWorkspacesService, createWorkspaceService } from "../services/workspaceService";
+import { getMyWorkspacesService, createWorkspaceService, deleteWorkspaceService } from "../services/workspaceService";
 
 export const WorkspaceContext = createContext();
 
@@ -11,13 +11,12 @@ export const WorkspaceContextProvider = ({ children }) => {
     });
 
     useEffect(() => {
-        async function loadWorkspaces() {
+        async function loadMyWorkspaces() {
             try {
                 const res = await getMyWorkspacesService();
                 const data = res.data;
-                if (data?.workspaces) {
-                    setWorkspaces(data.workspaces);
-                }
+                setWorkspaces(data.workspaces);
+                
             } catch (err) {
                 console.error("Error loading workspaces:", err);
             } finally {
@@ -25,7 +24,7 @@ export const WorkspaceContextProvider = ({ children }) => {
             }
         }
 
-        loadWorkspaces();
+        loadMyWorkspaces();
     }, []);
 
     async function createWorkspace(workspaceData) {
@@ -42,12 +41,22 @@ export const WorkspaceContextProvider = ({ children }) => {
         }
     }
 
+    async function deleteWorkspace(idWorkspace) {
+        try {
+            await deleteWorkspaceService(idWorkspace);
+            setWorkspaces(prev => prev.filter(ws => ws._id !== idWorkspace));
+        } catch (err) {
+            throw err;
+        }
+    }
+
     return (
         <WorkspaceContext.Provider
             value={{
                 workspaces,
                 loading,
-                createWorkspace
+                createWorkspace,
+                deleteWorkspace
             }}
         >
             {children}

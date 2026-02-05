@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { WorkspaceContext } from "../../context/WorkspaceContext";
 import Loader from "../../components/Loader";
+import WorkspaceList from "../../components/WorkspaceList/WorkspaceList";
 import "./DashboardUser.css";
 
 const DashboardUser = () => {
@@ -11,7 +12,6 @@ const DashboardUser = () => {
   return (
     <section className="dashboard-container">
       {loading.session ? <Loader /> : (
-
         <div className="dashboard-content">
           <header className="dashboard-header">
             <div className="header-logo">
@@ -51,26 +51,29 @@ const DashboardUser = () => {
             {workspaces?.length > 0 ? (
               <div className="workspaces-grid">
                 {workspaces.map((workspace) => (
-                  <div key={workspace.id} className="workspace-card">
-                    <div className="workspace-icon">
-                      <div className="workspace-avatar">
-                        {workspace.name?.charAt(0).toUpperCase()}
-                      </div>
-                    </div>
-                    <div className="workspace-info">
-                      <h3 className="workspace-name">{workspace.name}</h3>
-                      <p className="workspace-members">
-                        {workspace.members?.length || 0} {workspace.members?.length === 1 ? 'miembro' : 'miembros'}
-                      </p>
-                    </div>
-                    <button className="workspace-launch">
-                      Abrir
-                      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                        <path d="M6 3L11 8L6 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-                      </svg>
-                    </button>
-                  </div>
+                  <WorkspaceList
+                    key={workspace._id}
+                    id={workspace._id}
+                    title={workspace.title}
+                    description={workspace.description}
+                    image={workspace.image}
+                    created_at={workspace.created_at}
+                  />
                 ))}
+
+                <a href="/crear-workspace" className="workspace-add-card">
+                  <div className="workspace-add-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+                      <path
+                        d="M12 5V19M5 12H19"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                      />
+                    </svg>
+                  </div>
+                  <span className="workspace-add-text">Crear nuevo workspace</span>
+                </a>
               </div>
             ) : (
               <div className="empty-state">

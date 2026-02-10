@@ -14,7 +14,7 @@ router.get('/:idWorkspace/canales', verifyToken, memberMiddleware, workspaceCont
 router.post('/create-workspace', verifyToken, upload.single('image'), workspaceController.createWorkspace)
 router.post('/:idWorkspace/enviar-invitacion', verifyToken, memberMiddleware, workspaceController.sendInvitation)
 router.post('/:idWorkspace/agregar-miembro', verifyToken, memberMiddleware, workspaceController.addMember)
-router.post('/:idWorkspace/canales', verifyToken, memberMiddleware, workspaceController.createChannel)
+router.post('/:idWorkspace/agregar-canal', verifyToken, memberMiddleware, workspaceController.createChannel)
 router.post('/:idWorkspace/canales/:idChannel/mensaje', verifyToken, memberMiddleware, workspaceController.createMessage)
 
 

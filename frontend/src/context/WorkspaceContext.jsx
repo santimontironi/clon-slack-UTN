@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from "react";
-import { getMyWorkspacesService, createWorkspaceService, deleteWorkspaceService, getWorkspaceByIdService, getWorkspaceChannelsService } from "../services/workspaceService";
+import { getMyWorkspacesService, createWorkspaceService, deleteWorkspaceService, getWorkspaceByIdService, getWorkspaceChannelsService, createChannelService } from "../services/workspaceService";
 
 export const WorkspaceContext = createContext();
 
@@ -10,7 +10,8 @@ export const WorkspaceContextProvider = ({ children }) => {
     const [loading, setLoading] = useState({
         workspaces: true,
         create: false,
-        getWorkspace: false
+        getWorkspace: false,
+        createChannel: false
     });
 
     useEffect(() => {
@@ -57,7 +58,7 @@ export const WorkspaceContextProvider = ({ children }) => {
         setLoading(prev => ({ ...prev, getWorkspace: true }));
         try {
             const res = await getWorkspaceByIdService(idWorkspace);
-            setWorkspaceById(res.data.workspace);   
+            setWorkspaceById(res.data.workspace);
             return res.data.workspace;
         } catch (err) {
             throw err;
@@ -75,6 +76,20 @@ export const WorkspaceContextProvider = ({ children }) => {
         }
     }
 
+    async function createChannel(idWorkspace, channelData) {
+        setLoading(prev => ({ ...prev, createChannel: true }));
+        try {
+            const res = await createChannelService(idWorkspace, channelData);
+            const newChannel = res.data.channel;
+            setWorkspaceChannels(prev => [...prev, newChannel]);
+            return res.data;
+        } catch (err) {
+            throw err;
+        } finally {
+            setLoading(prev => ({ ...prev, createChannel: false }));
+        }
+    }
+
     return (
         <WorkspaceContext.Provider
             value={{
@@ -85,7 +100,8 @@ export const WorkspaceContextProvider = ({ children }) => {
                 getWorkspaceById,
                 workspaceById,
                 getWorkspaceChannels,
-                workspaceChannels
+                workspaceChannels,
+                createChannel
             }}
         >
             {children}

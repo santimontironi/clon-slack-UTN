@@ -203,11 +203,13 @@ class WorkspaceController {
             const { idWorkspace } = req.params
             const member = req.member
 
+            const {name, description} = req.body
+
             if (!['owner', 'admin'].includes(member.role)) {
                 return res.status(403).json({ message: 'No tienes permiso para crear canales.' })
             }
 
-            const channel = await workspaceRepository.createChannel(idWorkspace, req.body.name)
+            const channel = await workspaceRepository.createChannel(idWorkspace, name, description)
 
             return res.status(200).json({ message: 'Canal creado con éxito', channel })
         } catch (error) {

@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react"
+import ItemChannel from "./ItemChannel"
+import { Link } from "react-router"
 
 const SideNav = ({ getWorkspaceChannels, workspaceChannels, workspaceData, user }) => {
 
@@ -28,16 +30,7 @@ const SideNav = ({ getWorkspaceChannels, workspaceChannels, workspaceData, user 
                 />
             )}
 
-            <aside
-                className={`
-                fixed top-0 left-0 z-50 h-screen w-64
-                bg-[#4A154B] text-white flex flex-col
-                border-r border-[#522653]
-                transform transition-transform duration-300
-                ${open ? "translate-x-0" : "-translate-x-full"}
-                md:translate-x-0
-                `}
-            >
+            <aside className={`fixed top-0 left-0 z-50 h-screen w-64 bg-[#4A154B] text-white flex flex-col border-r border-[#522653] transform transition-transform duration-300 ${open ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 `}>
                 <div className="px-4 py-4 border-b border-[#522653] flex items-start justify-between">
                     <div>
                         <h2 className="text-lg font-bold truncate">
@@ -66,19 +59,19 @@ const SideNav = ({ getWorkspaceChannels, workspaceChannels, workspaceData, user 
                                 </svg>
                                 Canales
                             </h3>
-                            <button className="text-gray-300 hover:text-white text-xl leading-none">
+                            <Link to={`/workspace/${workspaceData?._id}/nuevo-canal`} className="text-gray-300 hover:text-white text-xl leading-none">
                                 +
-                            </button>
+                            </Link>
                         </div>
 
                         {workspaceChannels && workspaceChannels.length > 0 ? (
                             <ul className="space-y-1">
                                 {workspaceChannels.map((channel) => (
                                     <li key={channel._id}>
-                                        <button className="w-full px-2 py-1.5 rounded text-left text-sm hover:bg-[#350d36] transition flex items-center gap-2">
-                                            <span className="text-gray-400">#</span>
-                                            <span className="truncate">{channel.name}</span>
-                                        </button>
+                                        <ItemChannel
+                                            id={channel._id}
+                                            channel={channel}
+                                        />
                                     </li>
                                 ))}
                             </ul>

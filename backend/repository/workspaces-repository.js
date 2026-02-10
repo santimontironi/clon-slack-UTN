@@ -53,8 +53,8 @@ class WorkspaceRepository {
         return channels
     }
 
-    async createChannel(fk_id_workspace, title, description) {
-        const channel = await Channel.create({ fk_id_workspace, title, description })
+    async createChannel(fk_id_workspace, name, description) {
+        const channel = await Channel.create({ fk_id_workspace, name, description })
         return channel
     }
 

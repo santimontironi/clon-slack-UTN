@@ -7,6 +7,7 @@ import DashboardUser from "./Screens/DashboardUser";
 import { WorkspaceContextProvider } from "./context/WorkspaceContext";
 import CreateWorkspace from "./Screens/CreateWorkspace";
 import Workspace from "./Screens/Workspace";
+import NewChannel from "./Screens/NewChannel";
 
 const App = () => {
   return (
@@ -37,6 +38,14 @@ const App = () => {
               <SecurityRoutes>
                 <WorkspaceContextProvider>
                   <Workspace />
+                </WorkspaceContextProvider>
+              </SecurityRoutes>
+            } />
+
+            <Route path="/workspace/:id/nuevo-canal" element={
+              <SecurityRoutes>
+                <WorkspaceContextProvider>
+                  <NewChannel />
                 </WorkspaceContextProvider>
               </SecurityRoutes>
             } />

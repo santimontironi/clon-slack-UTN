@@ -57,6 +57,15 @@ export const AuthContextProvider = ({ children }) => {
         }
     };
 
+    const verifyEmail = async (token) => {
+        try {
+            const res = await verifyEmailService(token);
+            return res.data;
+        } catch (err) {
+            throw err;
+        }
+    };
+
     const logout = () => {
         try{
             logoutUserService();
@@ -73,7 +82,8 @@ export const AuthContextProvider = ({ children }) => {
                 loading,
                 logout,
                 login,
-                register
+                register,
+                verifyEmail
             }}
         >
             {children}

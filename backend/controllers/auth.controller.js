@@ -37,7 +37,7 @@ class AuthController {
                     subject: 'Verificacion de cuenta - UTN SLACK',
                     html: `<h1>Gracias por registrarte en UTN SLACK</h1>
                            <p>Por favor, haz click en el siguiente enlace para verificar tu cuenta:</p>
-                           <a href="${process.env.BACKEND_URL}/api/auth/verify-email?verification_email_token=${token_generated}">Verificar cuenta</a>`
+                           <a href="${process.env.FRONTEND_URL}/verificar-email/${token_generated}">Verificar cuenta</a>`
                 })
             } catch (error) {
                 return res.status(500).json({ message: 'Error al enviar el email de verificacion', error: error.message })
@@ -95,13 +95,13 @@ class AuthController {
 
     async verifyEmail(req, res) {
         try {
-            const { verification_email_token } = req.query
+            const { token } = req.params
 
-            if (!verification_email_token) {
+            if (!token) {
                 return res.status(400).json({ message: 'Token de verificacion no proporcionado' })
             }
 
-            const decoded = jwt.verify(verification_email_token, process.env.SECRET_KEY)
+            const decoded = jwt.verify(token, process.env.SECRET_KEY)
 
             const user = await userRepository.findByEmail(decoded.email)
 

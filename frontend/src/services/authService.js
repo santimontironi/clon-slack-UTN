@@ -9,6 +9,10 @@ export const registerService = (data) => {
     return api.post('/api/auth/register', data)
 }
 
+export const verifyEmailService = (token) => {
+    return api.get(`/api/auth/verify-email/${token}`)
+}
+
 export const loginService = (data) => {
     return api.post('/api/auth/login', data)
 }

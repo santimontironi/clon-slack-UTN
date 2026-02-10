@@ -8,6 +8,7 @@ import { WorkspaceContextProvider } from "./context/WorkspaceContext";
 import CreateWorkspace from "./Screens/CreateWorkspace";
 import Workspace from "./Screens/Workspace";
 import NewChannel from "./Screens/NewChannel";
+import VerifyEmail from "./Screens/VerifyEmail";
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
 
             <Route path="/" element={<LoginScreen />} />
             <Route path="/registro" element={<RegisterScreen />} />
+            <Route path="/verificar-email/:token" element={<VerifyEmail />} />
 
             <Route path="/inicio" element={
               <SecurityRoutes>

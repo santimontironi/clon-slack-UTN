@@ -15,7 +15,7 @@ authRouter.post(
 )
 
 authRouter.get(
-    '/verify-email',
+    '/verify-email/:token',
     authController.verifyEmail
 )
 

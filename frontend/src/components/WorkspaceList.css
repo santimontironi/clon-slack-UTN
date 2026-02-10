@@ -116,6 +116,7 @@
     cursor: pointer;
     transition: background 0.2s ease;
     font-family: inherit;
+    text-decoration: none;
 }
 
 .workspace-open-button:hover {

@@ -1,8 +1,7 @@
 import { useForm } from 'react-hook-form'
 import { useContext } from 'react'
-import { WorkspaceContext } from '../../context/WorkspaceContext'
+import { WorkspaceContext } from '../context/WorkspaceContext'
 import { useNavigate } from 'react-router-dom'
-import './CreateWorkspace.css'
 
 const CreateWorkspace = () => {
     const { register, handleSubmit, formState: { errors }, reset } = useForm()
@@ -28,11 +27,11 @@ const CreateWorkspace = () => {
     }
 
     return (
-        <section className="create-workspace-container">
-            <div className="create-workspace-content">
-                <div className="workspace-header">
+        <section className="min-h-screen bg-linear-to-br from-[#f8f8f8] to-white p-5 font-['Slack-Lato','Lato','Helvetica_Neue',Helvetica,Arial,sans-serif]">
+            <div className="max-w-full md:max-w-180 lg:max-w-200 xl:max-w-225 mx-auto">
+                <div className="flex items-center justify-between mb-8">
                     <button
-                        className="back-button"
+                        className="w-10 h-10 rounded border border-[#e0e0e0] bg-white flex items-center justify-center cursor-pointer transition-all duration-200 ease-in-out text-[#1d1c1d] hover:bg-[#f8f8f8] hover:border-[#cccccc]"
                         onClick={() => navigate(-1)}
                         aria-label="Volver al dashboard"
                     >
@@ -41,8 +40,8 @@ const CreateWorkspace = () => {
                         </svg>
                     </button>
 
-                    <div className="workspace-logo">
-                        <svg className="slack-logo" viewBox="0 0 124 124" fill="none">
+                    <div>
+                        <svg className="w-10 h-10" viewBox="0 0 124 124" fill="none">
                             <path d="M26.3996 78.3999C26.3996 84.8999 21.0996 90.1999 14.5996 90.1999C8.09961 90.1999 2.79961 84.8999 2.79961 78.3999C2.79961 71.8999 8.09961 66.5999 14.5996 66.5999H26.3996V78.3999Z" fill="#E01E5A" />
                             <path d="M32.2996 78.3999C32.2996 71.8999 37.5996 66.5999 44.0996 66.5999C50.5996 66.5999 55.8996 71.8999 55.8996 78.3999V109.6C55.8996 116.1 50.5996 121.4 44.0996 121.4C37.5996 121.4 32.2996 116.1 32.2996 109.6V78.3999Z" fill="#E01E5A" />
                             <path d="M44.0996 26.4001C37.5996 26.4001 32.2996 21.1001 32.2996 14.6001C32.2996 8.1001 37.5996 2.8001 44.0996 2.8001C50.5996 2.8001 55.8996 8.1001 55.8996 14.6001V26.4001H44.0996Z" fill="#36C5F0" />
@@ -55,22 +54,29 @@ const CreateWorkspace = () => {
                     </div>
                 </div>
 
-                <div className="create-workspace-card">
-                    <div className="card-header">
-                        <h1>Crear un espacio de trabajo</h1>
-                        <p className="card-subtitle">
+                <div className="bg-white rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.08)] p-8 md:p-10 lg:px-20 lg:py-25 mb-6">
+                    <div className="text-center mb-8 pb-6 border-b border-[#e0e0e0]">
+                        <h1 className="text-[28px] md:text-4xl lg:text-[42px] xl:text-5xl font-bold text-[#1d1c1d] mb-3 tracking-tight">
+                            Crear un espacio de trabajo
+                        </h1>
+                        <p className="text-[15px] md:text-base lg:text-lg leading-normal text-[#616061] m-0">
                             Los espacios de trabajo son donde tu equipo se comunica. Son mejores cuando están organizados por un objetivo común.
                         </p>
                     </div>
 
-                    <form onSubmit={handleSubmit(onSubmit)} className="workspace-form">
-                        <div className="form-group">
-                            <label htmlFor="title">Nombre del espacio de trabajo *</label>
+                    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
+                        <div className="mb-6">
+                            <label htmlFor="title" className="block text-[15px] font-bold text-[#1d1c1d] mb-2 leading-snug">
+                                Nombre del espacio de trabajo *
+                            </label>
                             <input
                                 id="title"
                                 type="text"
                                 placeholder="Ej: Acme Marketing o Equipo de Ventas de Acme"
-                                className={errors.title ? "input-error" : ""}
+                                className={`w-full px-3 py-2.75 pb-3 text-lg leading-[1.33333333] border ${errors.title
+                                        ? "border-[#e8912d] focus:shadow-[0_0_0_4px_rgba(232,145,45,0.3)]"
+                                        : "border-[#868686] focus:border-[#1264a3] focus:shadow-[0_0_0_4px_rgba(29,155,209,0.3)]"
+                                    } rounded transition-all duration-200 ease-in-out box-border font-inherit text-[#1d1c1d] placeholder:text-[#616061] focus:outline-none`}
                                 {...register("title", {
                                     required: "El nombre del espacio de trabajo es obligatorio",
                                     minLength: {
@@ -80,8 +86,8 @@ const CreateWorkspace = () => {
                                 })}
                             />
                             {errors.title && (
-                                <p className="error-message">
-                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                <p className="flex items-start gap-1.5 mt-2 text-[13px] text-[#e8912d] leading-snug">
+                                    <svg className="shrink-0 mt-px" width="16" height="16" viewBox="0 0 16 16" fill="none">
                                         <path d="M8 0C3.6 0 0 3.6 0 8C0 12.4 3.6 16 8 16C12.4 16 16 12.4 16 8C16 3.6 12.4 0 8 0ZM8 12C7.4 12 7 11.6 7 11C7 10.4 7.4 10 8 10C8.6 10 9 10.4 9 11C9 11.6 8.6 12 8 12ZM9 9H7V4H9V9Z" fill="#E8912D" />
                                     </svg>
                                     {errors.title.message}
@@ -89,39 +95,46 @@ const CreateWorkspace = () => {
                             )}
                         </div>
 
-                        <div className="form-group">
-                            <label htmlFor="description">Descripción (opcional)</label>
+                        <div className="mb-6">
+                            <label htmlFor="description" className="block text-[15px] font-bold text-[#1d1c1d] mb-2 leading-snug">
+                                Descripción (opcional)
+                            </label>
                             <textarea
                                 id="description"
                                 rows="4"
                                 placeholder="¿De qué trata este espacio de trabajo?"
+                                className="w-full px-3 py-2.75 pb-3 text-lg leading-[1.33333333] border border-[#868686] rounded transition-all duration-200 ease-in-out box-border font-inherit text-[#1d1c1d] placeholder:text-[#616061] focus:outline-none focus:border-[#1264a3] focus:shadow-[0_0_0_4px_rgba(29,155,209,0.3)] resize-y min-h-25"
                                 {...register("description")}
                             />
                         </div>
 
-                        <div className="form-group">
-                            <label htmlFor="image">Imagen del espacio de trabajo (opcional)</label>
+                        <div className="mb-6">
+                            <label htmlFor="image" className="block text-[15px] font-bold text-[#1d1c1d] mb-2 leading-snug">
+                                Imagen del espacio de trabajo (opcional)
+                            </label>
                             <input
                                 id="image"
                                 type="file"
                                 accept="image/*"
-                                className="file-input-simple"
+                                className="w-full px-3 py-2.75 pb-3 text-base border border-[#868686] rounded box-border transition-all duration-200 ease-in-out font-inherit text-[#1d1c1d] bg-white cursor-pointer focus:outline-none focus:border-[#1264a3] focus:shadow-[0_0_0_4px_rgba(29,155,209,0.3)] file:px-4 file:py-2 file:mr-3 file:bg-[#f8f8f8] file:border file:border-[#cccccc] file:rounded file:text-[15px] file:font-semibold file:text-[#1d1c1d] file:cursor-pointer file:transition-all file:duration-200 file:font-inherit hover:file:bg-[#e8e8e8] hover:file:border-[#868686]"
                                 {...register("image")}
                             />
-                            <p className="file-input-hint">PNG, JPG, GIF hasta 5MB</p>
+                            <p className="text-[13px] text-[#616061] mt-2 mb-0">
+                                PNG, JPG, GIF hasta 5MB
+                            </p>
                         </div>
 
-                        <div className="form-actions">
+                        <div className="mt-8 flex flex-col-reverse md:flex-row md:justify-between gap-3">
                             <button
                                 type="button"
-                                className="cancel-button"
-                                onClick={() => navigate('/dashboard')}
+                                className="w-full md:w-[48%] bg-white text-[#1d1c1d] text-lg font-bold px-5 py-3.5 pb-3.75 border border-[#868686] rounded cursor-pointer transition-all duration-100 ease-in-out font-inherit hover:bg-[#f8f8f8] hover:border-[#1d1c1d]"
+                                onClick={() => navigate(-1)}
                             >
                                 Cancelar
                             </button>
                             <button
                                 type="submit"
-                                className="submit-button"
+                                className="w-full md:w-[48%] bg-[#611f69] text-white text-lg font-bold px-5 py-3.5 pb-3.75 border-none rounded cursor-pointer transition-all duration-100 ease-in-out font-inherit hover:bg-[#4a154b] hover:shadow-[0_1px_4px_rgba(0,0,0,0.3)] active:bg-[#350d36] disabled:bg-[#868686] disabled:cursor-not-allowed"
                                 disabled={loading.create}
                             >
                                 {loading.create ? 'Creando...' : 'Crear espacio de trabajo'}
@@ -130,12 +143,20 @@ const CreateWorkspace = () => {
                     </form>
                 </div>
 
-                <div className="tips-section">
-                    <h3>💡 Consejos para tu espacio de trabajo</h3>
-                    <ul>
-                        <li>Usa un nombre descriptivo que todos reconozcan</li>
-                        <li>Mantén la organización con canales temáticos</li>
-                        <li>Invita a tu equipo después de crear el espacio</li>
+                <div className="bg-white rounded-lg p-6 border border-[#e0e0e0]">
+                    <h3 className="text-base font-bold text-[#1d1c1d] mb-4 mt-0">
+                        💡 Consejos para tu espacio de trabajo
+                    </h3>
+                    <ul className="m-0 pl-5">
+                        <li className="text-sm text-[#616061] leading-relaxed mb-2">
+                            Usa un nombre descriptivo que todos reconozcan
+                        </li>
+                        <li className="text-sm text-[#616061] leading-relaxed mb-2">
+                            Mantén la organización con canales temáticos
+                        </li>
+                        <li className="text-sm text-[#616061] leading-relaxed mb-0">
+                            Invita a tu equipo después de crear el espacio
+                        </li>
                     </ul>
                 </div>
             </div>

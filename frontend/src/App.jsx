@@ -1,40 +1,49 @@
 import { Routes, Route, BrowserRouter } from "react-router-dom";
-import RegisterScreen from "./Screens/RegisterScreen/RegisterScreen";
-import LoginScreen from "./Screens/LoginScreen/LoginScreen";
+import RegisterScreen from "./Screens/RegisterScreen";
+import LoginScreen from "./Screens/LoginScreen";
 import { AuthContextProvider } from "./context/AuthContext";
 import SecurityRoutes from "./components/SecurityRoutes";
-import DashboardUser from "./Screens/DashboardUser/DashboardUser";
+import DashboardUser from "./Screens/DashboardUser";
 import { WorkspaceContextProvider } from "./context/WorkspaceContext";
-import CreateWorkspace from "./Screens/CreateWorkspace/CreateWorkspace";
+import CreateWorkspace from "./Screens/CreateWorkspace";
+import Workspace from "./Screens/Workspace";
 
 const App = () => {
   return (
     <BrowserRouter>
-      <AuthContextProvider>
-        <Routes>
+        <AuthContextProvider>
+          <Routes>
 
-          <Route path="/" element={<LoginScreen />} />
-          <Route path="/registro" element={<RegisterScreen />} />
+            <Route path="/" element={<LoginScreen />} />
+            <Route path="/registro" element={<RegisterScreen />} />
 
-          <Route path="/inicio" element={
-            <SecurityRoutes>
-              <WorkspaceContextProvider>
-                <DashboardUser />
-              </WorkspaceContextProvider>
-            </SecurityRoutes>
-          }/>
+            <Route path="/inicio" element={
+              <SecurityRoutes>
+                <WorkspaceContextProvider>
+                  <DashboardUser />
+                </WorkspaceContextProvider>
+              </SecurityRoutes>
+            } />
 
-          <Route path="/crear-workspace" element={
-            <SecurityRoutes>
-              <WorkspaceContextProvider>
-                <CreateWorkspace />
-              </WorkspaceContextProvider>
-            </SecurityRoutes>
-          }/>
+            <Route path="/crear-workspace" element={
+              <SecurityRoutes>
+                <WorkspaceContextProvider>
+                  <CreateWorkspace />
+                </WorkspaceContextProvider>
+              </SecurityRoutes>
+            } />
 
-        </Routes>
-      </AuthContextProvider>
-    </BrowserRouter>
+            <Route path="/workspace/:id" element={
+              <SecurityRoutes>
+                <WorkspaceContextProvider>
+                  <Workspace />
+                </WorkspaceContextProvider>
+              </SecurityRoutes>
+            } />
+
+          </Routes>
+        </AuthContextProvider>
+    </BrowserRouter >
   );
 };
 

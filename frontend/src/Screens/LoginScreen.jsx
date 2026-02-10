@@ -1,8 +1,7 @@
 import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
-import "./LoginScreen.css";
 
 const LoginScreen = () => {
   const { user, login } = useContext(AuthContext);
@@ -29,10 +28,10 @@ const LoginScreen = () => {
   }
 
   return (
-    <section className="login-container">
-      <div className="login-card">
-        <div className="login-header">
-          <svg className="slack-logo" viewBox="0 0 124 124" fill="none">
+    <section className="min-h-screen flex items-center justify-center bg-[#f8f8f8] p-5 font-['Slack-Lato','Lato','Helvetica_Neue',Helvetica,Arial,sans-serif]">
+      <div className="bg-white rounded-lg shadow-[0_1px_4px_rgba(0,0,0,0.08)] w-full p-8 md:max-w-160 md:px-10 md:pt-10 md:pb-8 lg:px-20 lg:pt-15 lg:pb-12 xl:max-w-175 xl:px-22.5">
+        <div className="text-center mb-8">
+          <svg className="w-12 h-12 mb-6 mx-auto md:w-13 md:h-13 lg:w-13.5 lg:h-13.5" viewBox="0 0 124 124" fill="none">
             <path d="M26.3996 78.3999C26.3996 84.8999 21.0996 90.1999 14.5996 90.1999C8.09961 90.1999 2.79961 84.8999 2.79961 78.3999C2.79961 71.8999 8.09961 66.5999 14.5996 66.5999H26.3996V78.3999Z" fill="#E01E5A" />
             <path d="M32.2996 78.3999C32.2996 71.8999 37.5996 66.5999 44.0996 66.5999C50.5996 66.5999 55.8996 71.8999 55.8996 78.3999V109.6C55.8996 116.1 50.5996 121.4 44.0996 121.4C37.5996 121.4 32.2996 116.1 32.2996 109.6V78.3999Z" fill="#E01E5A" />
             <path d="M44.0996 26.4001C37.5996 26.4001 32.2996 21.1001 32.2996 14.6001C32.2996 8.1001 37.5996 2.8001 44.0996 2.8001C50.5996 2.8001 55.8996 8.1001 55.8996 14.6001V26.4001H44.0996Z" fill="#36C5F0" />
@@ -42,25 +41,32 @@ const LoginScreen = () => {
             <path d="M79.8996 97.5999C86.3996 97.5999 91.6996 102.9 91.6996 109.4C91.6996 115.9 86.3996 121.2 79.8996 121.2C73.3996 121.2 68.0996 115.9 68.0996 109.4V97.5999H79.8996Z" fill="#ECB22E" />
             <path d="M79.8996 91.7001C73.3996 91.7001 68.0996 86.4001 68.0996 79.9001C68.0996 73.4001 73.3996 68.1001 79.8996 68.1001H111.1C117.6 68.1001 122.9 73.4001 122.9 79.9001C122.9 86.4001 117.6 91.7001 111.1 91.7001H79.8996Z" fill="#ECB22E" />
           </svg>
-          <h1>Inicia sesión en Slack</h1>
-          <p className="login-subtitle">
-            Te sugerimos usar la <strong>dirección de correo electrónico que usas en el trabajo</strong>.
+          <h1 className="text-[28px] md:text-4xl lg:text-5xl xl:text-[52px] font-bold leading-tight text-[#1d1c1d] mb-3 tracking-tight">
+            Inicia sesión en Slack
+          </h1>
+          <p className="text-base md:text-[17px] lg:text-lg leading-normal text-[#1d1c1d] m-0">
+            Te sugerimos usar la <strong className="font-bold">dirección de correo electrónico que usas en el trabajo</strong>.
           </p>
         </div>
 
-        <form onSubmit={handleSubmit(formSubmit)} className="login-form">
-          <div className="form-group">
-            <label htmlFor="identifier">Correo electrónico o nombre de usuario</label>
+        <form onSubmit={handleSubmit(formSubmit)} className="mt-8">
+          <div className="mb-5">
+            <label htmlFor="identifier" className="block text-[15px] font-bold text-[#1d1c1d] mb-2 leading-snug">
+              Correo electrónico o nombre de usuario
+            </label>
             <input
               id="identifier"
               type="text"
               placeholder="nombre@empresa.com"
-              className={errors.identifier ? "input-error" : ""}
+              className={`w-full px-3 py-2.75 pb-3.25 text-lg leading-[1.33333333] border ${errors.identifier
+                  ? "border-[#e8912d] focus:shadow-[0_0_0_4px_rgba(232,145,45,0.3)]"
+                  : "border-[#868686] focus:border-[#1264a3] focus:shadow-[0_0_0_4px_rgba(29,155,209,0.3)]"
+                } rounded transition-all duration-200 ease-in-out box-border font-inherit text-[#1d1c1d] placeholder:text-[#616061] focus:outline-none`}
               {...register("identifier", { required: "Introduce tu correo electrónico o nombre de usuario." })}
             />
             {errors.identifier && (
-              <p className="error-message">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <p className="flex items-start gap-1.5 mt-2 text-[13px] text-[#e8912d] leading-snug">
+                <svg className="shrink-0 mt-px" width="16" height="16" viewBox="0 0 16 16" fill="none">
                   <path d="M8 0C3.6 0 0 3.6 0 8C0 12.4 3.6 16 8 16C12.4 16 16 12.4 16 8C16 3.6 12.4 0 8 0ZM8 12C7.4 12 7 11.6 7 11C7 10.4 7.4 10 8 10C8.6 10 9 10.4 9 11C9 11.6 8.6 12 8 12ZM9 9H7V4H9V9Z" fill="#E8912D" />
                 </svg>
                 {errors.identifier.message}
@@ -68,18 +74,23 @@ const LoginScreen = () => {
             )}
           </div>
 
-          <div className="form-group">
-            <label htmlFor="password">Contraseña</label>
+          <div className="mb-5">
+            <label htmlFor="password" className="block text-[15px] font-bold text-[#1d1c1d] mb-2 leading-snug">
+              Contraseña
+            </label>
             <input
               type="password"
               id="password"
               placeholder="Introduce tu contraseña"
-              className={errors.password ? "input-error" : ""}
+              className={`w-full px-3 py-2.75 pb-3.25 text-lg leading-[1.33333333] border ${errors.password
+                  ? "border-[#e8912d] focus:shadow-[0_0_0_4px_rgba(232,145,45,0.3)]"
+                  : "border-[#868686] focus:border-[#1264a3] focus:shadow-[0_0_0_4px_rgba(29,155,209,0.3)]"
+                } rounded transition-all duration-200 ease-in-out box-border font-inherit text-[#1d1c1d] placeholder:text-[#616061] focus:outline-none`}
               {...register("password", { required: "Introduce tu contraseña." })}
             />
             {errors.password && (
-              <p className="error-message">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <p className="flex items-start gap-1.5 mt-2 text-[13px] text-[#e8912d] leading-snug">
+                <svg className="shrink-0 mt-px" width="16" height="16" viewBox="0 0 16 16" fill="none">
                   <path d="M8 0C3.6 0 0 3.6 0 8C0 12.4 3.6 16 8 16C12.4 16 16 12.4 16 8C16 3.6 12.4 0 8 0ZM8 12C7.4 12 7 11.6 7 11C7 10.4 7.4 10 8 10C8.6 10 9 10.4 9 11C9 11.6 8.6 12 8 12ZM9 9H7V4H9V9Z" fill="#E8912D" />
                 </svg>
                 {errors.password.message}
@@ -87,22 +98,27 @@ const LoginScreen = () => {
             )}
           </div>
 
-          <button type="submit" className="submit-button">
+          <button
+            type="submit"
+            className="w-full bg-[#611f69] text-white text-lg font-bold px-5 py-3.5 pb-3.75 border-none rounded cursor-pointer mt-7 transition-all duration-100 ease-in-out font-inherit hover:bg-[#4a154b] hover:shadow-[0_1px_4px_rgba(0,0,0,0.3)] active:bg-[#350d36]"
+          >
             Iniciar sesión con correo electrónico
           </button>
 
           {loginError && (
-            <div className="alert alert-error">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <div className="flex items-start gap-3 p-4 rounded-lg mt-5 text-[15px] leading-snug bg-[#fff4f4] text-[#1d1c1d] border border-[#e8912d]">
+              <svg className="shrink-0 mt-0.5" width="16" height="16" viewBox="0 0 16 16" fill="none">
                 <path d="M8 0C3.6 0 0 3.6 0 8C0 12.4 3.6 16 8 16C12.4 16 16 12.4 16 8C16 3.6 12.4 0 8 0ZM8 12C7.4 12 7 11.6 7 11C7 10.4 7.4 10 8 10C8.6 10 9 10.4 9 11C9 11.6 8.6 12 8 12ZM9 9H7V4H9V9Z" fill="#E01E5A" />
               </svg>
               {loginError}
             </div>
           )}
         </form>
-  
-        <div className="login-footer">
-          <p>¿Primera vez en Slack? <a href="/registro">Crea una cuenta</a></p>
+
+        <div className="text-center mt-8 pt-8 border-t border-[#e0e0e0]">
+          <p className="text-[15px] text-[#1d1c1d] m-0">
+            ¿Primera vez en Slack? <a href="/registro" className="text-[#1264a3] no-underline font-semibold hover:underline">Crea una cuenta</a>
+          </p>
         </div>
       </div>
     </section>

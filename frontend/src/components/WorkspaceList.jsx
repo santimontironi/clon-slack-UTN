@@ -1,6 +1,8 @@
 import './WorkspaceList.css'
 import { useContext } from 'react'
-import { WorkspaceContext } from '../../context/WorkspaceContext'
+import { WorkspaceContext } from '../context/WorkspaceContext'
+import Swal from "sweetalert2";
+import { Link } from 'react-router';
 
 const WorkspaceList = ({ id, title, description, image, created_at }) => {
 
@@ -8,7 +10,20 @@ const WorkspaceList = ({ id, title, description, image, created_at }) => {
 
   const handleDelete = async (idWorkspace) => {
     try {
-      await deleteWorkspace(idWorkspace);
+      const result = await Swal.fire({
+        title: '¿Estás seguro?',
+        text: "Esta acción no se puede deshacer.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, eliminar',
+        cancelButtonText: 'Cancelar'
+      })
+
+      if(result.isConfirmed){
+        await deleteWorkspace(idWorkspace);
+      }
     } catch (error) {
       console.error('Error deleting workspace:', error);
     }
@@ -59,7 +74,7 @@ const WorkspaceList = ({ id, title, description, image, created_at }) => {
         )}
 
         <div className="workspace-footer">
-          <button className="workspace-open-button">
+          <Link to={`/workspace/${id}`} className="workspace-open-button">
             Abrir
             <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
               <path
@@ -71,7 +86,7 @@ const WorkspaceList = ({ id, title, description, image, created_at }) => {
                 fill="none"
               />
             </svg>
-          </button>
+          </Link>
         </div>
       </div>
     </div>

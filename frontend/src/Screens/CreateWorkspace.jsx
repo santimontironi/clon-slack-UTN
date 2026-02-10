@@ -27,8 +27,8 @@ const CreateWorkspace = () => {
     }
 
     return (
-        <section className="min-h-screen bg-linear-to-br from-[#f8f8f8] to-white p-5 font-['Slack-Lato','Lato','Helvetica_Neue',Helvetica,Arial,sans-serif]">
-            <div className="max-w-full md:max-w-180 lg:max-w-200 xl:max-w-225 mx-auto">
+        <section className="min-h-screen bg-[#3F0E40] py-10">
+            <div className="max-w-[90%] md:max-w-180 lg:max-w-200 xl:max-w-225 mx-auto">
                 <div className="flex items-center justify-between mb-8">
                     <button
                         className="w-10 h-10 rounded border border-[#e0e0e0] bg-white flex items-center justify-center cursor-pointer transition-all duration-200 ease-in-out text-[#1d1c1d] hover:bg-[#f8f8f8] hover:border-[#cccccc]"
@@ -54,19 +54,19 @@ const CreateWorkspace = () => {
                     </div>
                 </div>
 
-                <div className="bg-white rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.08)] p-8 md:p-10 lg:px-20 lg:py-25 mb-6">
-                    <div className="text-center mb-8 pb-6 border-b border-[#e0e0e0]">
-                        <h1 className="text-[28px] md:text-4xl lg:text-[42px] xl:text-5xl font-bold text-[#1d1c1d] mb-3 tracking-tight">
+                <div className="bg-[#522653] rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.08)] p-8 md:p-10 lg:px-20 lg:py-25 mb-6">
+                    <div className="text-center mb-8 pb-6 border-b border-white">
+                        <h1 className="text-[28px] md:text-4xl lg:text-[42px] xl:text-5xl font-bold text-white mb-3 tracking-tight">
                             Crear un espacio de trabajo
                         </h1>
-                        <p className="text-[15px] md:text-base lg:text-lg leading-normal text-[#616061] m-0">
+                        <p className="text-[15px] md:text-base lg:text-lg leading-normal text-[#D1C7D3] m-0">
                             Los espacios de trabajo son donde tu equipo se comunica. Son mejores cuando están organizados por un objetivo común.
                         </p>
                     </div>
 
                     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
                         <div className="mb-6">
-                            <label htmlFor="title" className="block text-[15px] font-bold text-[#1d1c1d] mb-2 leading-snug">
+                            <label htmlFor="title" className="block text-[15px] font-bold text-white mb-2 leading-snug">
                                 Nombre del espacio de trabajo *
                             </label>
                             <input
@@ -76,7 +76,7 @@ const CreateWorkspace = () => {
                                 className={`w-full px-3 py-2.75 pb-3 text-lg leading-[1.33333333] border ${errors.title
                                         ? "border-[#e8912d] focus:shadow-[0_0_0_4px_rgba(232,145,45,0.3)]"
                                         : "border-[#868686] focus:border-[#1264a3] focus:shadow-[0_0_0_4px_rgba(29,155,209,0.3)]"
-                                    } rounded transition-all duration-200 ease-in-out box-border font-inherit text-[#1d1c1d] placeholder:text-[#616061] focus:outline-none`}
+                                    } rounded transition-all duration-200 ease-in-out box-border font-inherit text-white placeholder:text-[#BFAEC3] bg-[#3F0E40] focus:outline-none`}
                                 {...register("title", {
                                     required: "El nombre del espacio de trabajo es obligatorio",
                                     minLength: {
@@ -96,20 +96,20 @@ const CreateWorkspace = () => {
                         </div>
 
                         <div className="mb-6">
-                            <label htmlFor="description" className="block text-[15px] font-bold text-[#1d1c1d] mb-2 leading-snug">
+                            <label htmlFor="description" className="block text-[15px] font-bold text-white mb-2 leading-snug">
                                 Descripción (opcional)
                             </label>
                             <textarea
                                 id="description"
                                 rows="4"
                                 placeholder="¿De qué trata este espacio de trabajo?"
-                                className="w-full px-3 py-2.75 pb-3 text-lg leading-[1.33333333] border border-[#868686] rounded transition-all duration-200 ease-in-out box-border font-inherit text-[#1d1c1d] placeholder:text-[#616061] focus:outline-none focus:border-[#1264a3] focus:shadow-[0_0_0_4px_rgba(29,155,209,0.3)] resize-y min-h-25"
+                                className="w-full px-3 py-2.75 pb-3 text-lg leading-[1.33333333] border border-[#868686] rounded transition-all duration-200 ease-in-out box-border font-inherit text-white placeholder:text-[#BFAEC3] bg-[#3F0E40] focus:outline-none focus:border-[#1264a3] focus:shadow-[0_0_0_4px_rgba(29,155,209,0.3)] resize-y min-h-25"
                                 {...register("description")}
                             />
                         </div>
 
                         <div className="mb-6">
-                            <label htmlFor="image" className="block text-[15px] font-bold text-[#1d1c1d] mb-2 leading-snug">
+                            <label htmlFor="image" className="block text-[15px] font-bold text-white mb-2 leading-snug">
                                 Imagen del espacio de trabajo (opcional)
                             </label>
                             <input
@@ -119,8 +119,8 @@ const CreateWorkspace = () => {
                                 className="w-full px-3 py-2.75 pb-3 text-base border border-[#868686] rounded box-border transition-all duration-200 ease-in-out font-inherit text-[#1d1c1d] bg-white cursor-pointer focus:outline-none focus:border-[#1264a3] focus:shadow-[0_0_0_4px_rgba(29,155,209,0.3)] file:px-4 file:py-2 file:mr-3 file:bg-[#f8f8f8] file:border file:border-[#cccccc] file:rounded file:text-[15px] file:font-semibold file:text-[#1d1c1d] file:cursor-pointer file:transition-all file:duration-200 file:font-inherit hover:file:bg-[#e8e8e8] hover:file:border-[#868686]"
                                 {...register("image")}
                             />
-                            <p className="text-[13px] text-[#616061] mt-2 mb-0">
-                                PNG, JPG, GIF hasta 5MB
+                            <p className="text-[13px] text-[#D1C7D3] mt-2 mb-0">
+                                PNG o JPG hasta 5MB
                             </p>
                         </div>
 
@@ -141,23 +141,6 @@ const CreateWorkspace = () => {
                             </button>
                         </div>
                     </form>
-                </div>
-
-                <div className="bg-white rounded-lg p-6 border border-[#e0e0e0]">
-                    <h3 className="text-base font-bold text-[#1d1c1d] mb-4 mt-0">
-                        💡 Consejos para tu espacio de trabajo
-                    </h3>
-                    <ul className="m-0 pl-5">
-                        <li className="text-sm text-[#616061] leading-relaxed mb-2">
-                            Usa un nombre descriptivo que todos reconozcan
-                        </li>
-                        <li className="text-sm text-[#616061] leading-relaxed mb-2">
-                            Mantén la organización con canales temáticos
-                        </li>
-                        <li className="text-sm text-[#616061] leading-relaxed mb-0">
-                            Invita a tu equipo después de crear el espacio
-                        </li>
-                    </ul>
                 </div>
             </div>
         </section>

@@ -16,3 +16,11 @@ export const createWorkspaceService = (workspaceData) => {
 export const deleteWorkspaceService = (idWorkspace) => {
     return api.delete(`/api/workspaces/${idWorkspace}/eliminar`)
 }
+
+export const getWorkspaceByIdService = (idWorkspace) => {
+    return api.get(`/api/workspaces/${idWorkspace}`)
+}
+
+export const getWorkspaceChannelsService = (idWorkspace) => {
+    return api.get(`/api/workspaces/${idWorkspace}/channels`)
+}

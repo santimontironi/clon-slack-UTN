@@ -1,13 +1,16 @@
 import { createContext, useState, useEffect } from "react";
-import { getMyWorkspacesService, createWorkspaceService, deleteWorkspaceService } from "../services/workspaceService";
+import { getMyWorkspacesService, createWorkspaceService, deleteWorkspaceService, getWorkspaceByIdService, getWorkspaceChannelsService } from "../services/workspaceService";
 
 export const WorkspaceContext = createContext();
 
 export const WorkspaceContextProvider = ({ children }) => {
     const [workspaces, setWorkspaces] = useState([]);
+    const [workspaceById, setWorkspaceById] = useState(null);
+    const [workspaceChannels, setWorkspaceChannels] = useState([]);
     const [loading, setLoading] = useState({
         workspaces: true,
-        create: false
+        create: false,
+        getWorkspace: false
     });
 
     useEffect(() => {
@@ -16,7 +19,7 @@ export const WorkspaceContextProvider = ({ children }) => {
                 const res = await getMyWorkspacesService();
                 const data = res.data;
                 setWorkspaces(data.workspaces);
-                
+
             } catch (err) {
                 console.error("Error loading workspaces:", err);
             } finally {
@@ -50,13 +53,39 @@ export const WorkspaceContextProvider = ({ children }) => {
         }
     }
 
+    async function getWorkspaceById(idWorkspace) {
+        setLoading(prev => ({ ...prev, getWorkspace: true }));
+        try {
+            const res = await getWorkspaceByIdService(idWorkspace);
+            setWorkspaceById(res.data.workspace);   
+            return res.data.workspace;
+        } catch (err) {
+            throw err;
+        } finally {
+            setLoading(prev => ({ ...prev, getWorkspace: false }));
+        }
+    }
+
+    async function getWorkspaceChannels(idWorkspace) {
+        try {
+            const res = await getWorkspaceChannelsService(idWorkspace);
+            setWorkspaceChannels(res.data.channels);
+        } catch (err) {
+            throw err;
+        }
+    }
+
     return (
         <WorkspaceContext.Provider
             value={{
                 workspaces,
                 loading,
                 createWorkspace,
-                deleteWorkspace
+                deleteWorkspace,
+                getWorkspaceById,
+                workspaceById,
+                getWorkspaceChannels,
+                workspaceChannels
             }}
         >
             {children}

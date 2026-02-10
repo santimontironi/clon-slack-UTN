@@ -16,3 +16,7 @@ export const loginService = (data) => {
 export const dashboardUserService = () => {
     return api.get('/api/auth/dashboard-user')
 }
+
+export const logoutUserService = () => {
+    return api.post('/api/auth/logout')
+}

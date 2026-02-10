@@ -25,4 +25,9 @@ authRouter.get(
     authController.dashboardUser
 )
 
+authRouter.post(
+    '/logout',
+    authController.logout
+)
+
 export default authRouter

@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from "react";
-import { loginService, registerService, dashboardUserService } from "../services/authService";
+import { loginService, registerService, dashboardUserService, logoutUserService } from "../services/authService";
 
 export const AuthContext = createContext();
 
@@ -58,7 +58,12 @@ export const AuthContextProvider = ({ children }) => {
     };
 
     const logout = () => {
-        setUser(null);
+        try{
+            logoutUserService();
+            setUser(null);
+        } catch (err) {
+            throw err;
+        }
     };
 
     return (

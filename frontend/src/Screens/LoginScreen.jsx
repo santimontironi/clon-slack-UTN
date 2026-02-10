@@ -102,7 +102,7 @@ const LoginScreen = () => {
             type="submit"
             className="w-full bg-[#611f69] text-white text-lg font-bold px-5 py-3.5 pb-3.75 border-none rounded cursor-pointer mt-7 transition-all duration-100 ease-in-out font-inherit hover:bg-[#4a154b] hover:shadow-[0_1px_4px_rgba(0,0,0,0.3)] active:bg-[#350d36]"
           >
-            Iniciar sesión con correo electrónico
+            Iniciar sesión
           </button>
 
           {loginError && (

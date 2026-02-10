@@ -1,9 +1,8 @@
 import { Oval } from 'react-loader-spinner'
-import './Loader.css'
 
 const Loader = () => {
   return (
-    <div className='loader'>
+    <div className='flex items-center justify-center h-screen w-full'>
       <Oval
         visible={true}
         height="80"

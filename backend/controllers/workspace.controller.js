@@ -263,6 +263,20 @@ class WorkspaceController {
         }
     }
 
+    async membersWorkspace(req, res) {
+        try {
+            const { idWorkspace } = req.params
+
+            const members = await workspaceRepository.getWorkspaceMembers(idWorkspace)
+
+            const amountMembers = members.length
+
+            return res.status(200).json({ message: 'Miembros obtenidos con éxito', members: members, amountMembers: amountMembers })
+        } catch (error) {
+            return res.status(500).json({ message: 'Error al obtener los miembros', error: error.message }) 
+        }
+    }
+
     async createMessage(req, res) {
         try {
             const { idChannel } = req.params

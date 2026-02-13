@@ -67,6 +67,11 @@ class WorkspaceRepository {
 
         return newMessage
     }
+
+    async getWorkspaceMembers(idWorkspace) {
+        const members = await MemberWorkspaceModel.find({ fk_id_workspace: idWorkspace }).populate({ path: 'fk_id_user', match: { active: true } })
+        return members
+    }
 }
 
 const workspaceRepository = new WorkspaceRepository()

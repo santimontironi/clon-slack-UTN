@@ -10,6 +10,7 @@ router.get('/my-workspaces', verifyToken, workspaceController.getMyWorkspaces)
 router.get('/:idWorkspace', verifyToken, memberMiddleware, workspaceController.workspaceById)
 router.get('/check-invitation/:token', workspaceController.checkInvitation)
 router.get('/:idWorkspace/canales', verifyToken, memberMiddleware, workspaceController.getWorkspacesChannels)
+router.get('/:idWorkspace/members', verifyToken, memberMiddleware, workspaceController.membersWorkspace)
 
 router.post('/create-workspace', verifyToken, upload.single('image'), workspaceController.createWorkspace)
 router.post('/:idWorkspace/enviar-invitacion', verifyToken, memberMiddleware, workspaceController.sendInvitation)

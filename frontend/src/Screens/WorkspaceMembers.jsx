@@ -3,10 +3,11 @@ import { WorkspaceContext } from "../context/WorkspaceContext"
 import { useParams, useNavigate } from "react-router"
 import MemberItem from "../components/MemberItem"
 import Loader from "../components/Loader"
+import Swal2 from "sweetalert2"
 
 const WorkspaceMembers = () => {
 
-    const { getWorkspaceMembers, workspaceMembers, loading } = useContext(WorkspaceContext)
+    const { getWorkspaceMembers, workspaceMembers, loading, deleteMember } = useContext(WorkspaceContext)
 
     const { id } = useParams()
     const navigate = useNavigate()
@@ -14,6 +15,35 @@ const WorkspaceMembers = () => {
     useEffect(() => {
         getWorkspaceMembers(id)
     }, [id])
+
+    const handleDelete = (idWorkspace, idMember) => {
+        Swal2.fire({
+            title: '¿Estás seguro?',
+            text: "Esta acción no se puede deshacer",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                deleteMember(idWorkspace, idMember)
+                Swal2.fire(
+                    'Eliminado',
+                    'El miembro ha sido eliminado.',
+                    'success'
+                )
+            }
+            else{
+                Swal2.fire(
+                    'Cancelado',
+                    'El miembro no ha sido eliminado.',
+                    'info'
+                )
+            }
+        })
+    }
 
     return (
         <section className="min-h-screen bg-[#F8F8F8] p-6">
@@ -53,7 +83,7 @@ const WorkspaceMembers = () => {
                     <div className="bg-white rounded-lg shadow border border-gray-200">
                         {workspaceMembers && workspaceMembers.length > 0 ? (
                             workspaceMembers.map((member) => (
-                                <MemberItem key={member._id} role={member.role} username={member.username} />
+                                <MemberItem key={member._id} role={member.role} username={member.username} deleteMember={() => handleDelete(id, member._id)} />
                             ))
                         ) : (
                             <div className="p-12 text-center">

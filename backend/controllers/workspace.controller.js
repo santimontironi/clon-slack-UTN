@@ -252,6 +252,10 @@ class WorkspaceController {
             const { idWorkspace } = req.params
             const member = req.member
 
+            if(!idWorkspace) {
+                return res.status(400).json({ message: 'Falta el campo requerido: idWorkspace' })
+            }
+
             const {name, description} = req.body
 
             if (!name) {
@@ -273,6 +277,10 @@ class WorkspaceController {
     async membersWorkspace(req, res) {
         try {
             const { idWorkspace } = req.params
+
+            if(!idWorkspace) {
+                return res.status(400).json({ message: 'Falta el campo requerido: idWorkspace' })
+            }
 
             const members = await workspaceRepository.getWorkspaceMembers(idWorkspace)
 
@@ -311,6 +319,34 @@ class WorkspaceController {
         } catch (error) {
             return res.status(500).json({
                 message: 'Error al crear el mensaje',
+                error: error.message
+            })
+        }
+    }
+
+    async deleteMember(req, res) {
+        try {
+            const { idWorkspace, idMember } = req.params
+
+            const member = req.member
+
+            if (!idMember || !idWorkspace) {
+                return res.status(400).json({ message: 'Falta el campo requerido: idMember o idWorkspace' })
+            }
+
+            if (!['owner', 'admin'].includes(member.role)) {
+                return res.status(403).json({ message: 'No tienes permiso para eliminar miembros.' })
+            }
+
+            const deletedMember = await workspaceRepository.deleteMember(idWorkspace, idMember)
+
+            return res.status(200).json({
+                message: 'Miembro eliminado con éxito',
+                data: deletedMember
+            })
+        } catch (error) {
+            return res.status(500).json({
+                message: 'Error al eliminar el miembro',
                 error: error.message
             })
         }

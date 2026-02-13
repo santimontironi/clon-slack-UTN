@@ -17,7 +17,7 @@ router.post('/:idWorkspace/agregar-miembro', verifyToken, memberMiddleware, work
 router.post('/:idWorkspace/agregar-canal', verifyToken, memberMiddleware, workspaceController.createChannel)
 router.post('/:idWorkspace/canales/:idChannel/mensaje', verifyToken, memberMiddleware, workspaceController.createMessage)
 
-
+router.delete('/:idWorkspace/miembros/:idMember/eliminar', verifyToken, memberMiddleware, workspaceController.deleteMember)
 router.delete('/:idWorkspace/eliminar', verifyToken, memberMiddleware, workspaceController.deleteWorkspace)
 router.delete('/:idWorkspace/abandonar', verifyToken, workspaceController.leaveWorkspace)
 

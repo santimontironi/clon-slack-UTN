@@ -38,8 +38,8 @@ class WorkspaceRepository {
         return workspace
     }
 
-    async deleteMember(idMember) {
-        const member = await MemberWorkspaceModel.findByIdAndDelete(idMember)
+    async deleteMember(idWorkspace, idMember) {
+        const member = await MemberWorkspaceModel.findOneAndDelete({ fk_id_workspace: idWorkspace, fk_id_user: idMember })
         return member
     }
 

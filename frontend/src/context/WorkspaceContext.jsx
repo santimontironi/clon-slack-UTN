@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from "react";
-import { getMyWorkspacesService, createWorkspaceService, deleteWorkspaceService, getWorkspaceByIdService, getWorkspaceChannelsService, createChannelService, getWorkspaceMembersService, addMemberToWorkspaceService } from "../services/workspaceService";
+import { getMyWorkspacesService, createWorkspaceService, deleteWorkspaceService, getWorkspaceByIdService, getWorkspaceChannelsService, createChannelService, getWorkspaceMembersService, addMemberToWorkspaceService, deleteMemberService } from "../services/workspaceService";
 
 export const WorkspaceContext = createContext();
 
@@ -14,7 +14,9 @@ export const WorkspaceContextProvider = ({ children }) => {
         getWorkspace: false,
         createChannel: false,
         getMembers: false,
-        sendInvitation: false
+        getWorkspaceMembers: false,
+        sendInvitation: false,
+        deleteMember: false
     });
 
     useEffect(() => {
@@ -94,7 +96,7 @@ export const WorkspaceContextProvider = ({ children }) => {
     }
 
     async function getWorkspaceMembers(idWorkspace) {
-        setLoading(prev => ({ ...prev, getMembers: true }));
+        setLoading(prev => ({ ...prev, getWorkspaceMembers: true }));
         try {
             const res = await getWorkspaceMembersService(idWorkspace);
             setWorkspaceMembers(res.data.members);
@@ -102,7 +104,7 @@ export const WorkspaceContextProvider = ({ children }) => {
         } catch (err) {
             throw err;
         } finally {
-            setLoading(prev => ({ ...prev, getMembers: false }));
+            setLoading(prev => ({ ...prev, getWorkspaceMembers: false }));
         }
     }
 
@@ -118,6 +120,15 @@ export const WorkspaceContextProvider = ({ children }) => {
         }
     }
 
+    async function deleteMember(idWorkspace, idMember) {
+        try {
+            await deleteMemberService(idWorkspace, idMember);
+            setWorkspaceMembers(prev => prev.filter(member => member._id !== idMember));
+            return { success: true };
+        } catch (err) {
+            return { success: false, error: err };
+        }
+    }
 
     return (
         <WorkspaceContext.Provider
@@ -133,7 +144,8 @@ export const WorkspaceContextProvider = ({ children }) => {
                 createChannel,
                 getWorkspaceMembers,
                 workspaceMembers,
-                sendInvitation
+                sendInvitation,
+                deleteMember
             }}
         >
             {children}

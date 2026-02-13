@@ -9,6 +9,7 @@ import CreateWorkspace from "./Screens/CreateWorkspace";
 import Workspace from "./Screens/Workspace";
 import NewChannel from "./Screens/NewChannel";
 import VerifyEmail from "./Screens/VerifyEmail";
+import AddMember from "./Screens/AddMember";
 
 const App = () => {
   return (
@@ -48,6 +49,14 @@ const App = () => {
               <SecurityRoutes>
                 <WorkspaceContextProvider>
                   <NewChannel />
+                </WorkspaceContextProvider>
+              </SecurityRoutes>
+            } />
+
+            <Route path="/workspace/:id/agregar-miembro" element={
+              <SecurityRoutes>
+                <WorkspaceContextProvider>
+                  <AddMember />
                 </WorkspaceContextProvider>
               </SecurityRoutes>
             } />

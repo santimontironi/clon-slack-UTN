@@ -153,7 +153,22 @@ class WorkspaceController {
                 return res.status(403).json({ message: 'No tienes permiso para agregar miembros.' })
             }
 
-            const newMember = await workspaceRepository.addMember(idWorkspace, email, role)
+            const userFounded = await userRepository.findByEmail(email)
+
+            if (!userFounded) {
+                return res.status(404).json({ message: 'Usuario no encontrado.' })
+            }
+
+            const isMember = await workspaceRepository.findWorkspaceByIdAndUser(
+                idWorkspace,
+                userFounded.id
+            )
+
+            if (isMember) {
+                return res.status(400).json({ message: 'El usuario ya es miembro del workspace.' })
+            }
+
+            const newMember = await workspaceRepository.addMember(idWorkspace, userFounded.id, role)
 
             return res.status(200).json({ message: 'Miembro agregado con exito', member: newMember })
         } catch (error) {
@@ -172,7 +187,22 @@ class WorkspaceController {
             const decoded = jwt.verify(token, process.env.SECRET_KEY)
             const { idWorkspace, email, role } = decoded
 
-            const newMember = await workspaceRepository.addMember(idWorkspace, email, role)
+            const userFounded = await userRepository.findByEmail(email)
+
+            if (!userFounded) {
+                return res.status(404).json({ message: 'Usuario no encontrado.' })
+            }
+
+            const isMember = await workspaceRepository.findWorkspaceByIdAndUser(
+                idWorkspace,
+                userFounded.id
+            )
+
+            if (isMember) {
+                return res.status(400).json({ message: 'El usuario ya es miembro del workspace.' })
+            }
+
+            const newMember = await workspaceRepository.addMember(idWorkspace, userFounded.id, role)
 
             return res.status(200).json({ message: 'Invitacion verificada con exito', member: newMember })
         } catch (error) {

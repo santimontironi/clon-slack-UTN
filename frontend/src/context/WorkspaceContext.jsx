@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from "react";
-import { getMyWorkspacesService, createWorkspaceService, deleteWorkspaceService, getWorkspaceByIdService, getWorkspaceChannelsService, createChannelService } from "../services/workspaceService";
+import { getMyWorkspacesService, createWorkspaceService, deleteWorkspaceService, getWorkspaceByIdService, getWorkspaceChannelsService, createChannelService, addMemberService } from "../services/workspaceService";
 
 export const WorkspaceContext = createContext();
 
@@ -11,7 +11,8 @@ export const WorkspaceContextProvider = ({ children }) => {
         workspaces: true,
         create: false,
         getWorkspace: false,
-        createChannel: false
+        createChannel: false,
+        addMember: false
     });
 
     useEffect(() => {
@@ -90,6 +91,19 @@ export const WorkspaceContextProvider = ({ children }) => {
         }
     }
 
+    async function addMember(idWorkspace, memberData) {
+        setLoading(prev => ({ ...prev, addMember: true }));
+        try {
+            const res = await addMemberService(idWorkspace, memberData);
+            return res.data;
+        } catch (err) {
+            throw err;
+        }
+        finally {
+            setLoading(prev => ({ ...prev, addMember: false }));
+        }
+    }
+
     return (
         <WorkspaceContext.Provider
             value={{
@@ -101,7 +115,8 @@ export const WorkspaceContextProvider = ({ children }) => {
                 workspaceById,
                 getWorkspaceChannels,
                 workspaceChannels,
-                createChannel
+                createChannel,
+                addMember
             }}
         >
             {children}

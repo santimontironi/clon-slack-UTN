@@ -36,25 +36,7 @@ const Header = ({ user, logout }) => {
                         className="group flex cursor-pointer items-center gap-2 px-3 py-2 rounded-xl border border-black/10 dark:border-white/10 text-sm font-semibold text-gray-600 dark:text-gray-300 transition-all duration-200 hover:bg-rose-50 hover:text-rose-600 hover:border-rose-200 dark:hover:bg-rose-500/10"
                         title="Cerrar sesión"
                     >
-                        <svg
-                            className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                        >
-                            <path
-                                d="M15 12H3M10 7L15 12L10 17"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                            />
-                            <path
-                                d="M21 12C21 7.029 16.971 3 12 3"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                            />
-                        </svg>
+                        <i className="bi bi-box-arrow-right transition-transform duration-200 group-hover:translate-x-0.5"></i>
                         Cerrar sesión
                     </button>
                 </div>

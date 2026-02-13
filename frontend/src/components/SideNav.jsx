@@ -20,9 +20,7 @@ const SideNav = ({ getWorkspaceChannels, workspaceChannels, workspaceData, user 
                 onClick={() => setOpen(true)}
                 className="md:hidden fixed top-3 left-3 z-50 p-2 rounded bg-[#4A154B] border border-[#522653] shadow"
             >
-                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
+                <i className="bi bi-list text-white"></i>
             </button>
 
             {open && (
@@ -54,9 +52,7 @@ const SideNav = ({ getWorkspaceChannels, workspaceChannels, workspaceData, user 
                     </div>
 
                     <Link to={`/workspace/${workspaceData?._id}/agregar-miembro`} className="mt-3 w-full px-3 py-2 text-sm font-medium cursor-pointer bg-white text-[#4A154B] rounded hover:bg-gray-100 transition-colors flex items-center justify-center gap-2">
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                        </svg>
+                        <i className="bi bi-plus"></i>
                         Agregar miembros
                     </Link>
                 </div>
@@ -65,9 +61,7 @@ const SideNav = ({ getWorkspaceChannels, workspaceChannels, workspaceData, user 
                     <div className="px-3 py-2">
                         <div className="flex items-center justify-between px-2 py-1 mb-2">
                             <h3 className="text-sm font-semibold text-gray-300 flex items-center gap-1">
-                                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-                                </svg>
+                                <i className="bi bi-grid-3x3-gap"></i>
                                 Canales
                             </h3>
                             <Link to={`/workspace/${workspaceData?._id}/nuevo-canal`} className="text-gray-300 hover:text-white text-xl leading-none">
@@ -110,9 +104,7 @@ const SideNav = ({ getWorkspaceChannels, workspaceChannels, workspaceData, user 
                             aria-label="Opciones"
                             onClick={() => setOptionsOpen(!optionsOpen)}
                         >
-                            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
-                            </svg>
+                            <i className="bi bi-three-dots-vertical"></i>
                         </button>
 
                         {optionsOpen && (

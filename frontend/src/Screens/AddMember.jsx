@@ -40,9 +40,7 @@ const AddMember = () => {
                                 onClick={() => navigate(`/workspace/${id}`)}
                                 className="text-gray-600 cursor-pointer hover:text-gray-800 mb-4 flex items-center gap-2 text-sm"
                             >
-                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                                </svg>
+                                <i className="bi bi-chevron-left"></i>
                                 Volver
                             </button>
                             <h1 className="text-3xl font-bold text-gray-900 mb-2">
@@ -56,9 +54,7 @@ const AddMember = () => {
                         {error && (
                             <div className="mb-5 bg-red-50 border border-red-200 rounded-lg p-4">
                                 <div className="flex gap-3">
-                                    <svg className="w-5 h-5 text-red-600 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                                    </svg>
+                                    <i className="bi bi-x-circle-fill text-red-600 shrink-0 mt-0.5"></i>
                                     <div className="flex-1">
                                         <h3 className="text-sm font-semibold text-red-900 mb-1">
                                             Error al agregar miembro
@@ -71,9 +67,7 @@ const AddMember = () => {
                                         onClick={() => setError('')}
                                         className="text-red-400 hover:text-red-600 transition-colors"
                                     >
-                                        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
-                                        </svg>
+                                        <i className="bi bi-x"></i>
                                     </button>
                                 </div>
                             </div>
@@ -103,9 +97,7 @@ const AddMember = () => {
                                 />
                                 {errors.email && (
                                     <p className="mt-2 text-sm text-red-600 flex items-center gap-1">
-                                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                                        </svg>
+                                        <i className="bi bi-info-circle-fill"></i>
                                         {errors.email.message}
                                     </p>
                                 )}
@@ -132,9 +124,7 @@ const AddMember = () => {
                                 </select>
                                 {errors.role && (
                                     <p className="mt-2 text-sm text-red-600 flex items-center gap-1">
-                                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                                        </svg>
+                                        <i className="bi bi-info-circle-fill"></i>
                                         {errors.role.message}
                                     </p>
                                 )}
@@ -163,9 +153,7 @@ const AddMember = () => {
 
                     <div className="mt-4 bg-blue-50 border border-blue-200 rounded-lg p-4">
                         <div className="flex gap-3">
-                            <svg className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-                            </svg>
+                            <i className="bi bi-info-circle-fill text-blue-600 shrink-0 mt-0.5"></i>
                             <div>
                                 <h3 className="text-sm font-semibold text-blue-900 mb-1">
                                     ¿Cómo funciona?

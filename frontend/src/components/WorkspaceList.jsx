@@ -83,16 +83,7 @@ const WorkspaceList = ({ id, title, description, image, created_at }) => {
                         className="flex items-center gap-1.5 px-4 py-2 bg-[#611f69] text-white border-none rounded font-bold text-[15px] cursor-pointer transition-all duration-200 ease-in-out font-inherit no-underline hover:bg-[#4a154b] active:bg-[#350d36]"
                     >
                         Abrir
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                            <path
-                                d="M6 3L11 8L6 13"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                fill="none"
-                            />
-                        </svg>
+                        <i className="bi bi-arrow-right"></i>
                     </Link>
                 </div>
             </div>

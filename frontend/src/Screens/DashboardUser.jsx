@@ -46,14 +46,7 @@ const DashboardUser = () => {
                                     className="bg-white/10 backdrop-blur-sm border-2 border-dashed border-white/30 rounded-xl p-6 min-h-45 flex flex-col items-center justify-center gap-3 no-underline text-white font-bold text-[15px] transition-all duration-200 ease-in-out cursor-pointer hover:bg-white/20 hover:border-white/60 hover:shadow-[0_8px_24px_rgba(0,0,0,0.15)] hover:-translate-y-0.5"
                                 >
                                     <div className="w-14 h-14 rounded-xl bg-white/20 border-2 border-white/40 flex items-center justify-center transition-all duration-200 ease-in-out hover:border-white hover:bg-white/30">
-                                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
-                                            <path
-                                                d="M12 5V19M5 12H19"
-                                                stroke="currentColor"
-                                                strokeWidth="2"
-                                                strokeLinecap="round"
-                                            />
-                                        </svg>
+                                        <i className="bi bi-plus text-2xl"></i>
                                     </div>
                                     <span className="text-center">Crear nuevo workspace</span>
                                 </a>
@@ -61,10 +54,7 @@ const DashboardUser = () => {
                         ) : (
                             <div className="text-center py-12 px-5 bg-white/10 backdrop-blur-md border-2 border-dashed border-white/30 rounded-xl mb-10">
                                 <div className="mb-6 flex justify-center">
-                                    <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
-                                        <circle cx="40" cy="40" r="38" stroke="rgba(255,255,255,0.3)" strokeWidth="4" />
-                                        <path d="M40 26V54M26 40H54" stroke="rgba(255,255,255,0.5)" strokeWidth="4" strokeLinecap="round" />
-                                    </svg>
+                                    <i className="bi bi-plus text-7xl text-white/50"></i>
                                 </div>
                                 <h2 className="text-[22px] font-bold text-white mb-3 drop-shadow-md">
                                     Crea tu primer espacio de trabajo

@@ -32,19 +32,7 @@ const Workspace = () => {
                         <Loader />
                     ) : (
                         <div className="text-center">
-                            <svg
-                                className="w-24 h-24 mx-auto mb-6 text-[#6B3B6E]"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={1.5}
-                                    d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"
-                                />
-                            </svg>
+                            <i className="bi bi-chat-left-text text-6xl mx-auto mb-6 text-[#6B3B6E] d-block"></i>
                             <h2 className="text-2xl font-bold text-white mb-3">
                                 Bienvenido a {workspaceById?.title || "tu workspace"}
                             </h2>

@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from "react";
-import { getMyWorkspacesService, createWorkspaceService, deleteWorkspaceService, getWorkspaceByIdService, getWorkspaceChannelsService, createChannelService, addMemberService, getWorkspaceMembersService } from "../services/workspaceService";
+import { getMyWorkspacesService, createWorkspaceService, deleteWorkspaceService, getWorkspaceByIdService, getWorkspaceChannelsService, createChannelService, getWorkspaceMembersService, sendInvitationService } from "../services/workspaceService";
 
 export const WorkspaceContext = createContext();
 
@@ -13,8 +13,9 @@ export const WorkspaceContextProvider = ({ children }) => {
         create: false,
         getWorkspace: false,
         createChannel: false,
-        addMember: false,
-        getMembers: false
+        getMembers: false,
+        sendInvitation: false,
+        acceptInvitation: false
     });
 
     useEffect(() => {
@@ -93,19 +94,6 @@ export const WorkspaceContextProvider = ({ children }) => {
         }
     }
 
-    async function addMember(idWorkspace, memberData) {
-        setLoading(prev => ({ ...prev, addMember: true }));
-        try {
-            const res = await addMemberService(idWorkspace, memberData);
-            return res.data;
-        } catch (err) {
-            throw err;
-        }
-        finally {
-            setLoading(prev => ({ ...prev, addMember: false }));
-        }
-    }
-
     async function getWorkspaceMembers(idWorkspace) {
         setLoading(prev => ({ ...prev, getMembers: true }));
         try {
@@ -118,6 +106,19 @@ export const WorkspaceContextProvider = ({ children }) => {
             setLoading(prev => ({ ...prev, getMembers: false }));
         }
     }
+
+    async function sendInvitation(idWorkspace, invitationData) {
+        setLoading(prev => ({ ...prev, sendInvitation: true }));
+        try {
+            const res = await sendInvitationService(idWorkspace, invitationData);
+            return res.data;
+        } catch (err) {
+            throw err;
+        } finally {
+            setLoading(prev => ({ ...prev, sendInvitation: false }));
+        }
+    }
+
 
     return (
         <WorkspaceContext.Provider
@@ -133,7 +134,7 @@ export const WorkspaceContextProvider = ({ children }) => {
                 createChannel,
                 getWorkspaceMembers,
                 amountMembers,
-                addMember
+                sendInvitation
             }}
         >
             {children}

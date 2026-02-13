@@ -109,19 +109,18 @@ class WorkspaceController {
                 return res.status(403).json({ message: 'No tienes permiso para enviar invitaciones.' })
             }
 
+            // Verificar si el usuario ya existe y es miembro
             const userFounded = await userRepository.findByEmail(email)
+            
+            if (userFounded) {
+                const isMember = await workspaceRepository.findWorkspaceByIdAndUser(
+                    idWorkspace,
+                    userFounded.id
+                )
 
-            if (!userFounded) {
-                return res.status(404).json({ message: 'Usuario no encontrado.' })
-            }
-
-            const isMember = await workspaceRepository.findWorkspaceByIdAndUser(
-                idWorkspace,
-                userFounded.id
-            )
-
-            if (isMember) {
-                return res.status(400).json({ message: 'El usuario ya es miembro del workspace.' })
+                if (isMember) {
+                    return res.status(400).json({ message: 'El usuario ya es miembro del workspace.' })
+                }
             }
 
             const token = jwt.sign({ idWorkspace, email, role }, process.env.SECRET_KEY)
@@ -130,7 +129,7 @@ class WorkspaceController {
                 from: process.env.EMAIL_USER,
                 to: email,
                 subject: 'Invitacion a workspace - UTN SLACK',
-                html: `<a href="${process.env.BACKEND_URL}/api/workspace/invite/${token}">Unirse</a>`
+                html: `<a href="${process.env.FRONTEND_URL}/aceptar-invitacion/${token}">Unirse</a>`
             })
 
             return res.status(200).json({ message: 'Invitación enviada con éxito' })
@@ -139,46 +138,9 @@ class WorkspaceController {
         }
     }
 
-    async addMember(req, res) {
-        try {
-            const { email, role } = req.body
-            const { idWorkspace } = req.params
-            const member = req.member
-
-            if (!email || !role) {
-                return res.status(400).json({ message: 'Faltan campos requeridos: email, role' })
-            }
-
-            if (!['owner', 'admin'].includes(member.role)) {
-                return res.status(403).json({ message: 'No tienes permiso para agregar miembros.' })
-            }
-
-            const userFounded = await userRepository.findByEmail(email)
-
-            if (!userFounded) {
-                return res.status(404).json({ message: 'Usuario no encontrado.' })
-            }
-
-            const isMember = await workspaceRepository.findWorkspaceByIdAndUser(
-                idWorkspace,
-                userFounded.id
-            )
-
-            if (isMember) {
-                return res.status(400).json({ message: 'El usuario ya es miembro del workspace.' })
-            }
-
-            const newMember = await workspaceRepository.addMember(idWorkspace, userFounded.id, role)
-
-            return res.status(200).json({ message: 'Miembro agregado con exito', member: newMember })
-        } catch (error) {
-            return res.status(500).json({ message: 'Error al agregar el miembro', error: error.message })
-        }
-    }
-
     async checkInvitation(req, res) {
         try {
-            const { token } = req.params
+            const token = req.params.token
 
             if (!token) {
                 return res.status(400).json({ message: 'Token de invitacion no proporcionado.' })
@@ -187,6 +149,11 @@ class WorkspaceController {
             const decoded = jwt.verify(token, process.env.SECRET_KEY)
             const { idWorkspace, email, role } = decoded
 
+            // Si hay usuario autenticado, verificar que el email coincida
+            if (req.user && req.user.email !== email) {
+                return res.status(403).json({ message: 'El email no coincide con la invitacion.' })
+            }
+
             const userFounded = await userRepository.findByEmail(email)
 
             if (!userFounded) {
@@ -204,7 +171,11 @@ class WorkspaceController {
 
             const newMember = await workspaceRepository.addMember(idWorkspace, userFounded.id, role)
 
-            return res.status(200).json({ message: 'Invitacion verificada con exito', member: newMember })
+            return res.status(200).json({ 
+                message: 'Invitacion verificada con exito', 
+                member: newMember,
+                workspaceId: idWorkspace 
+            })
         } catch (error) {
             return res.status(500).json({ message: 'Error al verificar la invitacion', error: error.message })
         }

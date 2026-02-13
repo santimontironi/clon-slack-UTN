@@ -9,7 +9,8 @@ import CreateWorkspace from "./Screens/CreateWorkspace";
 import Workspace from "./Screens/Workspace";
 import NewChannel from "./Screens/NewChannel";
 import VerifyEmail from "./Screens/VerifyEmail";
-import AddMember from "./Screens/AddMember";
+import SendInvitation from "./Screens/SendInvitation";
+import AcceptInvitation from "./Screens/AcceptInvitation";
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
             <Route path="/" element={<LoginScreen />} />
             <Route path="/registro" element={<RegisterScreen />} />
             <Route path="/verificar-email/:token" element={<VerifyEmail />} />
+            <Route path="/aceptar-invitacion/:token" element={<AcceptInvitation />} />
 
             <Route path="/inicio" element={
               <SecurityRoutes>
@@ -53,10 +55,10 @@ const App = () => {
               </SecurityRoutes>
             } />
 
-            <Route path="/workspace/:id/agregar-miembro" element={
+            <Route path="/workspace/:id/invitar" element={
               <SecurityRoutes>
                 <WorkspaceContextProvider>
-                  <AddMember />
+                  <SendInvitation />
                 </WorkspaceContextProvider>
               </SecurityRoutes>
             } />

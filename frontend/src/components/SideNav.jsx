@@ -56,9 +56,9 @@ const SideNav = ({ getWorkspaceChannels, workspaceChannels, workspaceData, user,
                         </button>
                     </div>
 
-                    <Link to={`/workspace/${workspaceData?._id}/agregar-miembro`} className="mt-3 w-full px-3 py-2 text-sm font-medium cursor-pointer bg-white text-[#4A154B] rounded hover:bg-gray-100 transition-colors flex items-center justify-center gap-2">
+                    <Link to={`/workspace/${workspaceData?._id}/invitar`} className="mt-3 w-full px-3 py-2 text-sm font-medium cursor-pointer bg-[#964597] text-white rounded hover:bg-[#8f3491] transition-colors flex items-center justify-center gap-2">
                         <i className="bi bi-plus"></i>
-                        Agregar miembros
+                        Invitar por mail
                     </Link>
                 </div>
 

@@ -29,18 +29,14 @@ export const createChannelService = (idWorkspace, channelData) => {
     return api.post(`/api/workspaces/${idWorkspace}/agregar-canal`, channelData)
 }
 
-export const sendInvitationService = (idWorkspace, invitationData) => {
-    return api.post(`/api/workspaces/${idWorkspace}/enviar-invitacion`, invitationData)
-}
-
-export const checkInvitationService = (token) => {
-    return api.get(`/api/workspaces/invite/${token}`)
-}
-
-export const acceptInvitationAfterRegisterService = (token) => {
-    return api.post('/api/workspaces/aceptar-invitacion', { token })
+export const addMemberToWorkspaceService = (idWorkspace, memberData) => {
+    return api.post(`/api/workspaces/${idWorkspace}/agregar-miembro`, memberData)
 }
 
 export const getWorkspaceMembersService = (idWorkspace) => {
     return api.get(`/api/workspaces/${idWorkspace}/miembros`)
+}
+
+export const checkInvitationService = (token) => {
+    return api.get(`/api/workspaces/invitacion/${token}`)
 }

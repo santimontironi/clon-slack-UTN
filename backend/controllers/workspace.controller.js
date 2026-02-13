@@ -105,36 +105,60 @@ class WorkspaceController {
                 return res.status(400).json({ message: 'Faltan campos requeridos: email, role' })
             }
 
-            if (!['owner', 'admin'].includes(member.role)) {
-                return res.status(403).json({ message: 'No tienes permiso para enviar invitaciones.' })
+            const roleNormalized = String(role).toLowerCase()
+
+            if (!['user', 'admin'].includes(roleNormalized)) {
+                return res.status(400).json({ message: 'Rol inválido. Debe ser user o admin.' })
             }
 
-            // Verificar si el usuario ya existe y es miembro
+            if (!['owner', 'admin'].includes(member.role)) {
+                return res.status(403).json({ message: 'No tienes permiso para agregar miembros.' })
+            }
+
+            // Verificar si el usuario existe
             const userFounded = await userRepository.findByEmail(email)
             
-            if (userFounded) {
-                const isMember = await workspaceRepository.findWorkspaceByIdAndUser(
-                    idWorkspace,
-                    userFounded.id
-                )
-
-                if (isMember) {
-                    return res.status(400).json({ message: 'El usuario ya es miembro del workspace.' })
-                }
+            if (!userFounded) {
+                return res.status(404).json({ message: 'Usuario no encontrado. El usuario debe estar registrado en la plataforma.' })
             }
 
-            const token = jwt.sign({ idWorkspace, email, role }, process.env.SECRET_KEY)
+            // Verificar si el usuario ha verificado su email
+            if (!userFounded.verify_email) {
+                return res.status(403).json({ message: 'El usuario debe verificar su email antes de ser agregado al workspace.' })
+            }
+
+            // Verificar si ya es miembro
+            const isMember = await workspaceRepository.findWorkspaceByIdAndUser(
+                idWorkspace,
+                userFounded.id
+            )
+
+            if (isMember) {
+                return res.status(400).json({ message: 'El usuario ya es miembro del workspace.' })
+            }
+
+            const token = jwt.sign(
+                { idWorkspace, email, role: roleNormalized },
+                process.env.SECRET_KEY,
+                { expiresIn: '1d' }
+            )
+
+            const invitationUrl = `${process.env.FRONTEND_URL}/aceptar-invitacion/${token}`
 
             await mail_transporter.sendMail({
                 from: process.env.EMAIL_USER,
                 to: email,
                 subject: 'Invitacion a workspace - UTN SLACK',
-                html: `<a href="${process.env.FRONTEND_URL}/aceptar-invitacion/${token}">Unirse</a>`
+                html: `<h1>Te invitaron a unirte a un workspace</h1>
+                       <p>Haz click en el siguiente enlace para aceptar la invitacion:</p>
+                       <a href="${invitationUrl}">Aceptar invitacion</a>`
             })
 
-            return res.status(200).json({ message: 'Invitación enviada con éxito' })
+            return res.status(200).json({ 
+                message: 'Invitacion enviada con éxito'
+            })
         } catch (error) {
-            return res.status(500).json({ message: 'Error al enviar la invitación', error: error.message })
+            return res.status(500).json({ message: 'Error al enviar la invitacion', error: error.message })
         }
     }
 
@@ -149,6 +173,12 @@ class WorkspaceController {
             const decoded = jwt.verify(token, process.env.SECRET_KEY)
             const { idWorkspace, email, role } = decoded
 
+            const roleNormalized = String(role).toLowerCase()
+
+            if (!['user', 'admin'].includes(roleNormalized)) {
+                return res.status(400).json({ message: 'Rol inválido en la invitacion.' })
+            }
+
             // Si hay usuario autenticado, verificar que el email coincida
             if (req.user && req.user.email !== email) {
                 return res.status(403).json({ message: 'El email no coincide con la invitacion.' })
@@ -156,8 +186,14 @@ class WorkspaceController {
 
             const userFounded = await userRepository.findByEmail(email)
 
+            // Si el usuario no existe, redirigir al registro
             if (!userFounded) {
-                return res.status(404).json({ message: 'Usuario no encontrado.' })
+                return res.status(404).json({ message: 'Usuario no encontrado. Debes registrarte primero.' })
+            }
+
+            // Si el usuario existe pero no ha verificado su email, no puede unirse al workspace
+            if (!userFounded.verify_email) {
+                return res.status(403).json({ message: 'Debes verificar tu email antes de unirte al workspace.' })
             }
 
             const isMember = await workspaceRepository.findWorkspaceByIdAndUser(
@@ -169,7 +205,7 @@ class WorkspaceController {
                 return res.status(400).json({ message: 'El usuario ya es miembro del workspace.' })
             }
 
-            const newMember = await workspaceRepository.addMember(idWorkspace, userFounded.id, role)
+            const newMember = await workspaceRepository.addMember(idWorkspace, userFounded.id, roleNormalized)
 
             return res.status(200).json({ 
                 message: 'Invitacion verificada con exito', 
@@ -240,9 +276,13 @@ class WorkspaceController {
 
             const members = await workspaceRepository.getWorkspaceMembers(idWorkspace)
 
-            const amountMembers = members.length
+            const membersFormat = members.map((member) => ({
+                _id: member.fk_id_user._id,
+                role: member.role,
+                username: member.fk_id_user.username
+            }))
 
-            return res.status(200).json({ message: 'Miembros obtenidos con éxito', members: members, amountMembers: amountMembers })
+            return res.status(200).json({ message: 'Miembros obtenidos con éxito', members: membersFormat })
         } catch (error) {
             return res.status(500).json({ message: 'Error al obtener los miembros', error: error.message }) 
         }

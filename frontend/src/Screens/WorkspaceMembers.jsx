@@ -1,0 +1,82 @@
+import { useContext, useEffect } from "react"
+import { WorkspaceContext } from "../context/WorkspaceContext"
+import { useParams, useNavigate } from "react-router"
+import MemberItem from "../components/MemberItem"
+import Loader from "../components/Loader"
+
+const WorkspaceMembers = () => {
+
+    const { getWorkspaceMembers, workspaceMembers, loading } = useContext(WorkspaceContext)
+
+    const { id } = useParams()
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        getWorkspaceMembers(id)
+    }, [id])
+
+    return (
+        <section className="min-h-screen bg-[#F8F8F8] p-6">
+            <div className="max-w-4xl mx-auto">
+                <div className="mb-6">
+                    <button
+                        onClick={() => navigate(`/workspace/${id}`)}
+                        className="text-gray-600 hover:text-gray-800 mb-4 flex items-center gap-2 text-sm cursor-pointer"
+                    >
+                        <i className="bi bi-chevron-left"></i>
+                        Volver al workspace
+                    </button>
+
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                                Miembros del workspace
+                            </h1>
+                            <p className="text-gray-600 text-sm">
+                                {workspaceMembers?.length || 0} {workspaceMembers?.length === 1 ? 'miembro' : 'miembros'}
+                            </p>
+                        </div>
+
+                        <button
+                            onClick={() => navigate(`/workspace/${id}/agregar-miembro`)}
+                            className="px-4 py-2 bg-[#4A154B] text-white font-semibold rounded-md hover:bg-[#3d1140] transition-colors shadow-sm flex items-center gap-2 cursor-pointer"
+                        >
+                            <i className="bi bi-plus-lg"></i>
+                            Agregar miembro
+                        </button>
+                    </div>
+                </div>
+
+                {loading.getWorkspaceMembers ? (
+                    <Loader />
+                ) : (
+                    <div className="bg-white rounded-lg shadow border border-gray-200">
+                        {workspaceMembers && workspaceMembers.length > 0 ? (
+                            workspaceMembers.map((member) => (
+                                <MemberItem key={member._id} role={member.role} username={member.username} />
+                            ))
+                        ) : (
+                            <div className="p-12 text-center">
+                                <i className="bi bi-people text-gray-400 text-6xl mb-4"></i>
+                                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                                    No hay miembros aún
+                                </h3>
+                                <p className="text-gray-600 mb-4">
+                                    Comienza agregando miembros a tu workspace
+                                </p>
+                                <button
+                                    onClick={() => navigate(`/workspace/${id}/agregar-miembro`)}
+                                    className="px-4 py-2 bg-[#4A154B] text-white font-semibold rounded-md hover:bg-[#3d1140] transition-colors cursor-pointer"
+                                >
+                                    Agregar primer miembro
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                )}
+            </div>
+        </section>
+    )
+}
+
+export default WorkspaceMembers

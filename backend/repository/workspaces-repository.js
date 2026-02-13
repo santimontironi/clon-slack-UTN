@@ -18,11 +18,6 @@ class WorkspaceRepository {
         return workspace
     }
 
-    async addMember(fk_id_workspace, fk_id_user, role) {
-        const member = await MemberWorkspaceModel.create({ fk_id_workspace, fk_id_user, role })
-        return member
-    }
-
     async findWorkspaceByIdAndUser(idWorkspace, idUser) {
         const workspace = await MemberWorkspaceModel.findOne({ fk_id_workspace: idWorkspace, fk_id_user: idUser }).populate({ path: 'fk_id_workspace', match: { active: true } })
         return workspace

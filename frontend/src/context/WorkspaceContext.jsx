@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from "react";
-import { getMyWorkspacesService, createWorkspaceService, deleteWorkspaceService, getWorkspaceByIdService, getWorkspaceChannelsService, createChannelService, getWorkspaceMembersService, sendInvitationService } from "../services/workspaceService";
+import { getMyWorkspacesService, createWorkspaceService, deleteWorkspaceService, getWorkspaceByIdService, getWorkspaceChannelsService, createChannelService, getWorkspaceMembersService, addMemberToWorkspaceService } from "../services/workspaceService";
 
 export const WorkspaceContext = createContext();
 
@@ -7,15 +7,14 @@ export const WorkspaceContextProvider = ({ children }) => {
     const [workspaces, setWorkspaces] = useState([]);
     const [workspaceById, setWorkspaceById] = useState(null);
     const [workspaceChannels, setWorkspaceChannels] = useState([]);
-    const [amountMembers, setAmountMembers] = useState(0);
+    const [workspaceMembers, setWorkspaceMembers] = useState([]);
     const [loading, setLoading] = useState({
         workspaces: true,
         create: false,
         getWorkspace: false,
         createChannel: false,
         getMembers: false,
-        sendInvitation: false,
-        acceptInvitation: false
+        sendInvitation: false
     });
 
     useEffect(() => {
@@ -98,7 +97,7 @@ export const WorkspaceContextProvider = ({ children }) => {
         setLoading(prev => ({ ...prev, getMembers: true }));
         try {
             const res = await getWorkspaceMembersService(idWorkspace);
-            setAmountMembers(res.data.amountMembers);
+            setWorkspaceMembers(res.data.members);
             return res.data.members;
         } catch (err) {
             throw err;
@@ -107,10 +106,10 @@ export const WorkspaceContextProvider = ({ children }) => {
         }
     }
 
-    async function sendInvitation(idWorkspace, invitationData) {
+    async function sendInvitation(idWorkspace, memberData) {
         setLoading(prev => ({ ...prev, sendInvitation: true }));
         try {
-            const res = await sendInvitationService(idWorkspace, invitationData);
+            const res = await addMemberToWorkspaceService(idWorkspace, memberData);
             return res.data;
         } catch (err) {
             throw err;
@@ -133,7 +132,7 @@ export const WorkspaceContextProvider = ({ children }) => {
                 workspaceChannels,
                 createChannel,
                 getWorkspaceMembers,
-                amountMembers,
+                workspaceMembers,
                 sendInvitation
             }}
         >

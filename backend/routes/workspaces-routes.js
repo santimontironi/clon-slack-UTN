@@ -8,15 +8,14 @@ const router = Router()
 
 router.get('/my-workspaces', verifyToken, workspaceController.getMyWorkspaces)
 router.get('/:idWorkspace', verifyToken, memberMiddleware, workspaceController.workspaceById)
-router.get('/invite/:token', workspaceController.checkInvitation)
 router.get('/:idWorkspace/canales', verifyToken, memberMiddleware, workspaceController.getWorkspacesChannels)
 router.get('/:idWorkspace/miembros', verifyToken, memberMiddleware, workspaceController.membersWorkspace)
+router.get('/invitacion/:token', workspaceController.checkInvitation)
 
 router.post('/create-workspace', verifyToken, upload.single('image'), workspaceController.createWorkspace)
-router.post('/:idWorkspace/enviar-invitacion', verifyToken, memberMiddleware, workspaceController.sendInvitation)
+router.post('/:idWorkspace/agregar-miembro', verifyToken, memberMiddleware, workspaceController.sendInvitation)
 router.post('/:idWorkspace/agregar-canal', verifyToken, memberMiddleware, workspaceController.createChannel)
 router.post('/:idWorkspace/canales/:idChannel/mensaje', verifyToken, memberMiddleware, workspaceController.createMessage)
-router.post('/aceptar-invitacion', verifyToken , workspaceController.checkInvitation)
 
 
 router.delete('/:idWorkspace/eliminar', verifyToken, memberMiddleware, workspaceController.deleteWorkspace)

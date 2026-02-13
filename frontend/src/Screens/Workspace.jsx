@@ -7,7 +7,7 @@ import { useParams } from "react-router"
 
 const Workspace = () => {
 
-    const { getWorkspaceById, workspaceById, loading, getWorkspaceChannels, workspaceChannels, getWorkspaceMembers, amountMembers } = useContext(WorkspaceContext)
+    const { getWorkspaceById, workspaceById, loading, getWorkspaceChannels, workspaceChannels, getWorkspaceMembers, workspaceMembers } = useContext(WorkspaceContext)
 
     const { user } = useContext(AuthContext)
     const { id } = useParams()
@@ -23,7 +23,7 @@ const Workspace = () => {
                 workspaceChannels={workspaceChannels}
                 workspaceData={workspaceById}
                 user={user}
-                amountMembers={amountMembers}
+                workspaceMembers={workspaceMembers}
                 getWorkspaceMembers={getWorkspaceMembers}
             />
 

@@ -22,12 +22,13 @@ const SendInvitation = () => {
     const onSubmit = async (data) => {
         try {
             setError('');
+            setSuccess('');
             const res = await sendInvitation(id, data);
-            setSuccess(res.data.message);
-            alert(success)
+            setSuccess(res.message || 'Invitación enviada con éxito');
             reset();
         }
         catch (err) {
+            console.error('Error completo:', err);
             setError(err.response?.data?.message || 'Ocurrió un error al enviar la invitación');
             reset();
         }
@@ -70,6 +71,28 @@ const SendInvitation = () => {
                                     <button
                                         onClick={() => setError('')}
                                         className="text-red-400 hover:text-red-600 transition-colors"
+                                    >
+                                        <i className="bi bi-x"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+
+                        {success && (
+                            <div className="mb-5 bg-green-50 border border-green-200 rounded-lg p-4">
+                                <div className="flex gap-3">
+                                    <i className="bi bi-check-circle-fill text-green-600 shrink-0 mt-0.5"></i>
+                                    <div className="flex-1">
+                                        <h3 className="text-sm font-semibold text-green-900 mb-1">
+                                            ¡Invitación enviada!
+                                        </h3>
+                                        <p className="text-sm text-green-800">
+                                            {success}
+                                        </p>
+                                    </div>
+                                    <button
+                                        onClick={() => setSuccess('')}
+                                        className="text-green-400 hover:text-green-600 transition-colors"
                                     >
                                         <i className="bi bi-x"></i>
                                     </button>
@@ -123,7 +146,7 @@ const SendInvitation = () => {
                                         }`}
                                 >
                                     <option value="">Selecciona un rol</option>
-                                    <option value="member">Miembro</option>
+                                    <option value="user">Miembro</option>
                                     <option value="admin">Administrador</option>
                                 </select>
                                 {errors.role && (

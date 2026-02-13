@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import ItemChannel from "./ItemChannel"
 import { Link } from "react-router"
 
-const SideNav = ({ getWorkspaceChannels, workspaceChannels, workspaceData, user, amountMembers, getWorkspaceMembers }) => {
+const SideNav = ({ getWorkspaceChannels, workspaceChannels, workspaceData, user, workspaceMembers , getWorkspaceMembers }) => {
 
     const [open, setOpen] = useState(false)
 
@@ -44,9 +44,9 @@ const SideNav = ({ getWorkspaceChannels, workspaceChannels, workspaceData, user,
                             </div>
                         </div>
 
-                        <p className="text-xs font-semibold text-purple-300 bg-[#522653] px-2 py-1 rounded-full whitespace-nowrap">
-                            {amountMembers} {amountMembers === 1 ? "miembro" : "miembros"}
-                        </p>
+                        <Link to={`/workspace/${workspaceData?._id}/miembros`} className="text-xs font-semibold text-purple-300 bg-[#522653] px-2 py-1 rounded-full whitespace-nowrap">
+                            {workspaceMembers.length} {workspaceMembers.length === 1 ? "miembro" : "miembros"}
+                        </Link>
 
                         <button
                             onClick={() => setOpen(false)}

@@ -1,103 +1,94 @@
-import { useEffect, useState } from "react"
-import { useParams, useNavigate } from "react-router-dom"
-import Loader from "../components/Loader"
-import { checkInvitationService } from "../services/workspaceService"
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router";
+import Loader from "../components/Loader";
+import { checkInvitationService } from "../services/workspaceService";
 
 const AcceptInvitation = () => {
-    const { token } = useParams()
-    const navigate = useNavigate()
-    const [loading, setLoading] = useState(true)
-    const [error, setError] = useState(null)
+    const { token } = useParams();
+    const navigate = useNavigate();
+
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
+    const [success, setSuccess] = useState("");
+    const [workspaceId, setWorkspaceId] = useState("");
 
     useEffect(() => {
-        const acceptInvitation = async () => {
-            try {
-                const response = await checkInvitationService(token)
-                
-                const workspaceId = response.data.workspaceId
 
-                setTimeout(() => {
-                    navigate(`/workspace/${workspaceId}`)
-                }, 2000)
-                
+        async function verifyInvitation() {
+            try {
+                setError("");
+                setSuccess("");
+
+                const res = await checkInvitationService(token);
+
+                setSuccess(res.data.message || "Invitacion aceptada con exito");
+                setWorkspaceId(res.data.workspaceId || "");
             } catch (err) {
-                console.error('Error al aceptar invitación:', err)
-                
-                if (err.response?.status === 404) {
-                    setError('¡Te registraste recientemente! Ingresa para unirte al workspace.')
-                    setTimeout(() => {
-                        navigate(`/`)
-                    }, 3000)
-                } else {
-                    setError(err.response?.data?.message || 'Error al procesar la invitación')
-                    setTimeout(() => {
-                        navigate('/')
-                    }, 3000)
-                }
-            } finally {
-                setLoading(false)
+                const message = err?.response?.data?.message || "Ocurrio un error al aceptar la invitacion";
+                setError(message);
             }
         }
 
         if (token) {
-            acceptInvitation()
+            verifyInvitation();
+        } else {
+            setError("Token invalido");
+            setLoading(false);
         }
-    }, [token, navigate])
-
-    if (loading) {
-        return (
-            <section className="min-h-screen bg-[#3F0E40] flex items-center justify-center p-4">
-                <div className="text-center">
-                    <Loader />
-                    <p className="text-white mt-4">Procesando invitación...</p>
-                </div>
-            </section>
-        )
-    }
-
-    if (error) {
-        return (
-            <section className="min-h-screen bg-[#3F0E40] flex items-center justify-center p-4">
-                <div className="w-full max-w-md">
-                    <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-8 text-center">
-                        <div className="mb-4">
-                            <i className="bi bi-x-circle-fill text-red-600 text-6xl"></i>
-                        </div>
-                        <h1 className="text-2xl font-bold text-gray-900 mb-2">
-                            Error
-                        </h1>
-                        <p className="text-gray-600">
-                            {error}
-                        </p>
-                        <p className="text-sm text-gray-500 mt-4">
-                            Serás redirigido en unos segundos...
-                        </p>
-                    </div>
-                </div>
-            </section>
-        )
-    }
+        
+    }, [token]);
 
     return (
         <section className="min-h-screen bg-[#3F0E40] flex items-center justify-center p-4">
-            <div className="w-full max-w-md">
-                <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-8 text-center">
-                    <div className="mb-4">
-                        <i className="bi bi-check-circle-fill text-green-600 text-6xl"></i>
-                    </div>
-                    <h1 className="text-2xl font-bold text-gray-900 mb-2">
-                        ¡Bienvenido!
-                    </h1>
-                    <p className="text-gray-600">
-                        Te has unido al workspace exitosamente
-                    </p>
-                    <p className="text-sm text-gray-500 mt-4">
-                        Serás redirigido en unos segundos...
-                    </p>
-                </div>
-            </div>
-        </section>
-    )
-}
+            {loading ? (
+                <Loader />
+            ) : (
+                <div className="w-full max-w-md">
+                    <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-8 text-center">
+                        {success && (
+                            <>
+                                <div className="w-14 h-14 rounded-full bg-green-100 text-green-600 flex items-center justify-center mx-auto mb-4">
+                                    <i className="bi bi-check-lg text-2xl"></i>
+                                </div>
+                                <h1 className="text-2xl font-bold text-gray-900 mb-2">
+                                    Invitacion aceptada
+                                </h1>
+                                <p className="text-gray-700 text-sm mb-6">
+                                    {success}
+                                </p>
+                                <button
+                                    onClick={() => navigate(workspaceId ? `/workspace/${workspaceId}` : "/inicio")}
+                                    className="w-full px-4 py-3 cursor-pointer bg-[#4A154B] text-white font-semibold rounded-md hover:bg-[#3d1140] transition-colors shadow-sm"
+                                >
+                                    Ir al workspace
+                                </button>
+                            </>
+                        )}
 
-export default AcceptInvitation
+                        {error && !success && (
+                            <>
+                                <div className="w-14 h-14 rounded-full bg-red-100 text-red-600 flex items-center justify-center mx-auto mb-4">
+                                    <i className="bi bi-x-lg text-2xl"></i>
+                                </div>
+                                <h1 className="text-2xl font-bold text-gray-900 mb-2">
+                                    No se pudo aceptar
+                                </h1>
+                                <p className="text-gray-700 text-sm mb-6">
+                                    {error}
+                                </p>
+                                <button
+                                    onClick={() => navigate("/")}
+                                    className="w-full px-4 py-3 cursor-pointer border border-gray-300 text-gray-700 font-semibold rounded-md hover:bg-gray-50 transition-colors"
+                                >
+                                    Ir al login
+                                </button>
+                            </>
+                        )}
+                    </div>
+                </div>
+            )}
+        </section>
+    );
+};
+
+export default AcceptInvitation;

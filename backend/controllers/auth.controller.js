@@ -1,10 +1,7 @@
 import userRepository from "../repository/user-repository.js"
 import jwt from 'jsonwebtoken'
-import dotenv from 'dotenv'
 import bcrypt from "bcrypt";
 import mail_transporter from "../config/mail.config.js";
-
-dotenv.config()
 
 class AuthController {
     async register(req, res) {

@@ -1,4 +1,4 @@
-import app from "./main.js";
+import app from "./app.js";
 import { connectMongoDB } from "./config/mongoDB.config.js"
 
 const startServer = async () => {

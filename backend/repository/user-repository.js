@@ -36,15 +36,11 @@ class UserRepository{
     async deleteUser(idUser){
         const userDeleted = await User.findByIdAndDelete(idUser)
 
-        await User.save()
-
         return userDeleted
     }
 
     async desactiveUser(idUser){
         const userUpdated = await User.findByIdAndUpdate(idUser,{active:false}, {new: true})
-
-        await User.save()
 
         return userUpdated
     }
@@ -63,8 +59,6 @@ class UserRepository{
 
     async updateUser(idUser, newData){
         const userUpdated = await User.findByIdAndUpdate(idUser, newData, {new: true})
-
-        await userUpdated.save()
 
         return userUpdated
     }

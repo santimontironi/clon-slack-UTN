@@ -7,7 +7,7 @@ import { useParams } from "react-router"
 
 const Workspace = () => {
 
-    const { getWorkspaceById, workspaceById, loading, getWorkspaceChannels, workspaceChannels} = useContext(WorkspaceContext)
+    const { getWorkspaceById, workspaceById, loading, getWorkspaceChannels, workspaceChannels, getWorkspaceMembers, amountMembers } = useContext(WorkspaceContext)
 
     const { user } = useContext(AuthContext)
     const { id } = useParams()
@@ -23,6 +23,8 @@ const Workspace = () => {
                 workspaceChannels={workspaceChannels}
                 workspaceData={workspaceById}
                 user={user}
+                amountMembers={amountMembers}
+                getWorkspaceMembers={getWorkspaceMembers}
             />
 
             <div className="flex-1 flex flex-col md:ml-64">

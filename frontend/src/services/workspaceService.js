@@ -32,3 +32,7 @@ export const createChannelService = (idWorkspace, channelData) => {
 export const addMemberService = (idWorkspace, memberData) => {
     return api.post(`/api/workspaces/${idWorkspace}/agregar-miembro`, memberData)
 }
+
+export const getWorkspaceMembersService = (idWorkspace) => {
+    return api.get(`/api/workspaces/${idWorkspace}/miembros`)
+}

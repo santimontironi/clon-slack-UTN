@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from "react";
-import { getMyWorkspacesService, createWorkspaceService, deleteWorkspaceService, getWorkspaceByIdService, getWorkspaceChannelsService, createChannelService, addMemberService } from "../services/workspaceService";
+import { getMyWorkspacesService, createWorkspaceService, deleteWorkspaceService, getWorkspaceByIdService, getWorkspaceChannelsService, createChannelService, addMemberService, getWorkspaceMembersService } from "../services/workspaceService";
 
 export const WorkspaceContext = createContext();
 
@@ -7,12 +7,14 @@ export const WorkspaceContextProvider = ({ children }) => {
     const [workspaces, setWorkspaces] = useState([]);
     const [workspaceById, setWorkspaceById] = useState(null);
     const [workspaceChannels, setWorkspaceChannels] = useState([]);
+    const [amountMembers, setAmountMembers] = useState(0);
     const [loading, setLoading] = useState({
         workspaces: true,
         create: false,
         getWorkspace: false,
         createChannel: false,
-        addMember: false
+        addMember: false,
+        getMembers: false
     });
 
     useEffect(() => {
@@ -104,6 +106,19 @@ export const WorkspaceContextProvider = ({ children }) => {
         }
     }
 
+    async function getWorkspaceMembers(idWorkspace) {
+        setLoading(prev => ({ ...prev, getMembers: true }));
+        try {
+            const res = await getWorkspaceMembersService(idWorkspace);
+            setAmountMembers(res.data.amountMembers);
+            return res.data.members;
+        } catch (err) {
+            throw err;
+        } finally {
+            setLoading(prev => ({ ...prev, getMembers: false }));
+        }
+    }
+
     return (
         <WorkspaceContext.Provider
             value={{
@@ -116,6 +131,8 @@ export const WorkspaceContextProvider = ({ children }) => {
                 getWorkspaceChannels,
                 workspaceChannels,
                 createChannel,
+                getWorkspaceMembers,
+                amountMembers,
                 addMember
             }}
         >

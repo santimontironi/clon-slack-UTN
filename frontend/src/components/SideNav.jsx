@@ -2,15 +2,16 @@ import { useEffect, useState } from "react"
 import ItemChannel from "./ItemChannel"
 import { Link } from "react-router"
 
-const SideNav = ({ getWorkspaceChannels, workspaceChannels, workspaceData, user }) => {
+const SideNav = ({ getWorkspaceChannels, workspaceChannels, workspaceData, user, amountMembers, getWorkspaceMembers }) => {
 
     const [open, setOpen] = useState(false)
 
     const [optionsOpen, setOptionsOpen] = useState(false)
 
     useEffect(() => {
-        if (getWorkspaceChannels && workspaceData?._id) {
+        if (getWorkspaceChannels && workspaceData?._id && getWorkspaceMembers) {
             getWorkspaceChannels(workspaceData._id)
+            getWorkspaceMembers(workspaceData._id)
         }
     }, [workspaceData?._id])
 
@@ -32,7 +33,7 @@ const SideNav = ({ getWorkspaceChannels, workspaceChannels, workspaceData, user 
 
             <aside className={`fixed top-0 left-0 z-50 h-screen w-64 bg-[#4A154B] text-white flex flex-col border-r border-[#522653] transform transition-transform duration-300 ${open ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 `}>
                 <div className="px-4 py-4 border-b border-[#522653]">
-                    <div className="flex items-start justify-between">
+                    <div className="flex items-center justify-between">
                         <div className="flex-1">
                             <h2 className="text-lg font-bold truncate">
                                 {workspaceData?.title || "Workspace"}
@@ -42,6 +43,10 @@ const SideNav = ({ getWorkspaceChannels, workspaceChannels, workspaceData, user 
                                 <span className="text-sm text-gray-300">Activo</span>
                             </div>
                         </div>
+
+                        <p className="text-xs font-semibold text-purple-300 bg-[#522653] px-2 py-1 rounded-full whitespace-nowrap">
+                            {amountMembers} {amountMembers === 1 ? "miembro" : "miembros"}
+                        </p>
 
                         <button
                             onClick={() => setOpen(false)}
@@ -108,11 +113,10 @@ const SideNav = ({ getWorkspaceChannels, workspaceChannels, workspaceData, user 
                         </button>
 
                         {optionsOpen && (
-                            <div className="absolute right-4 bottom-16 bg-[#4A154B] border border-[#522653] rounded shadow-lg py-2 w-48 z-50">
-                                <button className="block px-4 py-2 text-sm hover:bg-[#522653]">
-                                    Abandonar workspace
-                                </button>
-                            </div>
+                            <button className="block absolute right-4 bottom-16 px-4 py-2 text-sm bg-[#d30f29] rounded-xl text-white cursor-pointer hover:bg-[#af192d]">
+                                Dejar espacio de trabajo
+                            </button>
+
                         )}
                     </div>
                 </div>

@@ -9,6 +9,10 @@ class AuthController {
         try {
             const { email, password, username } = req.body
 
+            if (!email || !password || !username) {
+                return res.status(400).json({ message: 'Faltan campos requeridos: email, password, username' })
+            }
+
             const userEmail = await userRepository.findByEmail(email)
 
             const userUsername = await userRepository.findByUsername(username)
@@ -51,6 +55,10 @@ class AuthController {
         try {
             const { identifier, password } = req.body
 
+            if (!identifier || !password) {
+                return res.status(400).json({ message: 'Faltan campos requeridos: identifier, password' })
+            }
+
             const userFounded = await userRepository.findByIdentifier(identifier)
 
             if (!userFounded) {
@@ -61,10 +69,6 @@ class AuthController {
 
             if (!passwordHashed) {
                 return res.status(401).json({ message: 'Credenciales incorrectas' })
-            }
-
-            if (identifier == '' || password == '') {
-                return res.status(400).json({ message: 'Email o contraseña vacios' })
             }
 
             if (!userFounded.verify_email) {

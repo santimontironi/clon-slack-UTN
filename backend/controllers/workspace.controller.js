@@ -12,6 +12,10 @@ class WorkspaceController {
             const user = req.user
             let imageUrl = null
 
+            if (!title) {
+                return res.status(400).json({ message: 'Falta el campo requerido: title' })
+            }
+
             // si hay un archivo, subirlo a Cloudinary
             if (req.file) {
                 const b64 = Buffer.from(req.file.buffer).toString('base64')
@@ -97,6 +101,10 @@ class WorkspaceController {
             const { idWorkspace } = req.params
             const member = req.member
 
+            if (!email || !role) {
+                return res.status(400).json({ message: 'Faltan campos requeridos: email, role' })
+            }
+
             if (!['owner', 'admin'].includes(member.role)) {
                 return res.status(403).json({ message: 'No tienes permiso para enviar invitaciones.' })
             }
@@ -136,6 +144,10 @@ class WorkspaceController {
             const { email, role } = req.body
             const { idWorkspace } = req.params
             const member = req.member
+
+            if (!email || !role) {
+                return res.status(400).json({ message: 'Faltan campos requeridos: email, role' })
+            }
 
             if (!['owner', 'admin'].includes(member.role)) {
                 return res.status(403).json({ message: 'No tienes permiso para agregar miembros.' })
@@ -205,6 +217,10 @@ class WorkspaceController {
 
             const {name, description} = req.body
 
+            if (!name) {
+                return res.status(400).json({ message: 'Falta el campo requerido: name' })
+            }
+
             if (!['owner', 'admin'].includes(member.role)) {
                 return res.status(403).json({ message: 'No tienes permiso para crear canales.' })
             }
@@ -222,6 +238,10 @@ class WorkspaceController {
             const { idChannel } = req.params
             const { message } = req.body
             const member = req.member
+
+            if (!message) {
+                return res.status(400).json({ message: 'Falta el campo requerido: message' })
+            }
 
             const newMessage = await workspaceRepository.createMessage(
                 idChannel,

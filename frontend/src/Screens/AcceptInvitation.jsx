@@ -24,8 +24,13 @@ const AcceptInvitation = () => {
                 setSuccess(res.data.message || "Invitacion aceptada con exito");
                 setWorkspaceId(res.data.workspaceId || "");
             } catch (err) {
+                console.log(err);
+                console.log(err?.response.data.error);
                 const message = err?.response?.data?.message || "Ocurrio un error al aceptar la invitacion";
                 setError(message);
+            }
+            finally {
+                setLoading(false);
             }
         }
 

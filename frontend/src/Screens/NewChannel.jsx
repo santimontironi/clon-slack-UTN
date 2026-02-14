@@ -1,4 +1,4 @@
-import { useContext } from "react"
+import { useContext, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { WorkspaceContext } from "../context/WorkspaceContext"
 import { useForm } from "react-hook-form";
@@ -11,6 +11,8 @@ const NewChannel = () => {
 
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
 
+    const [error, setError] = useState("");
+
     const { id } = useParams();
 
     const onSubmit = async (data) => {
@@ -18,8 +20,7 @@ const NewChannel = () => {
             await createChannel(id, data);
             navigate(-1);
         } catch (err) {
-            console.error('Error creating channel:', err);
-            console.log(err.response?.data?.error);
+            setError(err?.response?.data?.message);
         }
     };
 
@@ -40,7 +41,11 @@ const NewChannel = () => {
                         Los canales son donde tu equipo se comunica. Funcionan mejor cuando están organizados por tema — #marketing, por ejemplo.
                     </p>
                 </div>
-
+                {error && (
+                    <div className="bg-red-100 text-red-700 p-3 rounded mb-4">
+                        {error}
+                    </div>
+                )}
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
                     <div>
                         <label htmlFor="name" className="block text-sm font-semibold text-gray-900 mb-2">

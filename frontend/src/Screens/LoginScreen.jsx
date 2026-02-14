@@ -2,12 +2,16 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
+import ModalNewPassword from "../components/ModalNewPassword";
 
 const LoginScreen = () => {
-  const { user, login } = useContext(AuthContext);
+  const { user, login, loading, resetPassword } = useContext(AuthContext);
+
   const [loginError, setLoginError] = useState(null);
+  const [openModal, setOpenModal] = useState(false);
 
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -59,8 +63,8 @@ const LoginScreen = () => {
               type="text"
               placeholder="nombre@empresa.com"
               className={`w-full px-3 py-2.75 pb-3.25 text-lg leading-[1.33333333] border ${errors.identifier
-                  ? "border-[#e8912d] focus:shadow-[0_0_0_4px_rgba(232,145,45,0.3)]"
-                  : "border-[#868686] focus:border-[#1264a3] focus:shadow-[0_0_0_4px_rgba(29,155,209,0.3)]"
+                ? "border-[#e8912d] focus:shadow-[0_0_0_4px_rgba(232,145,45,0.3)]"
+                : "border-[#868686] focus:border-[#1264a3] focus:shadow-[0_0_0_4px_rgba(29,155,209,0.3)]"
                 } rounded transition-all duration-200 ease-in-out box-border font-inherit text-[#1d1c1d] placeholder:text-[#616061] focus:outline-none`}
               {...register("identifier", { required: "Introduce tu correo electrónico o nombre de usuario." })}
             />
@@ -81,8 +85,8 @@ const LoginScreen = () => {
               id="password"
               placeholder="Introduce tu contraseña"
               className={`w-full px-3 py-2.75 pb-3.25 text-lg leading-[1.33333333] border ${errors.password
-                  ? "border-[#e8912d] focus:shadow-[0_0_0_4px_rgba(232,145,45,0.3)]"
-                  : "border-[#868686] focus:border-[#1264a3] focus:shadow-[0_0_0_4px_rgba(29,155,209,0.3)]"
+                ? "border-[#e8912d] focus:shadow-[0_0_0_4px_rgba(232,145,45,0.3)]"
+                : "border-[#868686] focus:border-[#1264a3] focus:shadow-[0_0_0_4px_rgba(29,155,209,0.3)]"
                 } rounded transition-all duration-200 ease-in-out box-border font-inherit text-[#1d1c1d] placeholder:text-[#616061] focus:outline-none`}
               {...register("password", { required: "Introduce tu contraseña." })}
             />
@@ -114,6 +118,16 @@ const LoginScreen = () => {
             ¿Primera vez en Slack? <a href="/registro" className="text-[#1264a3] no-underline font-semibold hover:underline">Crea una cuenta</a>
           </p>
         </div>
+
+        <div className="text-center mt-8 pt-8 border-t border-[#e0e0e0]">
+          <p className="text-[15px] text-[#1d1c1d] m-0">
+            <button onClick={() => setOpenModal(!openModal)} className="text-[#1264a3] no-underline font-semibold hover:underline cursor-pointer">¿Olvidaste tu contraseña?</button>
+          </p>
+        </div>
+
+        {openModal && (
+          <ModalNewPassword loading={loading} setOpenModal={setOpenModal} resetPassword={resetPassword} />
+        )}
       </div>
     </section>
   );

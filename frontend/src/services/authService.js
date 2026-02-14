@@ -24,3 +24,7 @@ export const dashboardUserService = () => {
 export const logoutUserService = () => {
     return api.post('/api/auth/logout')
 }
+
+export const sendResetPasswordEmailService = (data) => {
+    return api.post('/api/auth/send-reset-password-email', data)
+}

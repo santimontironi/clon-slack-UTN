@@ -139,9 +139,44 @@ class AuthController {
         }
     }
 
+    async sendChangePasswordEmail(req, res) {
+        try {
+            const { email } = req.body
+
+            if (!email) {
+                return res.status(400).json({ message: 'Email es requerido' })
+            }
+
+            const user = await userRepository.findByEmail(email)
+
+            if (!user) {
+                return res.status(404).json({ message: 'Usuario no encontrado' })
+            }
+
+            const token_generated = jwt.sign({ id: user._id.toString() }, process.env.SECRET_KEY, { expiresIn: '3h' })
+
+            const resetLink = `${process.env.FRONTEND_URL}/cambiar-password/${token_generated}`
+
+
+            await mail_transporter.sendMail({
+                from: process.env.EMAIL_USER,
+                to: email,
+                subject: 'Recuperar contraseña',
+                html: `<h1>Recuperar contraseña - UTN SLACK</h1>
+                        <p>Para cambiar tu contraseña, haz click en el siguiente enlace: <a href="${resetLink}">Cambiar contraseña</a></p>`
+            })
+
+            return res.status(200).json({ message: 'Te enviamos un email para cambiar la contraseña' })
+
+        }
+        catch (error) {
+            return res.status(500).json({ message: 'Error al enviar el email para cambiar la contraseña', error: error.message })
+        }
+    }
+
     async logout(req, res) {
         try {
-            res.clearCookie('token',{
+            res.clearCookie('token', {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production',
                 sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'

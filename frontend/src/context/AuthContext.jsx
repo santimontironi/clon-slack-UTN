@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from "react";
-import { loginService, registerService, dashboardUserService, logoutUserService } from "../services/authService";
+import { loginService, registerService, dashboardUserService, logoutUserService, sendResetPasswordEmailService } from "../services/authService";
 
 export const AuthContext = createContext();
 
@@ -9,7 +9,8 @@ export const AuthContextProvider = ({ children }) => {
     const [loading, setLoading] = useState({
         session: true,
         login: false,
-        register: false
+        register: false,
+        resetPassword: false
     });
 
     const login = async (data) => {
@@ -75,6 +76,18 @@ export const AuthContextProvider = ({ children }) => {
         }
     };
 
+    const resetPassword = async (data) => {
+        setLoading(prev => ({ ...prev, resetPassword: true }));
+        try {
+            const res = await sendResetPasswordEmailService(data);
+            return res.data;
+        } catch (err) {
+            throw err;
+        } finally {
+            setLoading(prev => ({ ...prev, resetPassword: false }));
+        }
+    };
+
     return (
         <AuthContext.Provider
             value={{
@@ -83,7 +96,8 @@ export const AuthContextProvider = ({ children }) => {
                 logout,
                 login,
                 register,
-                verifyEmail
+                verifyEmail,
+                resetPassword
             }}
         >
             {children}

@@ -155,7 +155,7 @@ class AuthController {
 
             const token_generated = jwt.sign({ id: user._id.toString() }, process.env.SECRET_KEY, { expiresIn: '3h' })
 
-            const resetLink = `${process.env.FRONTEND_URL}/cambiar-password/${token_generated}`
+            const resetLink = `${process.env.FRONTEND_URL}/cambiar-clave/${token_generated}`
 
 
             await mail_transporter.sendMail({
@@ -171,6 +171,35 @@ class AuthController {
         }
         catch (error) {
             return res.status(500).json({ message: 'Error al enviar el email para cambiar la contraseña', error: error.message })
+        }
+    }
+
+    async changePassword(req, res) {
+        try {
+            const { password } = req.body
+
+            const { token } = req.params
+
+            if (!token || !password) {
+                return res.status(400).json({ message: 'Faltan campos requeridos: token, password' })
+            }
+
+            const decoded = jwt.verify(token, process.env.SECRET_KEY)
+
+            const user = await userRepository.findById(decoded.id)
+
+            if (!user) {
+                return res.status(404).json({ message: 'Usuario no encontrado' })
+            }
+
+            const hashedPassword = await bcrypt.hash(password, 10)
+
+            await userRepository.updateUser(user._id, { password: hashedPassword })
+
+            return res.status(200).json({ message: 'Contraseña cambiada con exito' })
+        }
+        catch (error) {
+            return res.status(500).json({ message: 'Error al cambiar la contraseña', error: error.message })
         }
     }
 

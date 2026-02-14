@@ -12,6 +12,7 @@ import SendInvitation from "./Screens/SendInvitation";
 import AcceptInvitation from "./Screens/AcceptInvitation";
 import VerifyEmail from "./Screens/VerifyEmail";
 import WorkspaceMembers from "./Screens/WorkspaceMembers";
+import ChangePassword from "./Screens/ChangePassword";
 
 const App = () => {
   return (
@@ -23,6 +24,7 @@ const App = () => {
             <Route path="/registro" element={<RegisterScreen />} />
             <Route path="/verificar-email/:token" element={<VerifyEmail />} />
             <Route path="/aceptar-invitacion/:token" element={<AcceptInvitation />} />
+            <Route path="/cambiar-clave/:token" element={<ChangePassword />} />
 
             <Route path="/inicio" element={
               <SecurityRoutes>

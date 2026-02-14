@@ -28,3 +28,7 @@ export const logoutUserService = () => {
 export const sendResetPasswordEmailService = (data) => {
     return api.post('/api/auth/send-reset-password-email', data)
 }
+
+export const resetPasswordService = (token, newPassword) => {
+    return api.post(`/api/auth/change-password/${token}`, { password: newPassword })
+}

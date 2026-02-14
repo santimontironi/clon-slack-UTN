@@ -62,11 +62,6 @@ class UserRepository{
 
         return userUpdated
     }
-
-    async changePassword(idUser, newPassword){
-        const userUpdated = await User.findByIdAndUpdate(idUser, {password: newPassword}, {new: true})
-        return userUpdated
-    }
 }
 
 const userRepository = new UserRepository()

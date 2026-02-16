@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form'
 import { useContext } from 'react'
-import { WorkspaceContext } from '../context/WorkspaceContext'
+import { WorkspaceContext } from '../../context/WorkspaceContext'
 import { useNavigate } from 'react-router-dom'
 
 const CreateWorkspace = () => {

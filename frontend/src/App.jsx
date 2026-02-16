@@ -1,18 +1,18 @@
 import { Routes, Route, BrowserRouter } from "react-router-dom";
-import RegisterScreen from "./Screens/RegisterScreen";
-import LoginScreen from "./Screens/LoginScreen";
+import RegisterScreen from "./Screens/authScreens/RegisterScreen";
+import LoginScreen from "./Screens/authScreens/LoginScreen";
 import { AuthContextProvider } from "./context/AuthContext";
-import SecurityRoutes from "./components/SecurityRoutes";
+import SecurityRoutes from "./components/authComponents/SecurityRoutes";
 import DashboardUser from "./Screens/DashboardUser";
 import { WorkspaceContextProvider } from "./context/WorkspaceContext";
-import CreateWorkspace from "./Screens/CreateWorkspace";
-import Workspace from "./Screens/Workspace";
-import NewChannel from "./Screens/NewChannel";
-import SendInvitation from "./Screens/SendInvitation";
-import AcceptInvitation from "./Screens/AcceptInvitation";
-import VerifyEmail from "./Screens/VerifyEmail";
-import WorkspaceMembers from "./Screens/WorkspaceMembers";
-import ChangePassword from "./Screens/ChangePassword";
+import CreateWorkspace from "./Screens/workspaceScreens/CreateWorkspace";
+import Workspace from "./Screens/workspaceScreens/Workspace";
+import NewChannel from "./Screens/channelScreens/NewChannel";
+import SendInvitation from "./Screens/workspaceScreens/SendInvitation";
+import AcceptInvitation from "./Screens/workspaceScreens/AcceptInvitation";
+import VerifyEmail from "./Screens/authScreens/VerifyEmail";
+import WorkspaceMembers from "./Screens/workspaceScreens/WorkspaceMembers";
+import ChangePassword from "./Screens/authScreens/ChangePassword";
 
 const App = () => {
   return (

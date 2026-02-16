@@ -1,9 +1,9 @@
 import { useContext, useEffect } from "react"
-import { WorkspaceContext } from "../context/WorkspaceContext"
-import { AuthContext } from "../context/AuthContext"
-import Loader from "../components/Loader"
-import SideNav from "../components/SideNav"
-import ChannelView from "../components/ChannelView"
+import { WorkspaceContext } from "../../context/WorkspaceContext"
+import { AuthContext } from "../../context/AuthContext"
+import Loader from "../../components/layoutComponents/Loader"
+import SideNav from "../../components/sidenavComponents/SideNav"
+import ChannelView from "../../components/channelComponents/ChannelView"
 import { useParams } from "react-router"
 
 const Workspace = () => {

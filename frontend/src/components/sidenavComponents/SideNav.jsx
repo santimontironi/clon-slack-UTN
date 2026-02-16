@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import SideNavHeader from "./SideNavHeader"
-import ChannelList from "./ChannelList"
+import ChannelList from "../channelComponents/ChannelList"
 import SideNavFooter from "./SideNavFooter"
 
 const SideNav = ({ getWorkspaceChannels, workspaceChannels, workspaceData, user, workspaceMembers, getWorkspaceMembers, leaveWorkspace }) => {

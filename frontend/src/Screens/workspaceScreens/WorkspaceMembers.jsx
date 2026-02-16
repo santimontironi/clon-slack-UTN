@@ -1,8 +1,8 @@
 import { useContext, useEffect } from "react"
-import { WorkspaceContext } from "../context/WorkspaceContext"
+import { WorkspaceContext } from "../../context/WorkspaceContext"
 import { useParams, useNavigate } from "react-router"
-import MemberItem from "../components/MemberItem"
-import Loader from "../components/Loader"
+import MemberItem from "../../components/workspaceComponents/MemberItem"
+import Loader from "../../components/layoutComponents/Loader"
 import Swal2 from "sweetalert2"
 
 const WorkspaceMembers = () => {

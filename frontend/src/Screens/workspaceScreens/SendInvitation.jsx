@@ -1,9 +1,9 @@
-import { WorkspaceContext } from "../context/WorkspaceContext"
+import { WorkspaceContext } from "../../context/WorkspaceContext"
 import { useForm } from "react-hook-form"
 import { useParams } from "react-router"
 import { useContext, useState } from "react"
 import { useNavigate } from "react-router"
-import Loader from "../components/Loader"
+import Loader from "../../components/layoutComponents/Loader"
 
 const SendInvitation = () => {
 

@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
 import { useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
-import ModalNewPassword from "../components/ModalNewPassword";
+import ModalNewPassword from "../../components/authComponents/ModalNewPassword";
 
 const LoginScreen = () => {
   const { user, login, loading, resetPassword } = useContext(AuthContext);

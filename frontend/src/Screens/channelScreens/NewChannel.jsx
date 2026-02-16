@@ -1,6 +1,6 @@
 import { useContext, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { WorkspaceContext } from "../context/WorkspaceContext"
+import { WorkspaceContext } from "../../context/WorkspaceContext"
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 

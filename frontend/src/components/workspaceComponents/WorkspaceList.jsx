@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { WorkspaceContext } from '../context/WorkspaceContext'
+import { WorkspaceContext } from '../../context/WorkspaceContext'
 import Swal from "sweetalert2";
 import { Link } from 'react-router';
 

@@ -1,9 +1,9 @@
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { WorkspaceContext } from "../context/WorkspaceContext";
-import Loader from "../components/Loader";
-import WorkspaceList from "../components/WorkspaceList";
-import Header from "../components/Header";
+import Loader from "../components/layoutComponents/Loader";
+import WorkspaceList from "../components/workspaceComponents/WorkspaceList";
+import Header from "../components/layoutComponents/Header";;
 
 const DashboardUser = () => {
     const { user, loading, logout } = useContext(AuthContext);

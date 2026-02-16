@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import Loader from "../components/Loader";
-import { verifyEmailService } from "../services/authService";
+import Loader from "../../components/layoutComponents/Loader";
+import { verifyEmailService } from "../../services/authService";
 
 const VerifyEmail = () => {
   const { token } = useParams();

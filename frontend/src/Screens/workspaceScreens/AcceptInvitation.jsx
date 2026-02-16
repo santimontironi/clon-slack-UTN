@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import Loader from "../components/Loader";
-import { checkInvitationService } from "../services/workspaceService";
+import Loader from "../../components/layoutComponents/Loader";
+import { checkInvitationService } from "../../services/workspaceService";
 
 const AcceptInvitation = () => {
     const { token } = useParams();

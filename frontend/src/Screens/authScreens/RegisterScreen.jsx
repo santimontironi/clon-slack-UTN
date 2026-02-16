@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useContext, useState } from "react";
-import { AuthContext } from "../context/AuthContext";
-import Loader from "../components/Loader";
+import { AuthContext } from "../../context/AuthContext";
+import Loader from "../../components/layoutComponents/Loader";
 
 const RegisterScreen = () => {
     const { register: registerUser, loading } = useContext(AuthContext);

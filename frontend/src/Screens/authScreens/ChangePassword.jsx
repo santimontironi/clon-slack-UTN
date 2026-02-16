@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router"
-import { resetPasswordService } from "../services/authService";
+import { resetPasswordService } from "../../services/authService";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 

@@ -1,7 +1,7 @@
 import { useContext } from "react"
 import { Link } from "react-router"
 import ItemChannel from "./ItemChannel"
-import { WorkspaceContext } from "../context/WorkspaceContext"
+import { WorkspaceContext } from "../../context/WorkspaceContext"
 
 const ChannelList = ({ workspaceChannels, workspaceId, canManageWorkspace }) => {
     const { selectedChannel, setSelectedChannel } = useContext(WorkspaceContext)

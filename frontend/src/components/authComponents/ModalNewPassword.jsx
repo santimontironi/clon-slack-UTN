@@ -1,4 +1,4 @@
-import Loader from "./Loader"
+import Loader from "../layoutComponents/Loader";
 import { useState } from "react"
 import { useForm } from "react-hook-form";
 

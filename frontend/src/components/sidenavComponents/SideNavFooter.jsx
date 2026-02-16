@@ -25,7 +25,7 @@ const SideNavFooter = ({ user, workspaceId, leaveWorkspace }) => {
     }
 
     return (
-        <div className="border-t border-[#522653] px-4 py-3">
+        <div className="border-t border-[#522653] px-4 py-4">
             <div className="flex items-center gap-2 justify-between">
                 <div className="flex items-center gap-2">
                     <div className="w-8 h-8 rounded bg-linear-to-br from-purple-500 to-pink-500 flex items-center justify-center text-sm font-semibold">

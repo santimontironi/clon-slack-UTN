@@ -1,4 +1,6 @@
 import { useState } from "react"
+import HeaderChannel from "./HeaderChannel"
+import ChannelData from "./ChannelData"
 
 const ChannelView = ({ channel }) => {
     const [message, setMessage] = useState("")
@@ -12,28 +14,13 @@ const ChannelView = ({ channel }) => {
 
     return (
         <div className="flex flex-col h-full">
-            <div className="bg-[#3F0E40] border-b border-[#522653] px-6 py-3">
-                <div className="flex items-center gap-2">
-                    <span className="text-gray-400 text-xl">#</span>
-                    <h2 className="text-white font-bold text-lg">{channel.name}</h2>
-                </div>
-                {channel.description && (
-                    <p className="text-gray-400 text-sm mt-1">{channel.description}</p>
-                )}
-            </div>
+            <HeaderChannel channelName={channel.name} />
 
             <div className="flex-1 overflow-y-auto p-6">
-                <div className="flex items-center justify-center h-full">
-                    <div className="text-center">
-                        <i className="bi bi-hash text-6xl text-[#6B3B6E] mb-4 block"></i>
-                        <h3 className="text-white text-xl font-bold mb-2">
-                            Bienvenido a #{channel.name}
-                        </h3>
-                        <p className="text-gray-400">
-                            Este es el comienzo del canal #{channel.name}
-                        </p>
-                    </div>
-                </div>
+                <ChannelData 
+                    channelName={channel.name} 
+                    channelDescription={channel.description} 
+                />
             </div>
 
             <div className="bg-[#3F0E40] border-t border-[#522653] px-6 py-4">

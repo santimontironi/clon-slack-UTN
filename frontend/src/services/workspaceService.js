@@ -44,3 +44,7 @@ export const checkInvitationService = (token) => {
 export const deleteMemberService = (idWorkspace, idMember) => {
     return api.delete(`/api/workspaces/${idWorkspace}/miembros/${idMember}/eliminar`)
 }
+
+export const leaveWorkspaceService = (idWorkspace) => {
+    return api.delete(`/api/workspaces/${idWorkspace}/abandonar`)
+}

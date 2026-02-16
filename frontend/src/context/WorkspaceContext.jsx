@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from "react";
-import { getMyWorkspacesService, createWorkspaceService, deleteWorkspaceService, getWorkspaceByIdService, getWorkspaceChannelsService, createChannelService, getWorkspaceMembersService, addMemberToWorkspaceService, deleteMemberService } from "../services/workspaceService";
+import { getMyWorkspacesService, createWorkspaceService, deleteWorkspaceService, getWorkspaceByIdService, getWorkspaceChannelsService, createChannelService, getWorkspaceMembersService, addMemberToWorkspaceService, deleteMemberService, leaveWorkspaceService } from "../services/workspaceService";
 
 export const WorkspaceContext = createContext();
 
@@ -130,6 +130,15 @@ export const WorkspaceContextProvider = ({ children }) => {
         }
     }
 
+    async function leaveWorkspace(idWorkspace) {
+        try {
+            await leaveWorkspaceService(idWorkspace);
+            setWorkspaces(prev => prev.filter(ws => ws._id !== idWorkspace));
+        } catch (err) {
+            throw err;
+        }
+    }
+
     return (
         <WorkspaceContext.Provider
             value={{
@@ -145,6 +154,7 @@ export const WorkspaceContextProvider = ({ children }) => {
                 getWorkspaceMembers,
                 workspaceMembers,
                 sendInvitation,
+                leaveWorkspace,
                 deleteMember
             }}
         >

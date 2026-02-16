@@ -46,12 +46,12 @@ const WorkspaceMembers = () => {
     }
 
     return (
-        <section className="min-h-screen bg-[#F8F8F8] p-6">
+        <section className="min-h-screen bg-[#4A154B] p-6">
             <div className="max-w-4xl mx-auto">
                 <div className="mb-6">
                     <button
                         onClick={() => navigate(`/workspace/${id}`)}
-                        className="text-gray-600 hover:text-gray-800 mb-4 flex items-center gap-2 text-sm cursor-pointer"
+                        className="text-gray-300 hover:text-white mb-4 flex items-center gap-2 text-sm cursor-pointer"
                     >
                         <i className="bi bi-chevron-left"></i>
                         Volver al workspace
@@ -59,10 +59,10 @@ const WorkspaceMembers = () => {
 
                     <div className="flex items-center justify-between">
                         <div>
-                            <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                            <h1 className="text-3xl font-bold text-white mb-2">
                                 Miembros del workspace
                             </h1>
-                            <p className="text-gray-600 text-sm">
+                            <p className="text-gray-300 text-sm">
                                 {workspaceMembers?.length || 0} {workspaceMembers?.length === 1 ? 'miembro' : 'miembros'}
                             </p>
                         </div>

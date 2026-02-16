@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react"
 import ItemChannel from "./ItemChannel"
 import { Link } from "react-router"
+import Swal2 from "sweetalert2"
+import { useNavigate } from "react-router-dom"
 
-const SideNav = ({ getWorkspaceChannels, workspaceChannels, workspaceData, user, workspaceMembers, getWorkspaceMembers }) => {
+const SideNav = ({ getWorkspaceChannels, workspaceChannels, workspaceData, user, workspaceMembers, getWorkspaceMembers, leaveWorkspace }) => {
 
     const [open, setOpen] = useState(false)
+
+    const navigate = useNavigate()
 
     const [optionsOpen, setOptionsOpen] = useState(false)
 
@@ -18,6 +22,30 @@ const SideNav = ({ getWorkspaceChannels, workspaceChannels, workspaceData, user,
             getWorkspaceMembers(workspaceData._id)
         }
     }, [workspaceData?._id])
+
+    const handleLeaveWorkspace = () => {
+        try {
+
+            Swal2.fire({
+                title: "¿Estás seguro?",
+                text: "¿Quieres dejar este espacio de trabajo?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Si, dejar",
+                cancelButtonText: "Cancelar",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    leaveWorkspace(workspaceData._id)
+                    navigate("/inicio")
+                }
+            })
+        }
+        catch (err) {
+            console.error("Error al dejar el espacio de trabajo:", err);
+        }
+    }
 
     return (
         <>
@@ -129,7 +157,7 @@ const SideNav = ({ getWorkspaceChannels, workspaceChannels, workspaceData, user,
                         </button>
 
                         {optionsOpen && (
-                            <button className="block absolute right-4 bottom-16 px-4 py-2 text-sm bg-[#d30f29] rounded-xl text-white cursor-pointer hover:bg-[#af192d]">
+                            <button onClick={() => handleLeaveWorkspace()} className="block absolute right-4 bottom-16 px-4 py-2 text-sm bg-[#d30f29] rounded-xl text-white cursor-pointer hover:bg-[#af192d]">
                                 Dejar espacio de trabajo
                             </button>
 

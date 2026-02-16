@@ -1,10 +1,13 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import ItemChannel from "./ItemChannel"
 import { Link } from "react-router"
 import Swal2 from "sweetalert2"
 import { useNavigate } from "react-router-dom"
+import { WorkspaceContext } from "../context/WorkspaceContext"
 
 const SideNav = ({ getWorkspaceChannels, workspaceChannels, workspaceData, user, workspaceMembers, getWorkspaceMembers, leaveWorkspace }) => {
+    
+    const { selectedChannel, setSelectedChannel } = useContext(WorkspaceContext)
 
     const [open, setOpen] = useState(false)
 
@@ -123,8 +126,9 @@ const SideNav = ({ getWorkspaceChannels, workspaceChannels, workspaceData, user,
                                 {workspaceChannels.map((channel) => (
                                     <li key={channel._id}>
                                         <ItemChannel
-                                            id={channel._id}
                                             channel={channel}
+                                            isSelected={selectedChannel?._id === channel._id}
+                                            onSelectChannel={setSelectedChannel}
                                         />
                                     </li>
                                 ))}

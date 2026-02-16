@@ -8,6 +8,7 @@ export const WorkspaceContextProvider = ({ children }) => {
     const [workspaceById, setWorkspaceById] = useState(null);
     const [workspaceChannels, setWorkspaceChannels] = useState([]);
     const [workspaceMembers, setWorkspaceMembers] = useState([]);
+    const [selectedChannel, setSelectedChannel] = useState(null);
     const [loading, setLoading] = useState({
         workspaces: true,
         create: false,
@@ -155,7 +156,9 @@ export const WorkspaceContextProvider = ({ children }) => {
                 workspaceMembers,
                 sendInvitation,
                 leaveWorkspace,
-                deleteMember
+                deleteMember,
+                selectedChannel,
+                setSelectedChannel
             }}
         >
             {children}

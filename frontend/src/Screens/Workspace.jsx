@@ -3,17 +3,19 @@ import { WorkspaceContext } from "../context/WorkspaceContext"
 import { AuthContext } from "../context/AuthContext"
 import Loader from "../components/Loader"
 import SideNav from "../components/SideNav"
+import ChannelView from "../components/ChannelView"
 import { useParams } from "react-router"
 
 const Workspace = () => {
 
-    const { getWorkspaceById, workspaceById, loading, getWorkspaceChannels, workspaceChannels, getWorkspaceMembers, workspaceMembers, leaveWorkspace } = useContext(WorkspaceContext)
+    const { getWorkspaceById, workspaceById, loading, getWorkspaceChannels, workspaceChannels, getWorkspaceMembers, workspaceMembers, leaveWorkspace, selectedChannel, setSelectedChannel } = useContext(WorkspaceContext)
 
     const { user } = useContext(AuthContext)
     const { id } = useParams()
 
     useEffect(() => {
         getWorkspaceById(id)
+        setSelectedChannel(null)
     }, [id])
 
     return (
@@ -30,21 +32,27 @@ const Workspace = () => {
 
             <div className="flex-1 flex flex-col md:ml-64">
 
-                <main className="flex-1 overflow-y-auto p-6 flex items-center justify-center">
+                <main className="flex-1 overflow-hidden flex flex-col">
                     {loading.getWorkspace ? (
-                        <Loader />
+                        <div className="flex-1 flex items-center justify-center">
+                            <Loader />
+                        </div>
+                    ) : selectedChannel ? (
+                        <ChannelView channel={selectedChannel} />
                     ) : (
-                        <div className="text-center">
-                            <i className="bi bi-chat-left-text text-6xl mx-auto mb-6 text-[#6B3B6E] d-block"></i>
-                            <h2 className="text-2xl font-bold text-white mb-3">
-                                Bienvenido a {workspaceById?.title || "tu workspace"}
-                            </h2>
-                            <p className="text-[#D1C7D3] text-lg mb-2">
-                                Selecciona un canal para comenzar a chatear
-                            </p>
-                            <p className="text-[#BFAEC3] text-sm">
-                                Los canales están en el menú lateral izquierdo
-                            </p>
+                        <div className="flex-1 flex items-center justify-center p-6">
+                            <div className="text-center">
+                                <i className="bi bi-chat-left-text text-6xl mx-auto mb-6 text-[#6B3B6E] d-block"></i>
+                                <h2 className="text-2xl font-bold text-white mb-3">
+                                    Bienvenido a {workspaceById?.title || "tu workspace"}
+                                </h2>
+                                <p className="text-[#D1C7D3] text-lg mb-2">
+                                    Selecciona un canal para comenzar a chatear
+                                </p>
+                                <p className="text-[#BFAEC3] text-sm">
+                                    Los canales están en el menú lateral izquierdo
+                                </p>
+                            </div>
                         </div>
                     )}
                 </main>

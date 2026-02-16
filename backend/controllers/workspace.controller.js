@@ -45,6 +45,7 @@ class WorkspaceController {
     async getMyWorkspaces(req, res) {
         try {
             const user = req.user
+
             const workspaces = await workspaceRepository.getMyWorkspaces(user.id)
 
             const workspacesFormat = workspaces.map((member) => ({
@@ -298,6 +299,7 @@ class WorkspaceController {
 
     async createMessage(req, res) {
         try {
+
             const { idChannel } = req.params
             const { message } = req.body
             const member = req.member
@@ -325,7 +327,7 @@ class WorkspaceController {
     }
 
     async deleteMember(req, res) {
-        try {
+        try {            
             const { idWorkspace, idMember } = req.params
 
             const member = req.member

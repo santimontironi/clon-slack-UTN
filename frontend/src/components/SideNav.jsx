@@ -2,11 +2,15 @@ import { useEffect, useState } from "react"
 import ItemChannel from "./ItemChannel"
 import { Link } from "react-router"
 
-const SideNav = ({ getWorkspaceChannels, workspaceChannels, workspaceData, user, workspaceMembers , getWorkspaceMembers }) => {
+const SideNav = ({ getWorkspaceChannels, workspaceChannels, workspaceData, user, workspaceMembers, getWorkspaceMembers }) => {
 
     const [open, setOpen] = useState(false)
 
     const [optionsOpen, setOptionsOpen] = useState(false)
+
+    const currentMemberRole = workspaceMembers?.find((member) => member._id === user?._id)?.role
+
+    const canManageWorkspace = currentMemberRole === "admin" || currentMemberRole === "owner"
 
     useEffect(() => {
         if (getWorkspaceChannels && workspaceData?._id && getWorkspaceMembers) {
@@ -32,7 +36,15 @@ const SideNav = ({ getWorkspaceChannels, workspaceChannels, workspaceData, user,
             )}
 
             <aside className={`fixed top-0 left-0 z-50 h-screen w-64 bg-[#4A154B] text-white flex flex-col border-r border-[#522653] transform transition-transform duration-300 ${open ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 `}>
-                <div className="px-4 py-4 border-b border-[#522653]">
+                <div className="px-4 py-3 border-b border-[#522653]">
+                    <Link
+                        to="/inicio"
+                        className="flex items-center gap-2 text-sm text-gray-300 hover:text-white transition-colors mb-3"
+                    >
+                        <i className="bi bi-arrow-left"></i>
+                        Volver a espacios de trabajo
+                    </Link>
+
                     <div className="flex items-center justify-between">
                         <div className="flex-1">
                             <h2 className="text-lg font-bold truncate">
@@ -56,10 +68,12 @@ const SideNav = ({ getWorkspaceChannels, workspaceChannels, workspaceData, user,
                         </button>
                     </div>
 
-                    <Link to={`/workspace/${workspaceData?._id}/invitar`} className="mt-3 w-full px-3 py-2 text-sm font-medium cursor-pointer bg-[#964597] text-white rounded hover:bg-[#8f3491] transition-colors flex items-center justify-center gap-2">
-                        <i className="bi bi-plus"></i>
-                        Invitar por mail
-                    </Link>
+                    {canManageWorkspace && (
+                        <Link to={`/workspace/${workspaceData?._id}/invitar`} className="mt-3 w-full px-3 py-2 text-sm font-medium cursor-pointer bg-[#964597] text-white rounded hover:bg-[#8f3491] transition-colors flex items-center justify-center gap-2">
+                            <i className="bi bi-plus"></i>
+                            Invitar por mail
+                        </Link>
+                    )}
                 </div>
 
                 <div className="flex-1 overflow-y-auto">
@@ -69,9 +83,11 @@ const SideNav = ({ getWorkspaceChannels, workspaceChannels, workspaceData, user,
                                 <i className="bi bi-grid-3x3-gap"></i>
                                 Canales
                             </h3>
-                            <Link to={`/workspace/${workspaceData?._id}/nuevo-canal`} className="text-gray-300 hover:text-white text-xl leading-none">
-                                +
-                            </Link>
+                            {canManageWorkspace && (
+                                <Link to={`/workspace/${workspaceData?._id}/nuevo-canal`} className="text-gray-300 hover:text-white text-xl leading-none">
+                                    +
+                                </Link>
+                            )}
                         </div>
 
                         {workspaceChannels && workspaceChannels.length > 0 ? (

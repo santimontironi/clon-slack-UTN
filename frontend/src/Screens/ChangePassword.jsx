@@ -103,10 +103,6 @@ const ChangePassword = () => {
                                 } rounded transition-all duration-200 focus:outline-none`}
                             {...register("newPassword", {
                                 required: "La nueva contraseña es obligatoria",
-                                minLength: {
-                                    value: 6,
-                                    message: "La contraseña debe tener al menos 6 caracteres"
-                                }
                             })}
                         />
                         {errors.newPassword && (

@@ -2,11 +2,13 @@ import { useState, useContext } from "react"
 import HeaderChannel from "./HeaderChannel"
 import ChannelData from "./ChannelData"
 import { MessageContext } from "../../context/MessageContext"
+import { AuthContext } from "../../context/AuthContext"
 
 const ChannelView = ({ channel }) => {
     const [message, setMessage] = useState("")
 
     const { messages, createMessage } = useContext(MessageContext)
+    const { user } = useContext(AuthContext)
 
     const handleSendMessage = async (e) => {
         e.preventDefault()
@@ -26,15 +28,21 @@ const ChannelView = ({ channel }) => {
             <div className="flex-1 overflow-y-auto p-6">
                 {messages && messages.length > 0 ? (
                     <div className="flex flex-col gap-4">
-                        {messages.map((m) => (
-                            <div key={m._id} className="bg-[#2f0b2f] p-3 rounded-md">
-                                <div className="text-sm text-gray-400">
-                                    <strong className="text-white mr-2">{m.fk_id_member?.fk_id_user?.username}</strong>
-                                    <span className="text-xs">{m.created_at ? new Date(m.created_at).toLocaleString() : ''}</span>
+                        {messages.map((m) => {
+                            const authorId = m.fk_id_member?.fk_id_user?._id
+                            const isMine = authorId === user._id
+                            return (
+                                <div key={m._id} className={`flex ${isMine ? 'justify-end' : 'justify-start'}`}>
+                                    <div className={`${isMine ? 'bg-[#6b21a8] rounded-tl-md rounded-br-md text-right' : 'bg-[#2f0b2f] rounded-tr-md rounded-bl-md text-left'} p-3 max-w-[70%]`}>
+                                        <div className="text-sm text-gray-400">
+                                            <strong className="text-white mr-2">{m.fk_id_member?.fk_id_user?.username}</strong>
+                                            <span className="text-xs">{m.created_at ? new Date(m.created_at).toLocaleString() : ''}</span>
+                                        </div>
+                                        <div className="text-white mt-1">{m.message}</div>
+                                    </div>
                                 </div>
-                                <div className="text-white mt-1">{m.message}</div>
-                            </div>
-                        ))}
+                            )
+                        })}
                     </div>
                 ) : (
                     <ChannelData 

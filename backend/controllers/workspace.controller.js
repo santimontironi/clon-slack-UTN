@@ -16,7 +16,6 @@ class WorkspaceController {
                 return res.status(400).json({ message: 'Falta el campo requerido: title' })
             }
 
-            // si hay un archivo, subirlo a Cloudinary
             if (req.file) {
                 const b64 = Buffer.from(req.file.buffer).toString('base64')
                 const dataURI = `data:${req.file.mimetype};base64,${b64}`
@@ -106,12 +105,6 @@ class WorkspaceController {
                 return res.status(400).json({ message: 'Faltan campos requeridos: email, role' })
             }
 
-            const roleNormalized = String(role).toLowerCase()
-
-            if (!['user', 'admin'].includes(roleNormalized)) {
-                return res.status(400).json({ message: 'Rol inválido. Debe ser user o admin.' })
-            }
-
             if (!['owner', 'admin'].includes(member.role)) {
                 return res.status(403).json({ message: 'No tienes permiso para agregar miembros.' })
             }
@@ -139,7 +132,7 @@ class WorkspaceController {
             }
 
             const token = jwt.sign(
-                { idWorkspace, email, role: roleNormalized },
+                { idWorkspace, email, role: role.toLowerCase() },
                 process.env.SECRET_KEY,
                 { expiresIn: '1d' }
             )
@@ -299,10 +292,13 @@ class WorkspaceController {
 
     async createMessage(req, res) {
         try {
-
             const { idChannel } = req.params
             const { message } = req.body
             const member = req.member
+
+            if(!idChannel) {
+                return res.status(400).json({ message: 'Falta el campo requerido: idChannel' })
+            }
 
             if (!message) {
                 return res.status(400).json({ message: 'Falta el campo requerido: message' })
@@ -316,13 +312,29 @@ class WorkspaceController {
 
             return res.status(201).json({
                 message: 'Mensaje creado con éxito',
-                data: newMessage
+                newMessage: newMessage
             })
         } catch (error) {
             return res.status(500).json({
                 message: 'Error al crear el mensaje',
                 error: error.message
             })
+        }
+    }
+
+    async messagesChannel(req, res) {
+        try {
+            const { idChannel } = req.params
+
+            if(!idChannel) {
+                return res.status(400).json({ message: 'Falta el campo requerido: idChannel' })
+            }
+
+            const messages = await workspaceRepository.getChannelMessages(idChannel)
+
+            return res.status(200).json({ message: 'Mensajes obtenidos con éxito', messages })
+        } catch (error) {
+            return res.status(500).json({ message: 'Error al obtener los mensajes', error: error.message })
         }
     }
 

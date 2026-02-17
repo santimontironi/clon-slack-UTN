@@ -5,6 +5,7 @@ import { AuthContextProvider } from "./context/AuthContext";
 import SecurityRoutes from "./components/authComponents/SecurityRoutes";
 import DashboardUser from "./Screens/DashboardUser";
 import { WorkspaceContextProvider } from "./context/WorkspaceContext";
+import { MessageProvider } from "./context/MessageContext";
 import CreateWorkspace from "./Screens/workspaceScreens/CreateWorkspace";
 import Workspace from "./Screens/workspaceScreens/Workspace";
 import NewChannel from "./Screens/channelScreens/NewChannel";
@@ -45,7 +46,9 @@ const App = () => {
             <Route path="/workspace/:id" element={
               <SecurityRoutes>
                 <WorkspaceContextProvider>
-                  <Workspace />
+                  <MessageProvider>
+                    <Workspace />
+                  </MessageProvider>
                 </WorkspaceContextProvider>
               </SecurityRoutes>
             } />

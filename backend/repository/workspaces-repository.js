@@ -60,7 +60,15 @@ class WorkspaceRepository {
             message
         })
 
+        // Poblar fk_id_member y dentro de este fk_id_user para devolver el mensaje listo
+        await newMessage.populate({ path: 'fk_id_member', populate: { path: 'fk_id_user', match: { active: true } } })
+
         return newMessage
+    }
+
+    async getChannelMessages(idChannel) {
+        const messages = await ChannelMessage.find({ fk_id_channel: idChannel }).populate({ path: 'fk_id_member', populate: { path: 'fk_id_user', match: { active: true } } })
+        return messages
     }
 
     async getWorkspaceMembers(idWorkspace) {

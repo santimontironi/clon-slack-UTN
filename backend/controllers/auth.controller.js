@@ -154,7 +154,7 @@ class AuthController {
                 return res.status(404).json({ message: 'Usuario no encontrado' })
             }
 
-            const token_generated = jwt.sign({ id: user._id.toString() }, process.env.SECRET_KEY, { expiresIn: '3h' })
+            const token_generated = jwt.sign({ id: user._id.toString() }, process.env.SECRET_KEY, { expiresIn: '1h' })
 
             const resetLink = `${process.env.FRONTEND_URL}/cambiar-clave/${token_generated}`
 

@@ -1,15 +1,22 @@
-import { useState } from "react"
+import { useState, useContext } from "react"
 import HeaderChannel from "./HeaderChannel"
 import ChannelData from "./ChannelData"
+import { MessageContext } from "../../context/MessageContext"
 
 const ChannelView = ({ channel }) => {
     const [message, setMessage] = useState("")
 
-    const handleSendMessage = (e) => {
+    const { messages, createMessage } = useContext(MessageContext)
+
+    const handleSendMessage = async (e) => {
         e.preventDefault()
         if (!message.trim()) return
-        console.log("Enviando mensaje:", message)
-        setMessage("")
+        try {
+            await createMessage({ message })
+            setMessage("")
+        } catch (err) {
+            console.error('Error al enviar mensaje', err)
+        }
     }
 
     return (
@@ -17,10 +24,24 @@ const ChannelView = ({ channel }) => {
             <HeaderChannel channelName={channel.name} />
 
             <div className="flex-1 overflow-y-auto p-6">
-                <ChannelData 
-                    channelName={channel.name} 
-                    channelDescription={channel.description} 
-                />
+                {messages && messages.length > 0 ? (
+                    <div className="flex flex-col gap-4">
+                        {messages.map((m) => (
+                            <div key={m._id} className="bg-[#2f0b2f] p-3 rounded-md">
+                                <div className="text-sm text-gray-400">
+                                    <strong className="text-white mr-2">{m.fk_id_member?.fk_id_user?.username}</strong>
+                                    <span className="text-xs">{m.created_at ? new Date(m.created_at).toLocaleString() : ''}</span>
+                                </div>
+                                <div className="text-white mt-1">{m.message}</div>
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <ChannelData 
+                        channelName={channel.name} 
+                        channelDescription={channel.description} 
+                    />
+                )}
             </div>
 
             <div className="bg-[#3F0E40] border-t border-[#522653] px-6 py-4">

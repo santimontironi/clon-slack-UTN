@@ -1,5 +1,6 @@
 import { useContext, useEffect } from "react"
 import { WorkspaceContext } from "../../context/WorkspaceContext"
+import { AuthContext } from "../../context/AuthContext"
 import { useParams, useNavigate } from "react-router"
 import MemberItem from "../../components/workspaceComponents/MemberItem"
 import Loader from "../../components/layoutComponents/Loader"
@@ -8,6 +9,10 @@ import Swal2 from "sweetalert2"
 const WorkspaceMembers = () => {
 
     const { getWorkspaceMembers, workspaceMembers, loading, deleteMember } = useContext(WorkspaceContext)
+    const { user } = useContext(AuthContext)
+
+    const currentMember = workspaceMembers?.find((member) => member._id === user?._id)
+    const isAdminOrOwner = currentMember?.role === "admin" || currentMember?.role === "owner"
 
     const { id } = useParams()
     const navigate = useNavigate()
@@ -35,7 +40,7 @@ const WorkspaceMembers = () => {
                     'success'
                 )
             }
-            else{
+            else {
                 Swal2.fire(
                     'Cancelado',
                     'El miembro no ha sido eliminado.',
@@ -67,13 +72,15 @@ const WorkspaceMembers = () => {
                             </p>
                         </div>
 
-                        <button
-                            onClick={() => navigate(`/workspace/${id}/agregar-miembro`)}
-                            className="px-4 py-2 bg-[#4A154B] text-white font-semibold rounded-md hover:bg-[#3d1140] transition-colors shadow-sm flex items-center gap-2 cursor-pointer"
-                        >
-                            <i className="bi bi-plus-lg"></i>
-                            Agregar miembro
-                        </button>
+                        {isAdminOrOwner && (
+                            <button
+                                onClick={() => navigate(`/workspace/${id}/agregar-miembro`)}
+                                className="px-4 py-2 bg-[#4A154B] text-white font-semibold rounded-md hover:bg-[#3d1140] transition-colors shadow-sm flex items-center gap-2 cursor-pointer"
+                            >
+                                <i className="bi bi-plus-lg"></i>
+                                Agregar miembro
+                            </button>
+                        )}
                     </div>
                 </div>
 
@@ -83,7 +90,7 @@ const WorkspaceMembers = () => {
                     <div className="bg-white rounded-lg shadow border border-gray-200">
                         {workspaceMembers && workspaceMembers.length > 0 ? (
                             workspaceMembers.map((member) => (
-                                <MemberItem key={member._id} role={member.role} username={member.username} deleteMember={() => handleDelete(id, member._id)} />
+                                <MemberItem isAdminOrOwner={isAdminOrOwner} key={member._id} role={member.role} username={member.username} deleteMember={() => handleDelete(id, member._id)} />
                             ))
                         ) : (
                             <div className="p-12 text-center">
@@ -94,12 +101,14 @@ const WorkspaceMembers = () => {
                                 <p className="text-gray-600 mb-4">
                                     Comienza agregando miembros a tu workspace
                                 </p>
-                                <button
-                                    onClick={() => navigate(`/workspace/${id}/agregar-miembro`)}
-                                    className="px-4 py-2 bg-[#4A154B] text-white font-semibold rounded-md hover:bg-[#3d1140] transition-colors cursor-pointer"
-                                >
-                                    Agregar primer miembro
-                                </button>
+                                {isAdminOrOwner && (
+                                    <button
+                                        onClick={() => navigate(`/workspace/${id}/agregar-miembro`)}
+                                        className="px-4 py-2 bg-[#4A154B] text-white font-semibold rounded-md hover:bg-[#3d1140] transition-colors cursor-pointer"
+                                    >
+                                        Agregar primer miembro
+                                    </button>
+                                )}
                             </div>
                         )}
                     </div>

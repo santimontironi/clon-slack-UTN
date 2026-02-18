@@ -1,4 +1,4 @@
-const MemberItem = ({ role, username, deleteMember, isAdminOrOwner }) => {
+const MemberItem = ({ role, username, deleteMember, isAdminOrOwner, currentMember }) => {
     return (
         <div className="p-4 hover:bg-gray-50 transition-colors flex items-center justify-between border-b border-gray-200 last:border-b-0">
             <div className="flex items-center gap-3">
@@ -23,7 +23,7 @@ const MemberItem = ({ role, username, deleteMember, isAdminOrOwner }) => {
                     </span>
                 )}
 
-                {isAdminOrOwner && (
+                {(isAdminOrOwner && currentMember?.username !== username) && (
                     <button
                         className="p-2 text-red-600 hover:bg-red-50 rounded transition-colors cursor-pointer"
                         aria-label="Eliminar miembro"

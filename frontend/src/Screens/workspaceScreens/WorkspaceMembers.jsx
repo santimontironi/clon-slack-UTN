@@ -90,7 +90,7 @@ const WorkspaceMembers = () => {
                     <div className="bg-white rounded-lg shadow border border-gray-200">
                         {workspaceMembers && workspaceMembers.length > 0 ? (
                             workspaceMembers.map((member) => (
-                                <MemberItem isAdminOrOwner={isAdminOrOwner} key={member._id} role={member.role} username={member.username} deleteMember={() => handleDelete(id, member._id)} />
+                                <MemberItem currentMember={currentMember} isAdminOrOwner={isAdminOrOwner} key={member._id} role={member.role} username={member.username} deleteMember={() => handleDelete(id, member._id)} />
                             ))
                         ) : (
                             <div className="p-12 text-center">

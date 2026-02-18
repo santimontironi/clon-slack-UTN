@@ -10,6 +10,14 @@ const ChannelView = ({ channel }) => {
     const { messages, createMessage } = useContext(MessageContext)
     const { user } = useContext(AuthContext)
 
+    const formatTimestamp = (isoString) => {
+        if (!isoString) return ''
+        const d = new Date(isoString) //se asume que el formato es ISO 8601
+        const date = d.toLocaleDateString() //formato local, ej: 12/9/2024
+        const time = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) //formato local, ej: 14:30
+        return `${date} ${time}`
+    }
+
     const handleSendMessage = async (e) => {
         e.preventDefault()
         if (!message.trim()) return
@@ -36,7 +44,7 @@ const ChannelView = ({ channel }) => {
                                     <div className={`${isMine ? 'bg-[#6b21a8] rounded-tl-md rounded-br-md text-right' : 'bg-[#2f0b2f] rounded-tr-md rounded-bl-md text-left'} p-3 max-w-[70%]`}>
                                         <div className="text-sm text-gray-400">
                                             <strong className="text-white mr-2">{m.fk_id_member?.fk_id_user?.username}</strong>
-                                            <span className="text-xs">{m.created_at ? new Date(m.created_at).toLocaleString() : ''}</span>
+                                            <span className="text-xs">{m.created_at ? formatTimestamp(m.created_at) : ''}</span>
                                         </div>
                                         <div className="text-white mt-1">{m.message}</div>
                                     </div>

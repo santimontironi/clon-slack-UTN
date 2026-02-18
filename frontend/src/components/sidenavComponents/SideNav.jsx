@@ -51,6 +51,8 @@ const SideNav = ({ getWorkspaceChannels, workspaceChannels, workspaceData, user,
                     user={user}
                     workspaceId={workspaceData?._id}
                     leaveWorkspace={leaveWorkspace}
+                    workspaceMembers={workspaceMembers}
+                    canManageWorkspace={canManageWorkspace}
                 />
             </aside>
         </>

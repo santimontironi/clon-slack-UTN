@@ -2,15 +2,22 @@ import { useState } from "react"
 import Swal2 from "sweetalert2"
 import { useNavigate } from "react-router-dom"
 
-const SideNavFooter = ({ user, workspaceId, leaveWorkspace }) => {
+const SideNavFooter = ({ user, workspaceId, leaveWorkspace, workspaceMembers }) => {
     const [optionsOpen, setOptionsOpen] = useState(false)
     const navigate = useNavigate()
 
     const handleLeaveWorkspace = () => {
+        const currentMemberRole = workspaceMembers?.find((m) => m._id === user?._id)?.role //se verifica el rol del usuario actual
+        const isAdminOrOwner = currentMemberRole === "admin" || currentMemberRole === "owner" //se determina si el usuario es admin o owner
+        const otherAdmins = workspaceMembers?.filter((m) => (m.role === "admin" || m.role === "owner") && m._id !== user?._id) || [] //se buscan otros admins u owners en el workspace, excluyendo al usuario actual
+        const noOtherAdmins = isAdminOrOwner && otherAdmins.length === 0 //si el usuario es admin u owner y no hay otros admins u owners, se muestra una advertencia especial al intentar abandonar el workspace
+
         Swal2.fire({
             title: "¿Estás seguro?",
-            text: "¿Quieres dejar este espacio de trabajo?",
-            icon: "warning",
+            text: noOtherAdmins
+                ? "Si abandonas este workspace no quedará otro administrador. Mejor agrega a otro antes para no dejar el servidor sin administración. ¿Quieres continuar?"
+                : "¿Quieres dejar este espacio de trabajo?",
+            icon: noOtherAdmins ? "warning" : "warning",
             showCancelButton: true,
             confirmButtonColor: "#d33",
             cancelButtonColor: "#3085d6",

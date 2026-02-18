@@ -29,8 +29,8 @@ const MemberItem = ({ role, username, deleteMember, isAdminOrOwner, currentMembe
                         aria-label="Eliminar miembro"
                         onClick={deleteMember}
                     >
-                    <i className="bi bi-trash text-lg"></i>
-                </button>
+                        <i className="bi bi-trash text-lg"></i>
+                    </button>
                 )}
             </div>
         </div>

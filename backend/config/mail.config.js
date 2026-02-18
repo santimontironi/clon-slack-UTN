@@ -11,9 +11,7 @@ const mail_transporter = nodemailer.createTransport({
     },
     tls: {
         rejectUnauthorized: false
-    },
-    logger: true,
-    debug: true
+    }
 })
 
 console.log('✅ Mail transporter configurado');

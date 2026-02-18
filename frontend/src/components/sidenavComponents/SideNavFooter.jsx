@@ -12,23 +12,32 @@ const SideNavFooter = ({ user, workspaceId, leaveWorkspace, workspaceMembers }) 
         const otherAdmins = workspaceMembers?.filter((m) => (m.role === "admin" || m.role === "owner") && m._id !== user?._id) || [] //se buscan otros admins u owners en el workspace, excluyendo al usuario actual
         const noOtherAdmins = isAdminOrOwner && otherAdmins.length === 0 //si el usuario es admin u owner y no hay otros admins u owners, se muestra una advertencia especial al intentar abandonar el workspace
 
-        Swal2.fire({
-            title: "¿Estás seguro?",
-            text: noOtherAdmins
-                ? "Si abandonas este workspace no quedará otro administrador. Mejor agrega a otro antes para no dejar el servidor sin administración. ¿Quieres continuar?"
-                : "¿Quieres dejar este espacio de trabajo?",
-            icon: noOtherAdmins ? "warning" : "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#d33",
-            cancelButtonColor: "#3085d6",
-            confirmButtonText: "Si, dejar",
-            cancelButtonText: "Cancelar",
-        }).then((result) => {
-            if (result.isConfirmed) {
-                leaveWorkspace(workspaceId)
-                navigate("/inicio")
-            }
-        })
+        if (noOtherAdmins) {
+            Swal2.fire({
+                text: "No puedes abandonar este workspace porque eres el único administrador. Por favor, asigna a otro miembro como administrador antes de abandonar el workspace.",
+                icon: "error",
+                confirmButtonColor: "#3085d6",
+                confirmButtonText: "Entendido",
+            })
+            return
+        }else{
+            Swal2.fire({
+                title: "¿Estás seguro?",
+                text: "¿Quieres dejar este espacio de trabajo?",
+                icon: noOtherAdmins ? "warning" : "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Si, dejar",
+                cancelButtonText: "Cancelar",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    leaveWorkspace(workspaceId)
+                    navigate("/inicio")
+                }
+            })
+        }
+
     }
 
     return (

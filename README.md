@@ -1,6 +1,6 @@
 # 💬 Slack Clone – Proyecto Full Stack (MERN)
 
-Proyecto desarrollado como Trabajo Práctico Final de la Diplomatura Full Stack (UTN). Es un clon básico de Slack que permite comunicación por canales, gestión de workspaces y autenticación con JWT.
+Proyecto desarrollado como Trabajo Práctico Final de la Diplomatura Full Stack (UTN). Es un clon de Slack que permite comunicación por canales, gestión de workspaces y autenticación con JWT.
 
 ---
 
@@ -15,6 +15,7 @@ Proyecto desarrollado como Trabajo Práctico Final de la Diplomatura Full Stack 
 **Contenido de este README**
 - Descripción
 - Requisitos y puesta en marcha (frontend y backend)
+- Funcionalidades principales
 - Variables de entorno necesarias
 - Scripts importantes
 - Endpoints del backend (lista y descripciones)

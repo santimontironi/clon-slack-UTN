@@ -86,13 +86,17 @@ Coloca estas variables en un archivo `.env` en la carpeta `backend`.
 
 ---
 
+## Variables de entorno (frontend)
+- `VITE_BACKEND_URL` - URL del backend (para comunicarse y realizar las peticiones)
+
+Coloca estas variables en un archivo `.env` en la carpeta `frontend`.
+
 ## Scripts (resumen)
 - Backend (carpeta `backend`):
   - `npm run dev` - ejecuta `nodemon index.js` (desarrollo)
   - `npm start` - ejecuta `node index.js`
 - Frontend (carpeta `frontend`):
   - `npm run dev` - inicia Vite (desarrollo)
-  - `npm run build` - build de producción
 
 ---
 

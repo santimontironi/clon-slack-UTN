@@ -4,7 +4,9 @@ Proyecto desarrollado como Trabajo Práctico Final de la Diplomatura Full Stack 
 
 ---
 
-**Estado:** en desarrollo
+**Estado:** en producción
+
+**URL:** https://clon-slack-utn-frontend.vercel.app
 
 **Stack:** React + Vite + TailwindCSS (frontend) · Node.js + Express + MongoDB (backend)
 

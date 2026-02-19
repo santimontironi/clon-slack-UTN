@@ -19,6 +19,25 @@ Proyecto desarrollado como Trabajo Práctico Final de la Diplomatura Full Stack 
 
 ---
 
+## Funcionalidades principales
+
+Esta aplicación implementa las siguientes funcionalidades:
+
+- **Autenticación de usuarios**: registro, login con JWT, verificación de email y recuperación/cambio de contraseña mediante token enviado por email.
+- **Gestión de Workspaces**: crear workspaces, editar (imagen y datos) y eliminar workspaces.
+- **Invitaciones**: enviar invitaciones por email para unirse a un workspace mediante token público, aceptar invitaciones.
+- **Gestión de miembros**: listar miembros, agregar miembros mediante invitación, eliminar miembros y permitir que un miembro abandone un workspace.
+- **Canales por workspace**: crear y listar canales dentro de un workspace.
+- **Mensajería en canales**: publicar mensajes en canales y obtener el historial de mensajes por canal.
+- **Cargas de archivos / imágenes**: subida de imágenes (por ejemplo, imagen del workspace) integrada con Cloudinary.
+- **Envío de emails**: envío de correos (ver `config/mail.config.js`) para verificación y recuperación de contraseña.
+- **Middlewares de seguridad**: middleware `verifyToken` para rutas protegidas y `memberMiddleware` para validar pertenencia al workspace.
+- **Frontend SPA**: cliente en React (Vite + TailwindCSS) con pantallas de autenticación, administración de workspaces y visualización de canales.
+
+Estas funcionalidades están organizadas entre el cliente (`frontend`) y el servidor (`backend`).
+
+---
+
 ## Requisitos
 - Node.js (v16+ recomendado)
 - MongoDB (Atlas o local)
@@ -110,14 +129,12 @@ Base URL: `http://localhost:3000` (ajustar si cambia `PORT`)
   - Auth: no
 
 - `GET /auth/dashboard-user` — Información del usuario (ruta protegida)
-  - Headers: `Authorization: Bearer <token>`
-  - Auth: sí (middleware `verifyToken`)
+  - Auth: sí (middleware `verifyToken`; el JWT se envía en cookie httpOnly)
 
 -- Rutas de workspaces (`/workspaces`)
 
 - `GET /workspaces/my-workspaces` — Obtener workspaces del usuario
-  - Headers: `Authorization: Bearer <token>`
-  - Auth: sí
+  - Auth: sí (el JWT se envía en cookie httpOnly y lo valida `verifyToken`)
 
 - `GET /workspaces/:idWorkspace` — Obtener info del workspace
   - Middleware: `memberMiddleware` (verifica que el usuario sea miembro)
@@ -137,8 +154,7 @@ Base URL: `http://localhost:3000` (ajustar si cambia `PORT`)
 
 - `POST /workspaces/create-workspace` — Crear workspace (acepta imagen)
   - Form-data: `image` (file) y campos del workspace
-  - Headers: `Authorization: Bearer <token>`
-  - Auth: sí
+  - Auth: sí (el JWT se envía en cookie httpOnly y lo valida `verifyToken`)
 
 - `POST /workspaces/:idWorkspace/agregar-miembro` — Enviar invitación / agregar miembro
   - Auth: sí (member)
@@ -160,7 +176,7 @@ Base URL: `http://localhost:3000` (ajustar si cambia `PORT`)
   - Auth: sí
 
 Notas:
-- Las rutas que usan `verifyToken` requieren que hay loguearse para que se lea la cookie.
+- Las rutas protegidas esperan que el JWT se envíe en una cookie (normalmente `httpOnly`) y son verificadas por el middleware `verifyToken`.
 - Las rutas con `memberMiddleware` están pensadas para validar que el usuario pertenece al workspace.
 
 ---

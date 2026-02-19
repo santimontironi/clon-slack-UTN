@@ -14,6 +14,4 @@ const mail_transporter = nodemailer.createTransport({
     }
 })
 
-console.log('✅ Mail transporter configurado');
-
 export default mail_transporter

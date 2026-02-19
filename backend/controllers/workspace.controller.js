@@ -19,12 +19,12 @@ class WorkspaceController {
             if (req.file) {
                 const b64 = Buffer.from(req.file.buffer).toString('base64')
                 const dataURI = `data:${req.file.mimetype};base64,${b64}`
-                
+
                 const result = await cloudinary.uploader.upload(dataURI, {
                     folder: 'workspaces',
                     resource_type: 'auto'
                 })
-                
+
                 imageUrl = result.secure_url
             }
 
@@ -111,7 +111,7 @@ class WorkspaceController {
 
             // Verificar si el usuario existe
             const userFounded = await userRepository.findByEmail(email)
-            
+
             if (!userFounded) {
                 return res.status(404).json({ message: 'Usuario no encontrado. El usuario debe estar registrado en la plataforma.' })
             }
@@ -142,13 +142,55 @@ class WorkspaceController {
             await mail_transporter.sendMail({
                 from: process.env.EMAIL_USER,
                 to: email,
-                subject: 'Invitacion a workspace - UTN SLACK',
-                html: `<h1>Te invitaron a unirte a un workspace</h1>
-                       <p>Haz click en el siguiente enlace para aceptar la invitacion:</p>
-                       <a href="${invitationUrl}">Aceptar invitacion</a>`
+                subject: 'Invitación a workspace - UTN SLACK',
+                html: `
+                    <div style="margin:0; padding:0; background-color:#6C3BD1; font-family: Arial, Helvetica, sans-serif;">
+                        <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#6C3BD1; padding:40px 0;">
+                            <tr>
+                                <td align="center">
+                                    <table width="600" cellpadding="0" cellspacing="0"
+                                        style="background-color:#7E4BE8; border-radius:12px; padding:40px; text-align:center;">
+                                        
+                                        <tr>
+                                            <td>
+                                                <h1 style="color:#FFFFFF; margin-bottom:20px;">
+                                                    Invitación a Workspace 🚀
+                                                </h1>
+
+                                                <p style="color:#FFFFFF; font-size:16px; margin-bottom:30px;">
+                                                    Fuiste invitado a unirte a un workspace en <strong>UTN SLACK</strong>.<br/>
+                                                    Tu rol asignado será: <strong style="text-transform: capitalize;">${role}</strong>.
+                                                </p>
+
+                                                <a href="${invitationUrl}"
+                                                style="display:inline-block;
+                                                        padding:15px 30px;
+                                                        background-color:#FFFFFF;
+                                                        color:#6C3BD1;
+                                                        text-decoration:none;
+                                                        font-weight:bold;
+                                                        border-radius:8px;
+                                                        font-size:16px;">
+                                                    Aceptar invitación
+                                                </a>
+
+                                                <p style="color:#E0D7FF; font-size:14px; margin-top:30px;">
+                                                    Este enlace expirará en 24 horas.<br/>
+                                                    Si no esperabas esta invitación, podés ignorar este mensaje.
+                                                </p>
+
+                                            </td>
+                                        </tr>
+
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    `
             })
 
-            return res.status(200).json({ 
+            return res.status(200).json({
                 message: 'Invitacion enviada con éxito'
             })
         } catch (error) {
@@ -201,10 +243,10 @@ class WorkspaceController {
 
             const newMember = await workspaceRepository.addMember(idWorkspace, userFounded.id, roleNormalized)
 
-            return res.status(200).json({ 
-                message: 'Invitacion verificada con exito', 
+            return res.status(200).json({
+                message: 'Invitacion verificada con exito',
                 member: newMember,
-                workspaceId: idWorkspace 
+                workspaceId: idWorkspace
             })
         } catch (error) {
             return res.status(500).json({ message: 'Error al verificar la invitacion', error: error.message })
@@ -217,7 +259,7 @@ class WorkspaceController {
 
             const member = req.member
 
-            if(!member) {
+            if (!member) {
                 return res.status(403).json({ message: 'No tienes permiso para obtener el workspace.' })
             }
 
@@ -246,11 +288,11 @@ class WorkspaceController {
             const { idWorkspace } = req.params
             const member = req.member
 
-            if(!idWorkspace) {
+            if (!idWorkspace) {
                 return res.status(400).json({ message: 'Falta el campo requerido: idWorkspace' })
             }
 
-            const {name, description} = req.body
+            const { name, description } = req.body
 
             if (!name) {
                 return res.status(400).json({ message: 'Falta el campo requerido: name' })
@@ -272,7 +314,7 @@ class WorkspaceController {
         try {
             const { idWorkspace } = req.params
 
-            if(!idWorkspace) {
+            if (!idWorkspace) {
                 return res.status(400).json({ message: 'Falta el campo requerido: idWorkspace' })
             }
 
@@ -286,7 +328,7 @@ class WorkspaceController {
 
             return res.status(200).json({ message: 'Miembros obtenidos con éxito', members: membersFormat })
         } catch (error) {
-            return res.status(500).json({ message: 'Error al obtener los miembros', error: error.message }) 
+            return res.status(500).json({ message: 'Error al obtener los miembros', error: error.message })
         }
     }
 
@@ -296,7 +338,7 @@ class WorkspaceController {
             const { message } = req.body
             const member = req.member
 
-            if(!idChannel) {
+            if (!idChannel) {
                 return res.status(400).json({ message: 'Falta el campo requerido: idChannel' })
             }
 
@@ -326,7 +368,7 @@ class WorkspaceController {
         try {
             const { idChannel } = req.params
 
-            if(!idChannel) {
+            if (!idChannel) {
                 return res.status(400).json({ message: 'Falta el campo requerido: idChannel' })
             }
 
@@ -339,7 +381,7 @@ class WorkspaceController {
     }
 
     async deleteMember(req, res) {
-        try {            
+        try {
             const { idWorkspace, idMember } = req.params
 
             const member = req.member

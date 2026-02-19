@@ -36,9 +36,50 @@ class AuthController {
                     from: process.env.EMAIL_USER,
                     to: email,
                     subject: 'Verificacion de cuenta - UTN SLACK',
-                    html: `<h1>Gracias por registrarte en UTN SLACK</h1>
-                           <p>Por favor, haz click en el siguiente enlace para verificar tu cuenta:</p>
-                           <a href="${process.env.FRONTEND_URL}/verificar-email/${token_generated}">Verificar cuenta</a>`
+                    html: `
+                    <div style="margin:0; padding:0; background-color:#6C3BD1; font-family: Arial, Helvetica, sans-serif;">
+                        <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#6C3BD1; padding:40px 0;">
+                            <tr>
+                                <td align="center">
+                                    <table width="600" cellpadding="0" cellspacing="0" 
+                                        style="background-color:#7E4BE8; border-radius:12px; padding:40px; text-align:center;">
+                                        
+                                        <tr>
+                                            <td>
+                                                <h1 style="color:#FFFFFF; margin-bottom:20px;">
+                                                    Bienvenido a UTN SLACK 🚀
+                                                </h1>
+
+                                                <p style="color:#FFFFFF; font-size:16px; margin-bottom:30px;">
+                                                    Gracias por registrarte.<br/>
+                                                    Para activar tu cuenta, verificá tu email haciendo click en el botón de abajo.
+                                                </p>
+
+                                                <a href="${process.env.FRONTEND_URL}/verificar-email/${token_generated}"
+                                                style="display:inline-block;
+                                                        padding:15px 30px;
+                                                        background-color:#FFFFFF;
+                                                        color:#6C3BD1;
+                                                        text-decoration:none;
+                                                        font-weight:bold;
+                                                        border-radius:8px;
+                                                        font-size:16px;">
+                                                    Verificar cuenta
+                                                </a>
+
+                                                <p style="color:#E0D7FF; font-size:14px; margin-top:30px;">
+                                                    Si no creaste esta cuenta, podés ignorar este mensaje.
+                                                </p>
+
+                                            </td>
+                                        </tr>
+
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    `
                 })
             } catch (error) {
                 return res.status(500).json({ message: 'Error al enviar el email de verificacion', error: error.message })
@@ -162,16 +203,59 @@ class AuthController {
             await mail_transporter.sendMail({
                 from: process.env.EMAIL_USER,
                 to: email,
-                subject: 'Recuperar contraseña',
-                html: `<h1>Recuperar contraseña - UTN SLACK</h1>
-                        <p>Para cambiar tu contraseña, haz click en el siguiente enlace: <a href="${resetLink}">Cambiar contraseña</a></p>`
+                subject: 'Recuperar contraseña - UTN SLACK',
+                html: `
+                    <div style="margin:0; padding:0; background-color:#6C3BD1; font-family: Arial, Helvetica, sans-serif;">
+                        <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#6C3BD1; padding:40px 0;">
+                            <tr>
+                                <td align="center">
+                                    <table width="600" cellpadding="0" cellspacing="0"
+                                        style="background-color:#7E4BE8; border-radius:12px; padding:40px; text-align:center;">
+                                        
+                                        <tr>
+                                            <td>
+                                                <h1 style="color:#FFFFFF; margin-bottom:20px;">
+                                                    Recuperar contraseña 🔐
+                                                </h1>
+
+                                                <p style="color:#FFFFFF; font-size:16px; margin-bottom:30px;">
+                                                    Recibimos una solicitud para restablecer tu contraseña.<br/>
+                                                    Hacé click en el botón de abajo para crear una nueva.
+                                                </p>
+
+                                                <a href="${resetLink}"
+                                                style="display:inline-block;
+                                                        padding:15px 30px;
+                                                        background-color:#FFFFFF;
+                                                        color:#6C3BD1;
+                                                        text-decoration:none;
+                                                        font-weight:bold;
+                                                        border-radius:8px;
+                                                        font-size:16px;">
+                                                    Cambiar contraseña
+                                                </a>
+
+                                                <p style="color:#E0D7FF; font-size:14px; margin-top:30px;">
+                                                    Este enlace expirará en 1 hora.<br/>
+                                                    Si no solicitaste este cambio, podés ignorar este mensaje.
+                                                </p>
+
+                                            </td>
+                                        </tr>
+
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    `
             })
 
-            return res.status(200).json({ message: 'Te enviamos un email para cambiar la contraseña' })
+            return res.status(200).json({ message: 'Te enviamos un email para cambiar la contraseña' })
 
         }
         catch (error) {
-            return res.status(500).json({ message: 'Error al enviar el email para cambiar la contraseña', error: error.message })
+            return res.status(500).json({ message: 'Error al enviar el email para cambiar la contraseña', error: error.message })
         }
     }
 
@@ -197,10 +281,10 @@ class AuthController {
 
             await userRepository.updateUser(user._id, { password: hashedPassword })
 
-            return res.status(200).json({ message: 'Contraseña cambiada con exito' })
+            return res.status(200).json({ message: 'Contraseña cambiada con éxito' })
         }
         catch (error) {
-            return res.status(500).json({ message: 'Error al cambiar la contraseña', error: error.message })
+            return res.status(500).json({ message: 'Error al cambiar la contraseña', error: error.message })
         }
     }
 
@@ -212,10 +296,10 @@ class AuthController {
                 sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
                 path: '/'
             })
-            return res.status(200).json({ message: 'Sesion cerrada con exito' })
+            return res.status(200).json({ message: 'Sesión cerrada con éxito' })
         }
         catch (error) {
-            return res.status(500).json({ message: 'Error al cerrar sesion', error: error.message })
+            return res.status(500).json({ message: 'Error al cerrar sesión', error: error.message })
         }
     }
 }

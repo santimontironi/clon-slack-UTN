@@ -13,6 +13,7 @@ Proyecto desarrollado como Trabajo Práctico Final de la Diplomatura Full Stack 
 **Contenido de este README**
 - Descripción
 - Requisitos y puesta en marcha (frontend y backend)
+- Funcionalidades principales
 - Variables de entorno necesarias
 - Scripts importantes
 - Endpoints del backend (lista y descripciones)

@@ -188,5 +188,16 @@ Notas:
 
 ---
 
+## Tests unitarios
+
+- **Implementación:** Se implementaron tests unitarios con `jest` en el backend.
+- **Ejecutar:** Desde la raíz del proyecto, abre una terminal y ejecuta:
+
+```bash
+cd backend
+npm test
+```
+
+---
 
 ### Proyecto desarrollado por Santiago Montironi.

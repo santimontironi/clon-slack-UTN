@@ -83,7 +83,7 @@ class WorkspaceController {
             const { idWorkspace } = req.params
             const member = req.member
 
-            if (member.role !== 'owner') {
+            if (member.role !== 'owner' && member.role !== 'admin') {
                 return res.status(403).json({ message: 'No tienes permiso para eliminar el workspace.' })
             }
 

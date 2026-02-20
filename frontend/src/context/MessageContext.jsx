@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState } from "react";
 import { createMessageService, getMessagesService } from "../services/messageService";
 import { useContext } from "react";
 import { WorkspaceContext } from "./WorkspaceContext";
@@ -11,17 +11,14 @@ export const MessageProvider = ({children}) => {
 
     const { selectedChannel, workspaceById } = useContext(WorkspaceContext);
 
-    useEffect(() => {
-        const fetchMessages = async () => {
-            try {
-                const res = await getMessagesService(workspaceById._id, selectedChannel._id);
-                setMessages(res.data.messages);
-            } catch (err) {
-                throw err;
-            }
+    const fetchMessages = async () => {
+        try {
+            const res = await getMessagesService(workspaceById._id, selectedChannel._id);
+            setMessages(res.data.messages || []);
+        } catch (err) {
+            console.error('Error fetching messages', err)
         }
-        fetchMessages();
-    }, [selectedChannel, workspaceById])
+    }
 
     async function createMessage(messageData) {
         try {
@@ -35,7 +32,7 @@ export const MessageProvider = ({children}) => {
     }
 
     return (
-        <MessageContext.Provider value={{ messages, createMessage }}>
+        <MessageContext.Provider value={{ messages, createMessage, fetchMessages }}>
             {children}
         </MessageContext.Provider>
     )

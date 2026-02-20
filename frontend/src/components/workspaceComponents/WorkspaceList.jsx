@@ -24,7 +24,13 @@ const WorkspaceList = ({ id, title, description, image, created_at }) => {
                 await deleteWorkspace(idWorkspace);
             }
         } catch (error) {
-            console.error('Error deleting workspace:', error);
+            Swal.fire({
+                title: 'Error',
+                text: error.response?.data?.message || 'Ocurrio un error al eliminar el espacio de trabajo',
+                icon: 'error',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Aceptar'
+            })
         }
     }
 
@@ -38,6 +44,7 @@ const WorkspaceList = ({ id, title, description, image, created_at }) => {
     return (
         <div className="bg-white border border-[#e0e0e0] rounded-lg overflow-hidden transition-all duration-200 ease-in-out cursor-pointer flex flex-col hover:border-[#1264a3] hover:shadow-[0_4px_12px_rgba(0,0,0,0.08)] hover:-translate-y-0.5">
             <div className="w-full h-45 md:h-50 lg:h-50 xl:h-60 overflow-hidden bg-[#f8f8f8] relative">
+
                 <button
                     onClick={() => handleDelete(id)}
                     className="absolute top-3 right-3 bg-black/60 border-none rounded-md px-2 py-1.5 text-white cursor-pointer transition-all duration-200 ease-in-out flex items-center justify-center hover:bg-[#dc3545] active:scale-95"

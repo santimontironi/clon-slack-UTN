@@ -74,7 +74,7 @@ const WorkspaceMembers = () => {
 
                         {isAdminOrOwner && (
                             <button
-                                onClick={() => navigate(`/workspace/${id}/agregar-miembro`)}
+                                onClick={() => navigate(`/workspace/${id}/invitar`)}
                                 className="px-4 py-2 bg-[#4A154B] text-white font-semibold rounded-md hover:bg-[#3d1140] transition-colors shadow-sm flex items-center gap-2 cursor-pointer"
                             >
                                 <i className="bi bi-plus-lg"></i>

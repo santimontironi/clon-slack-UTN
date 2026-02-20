@@ -46,7 +46,7 @@ const LoginScreen = () => {
             <path d="M79.8996 91.7001C73.3996 91.7001 68.0996 86.4001 68.0996 79.9001C68.0996 73.4001 73.3996 68.1001 79.8996 68.1001H111.1C117.6 68.1001 122.9 73.4001 122.9 79.9001C122.9 86.4001 117.6 91.7001 111.1 91.7001H79.8996Z" fill="#ECB22E" />
           </svg>
           <h1 className="text-[28px] md:text-4xl lg:text-5xl xl:text-[52px] font-bold leading-tight text-[#1d1c1d] mb-3 tracking-tight">
-            Inicia sesión en Slack pedazo de pelotudo
+            Inicia sesión en Slack
           </h1>
           <p className="text-base md:text-[17px] lg:text-lg leading-normal text-[#1d1c1d] m-0">
             Te sugerimos usar la <strong className="font-bold">dirección de correo electrónico que usas en el trabajo</strong>.

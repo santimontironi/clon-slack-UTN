@@ -10,11 +10,11 @@ const MessageList = ({ messages = [], user }) => {
     return (
         <div className="flex flex-col gap-4">
             {messages.map((m) => {
-                const authorId = m.fk_id_member?.fk_id_user?._id
-                const isMine = authorId === user?._id
-                const memberExists = Boolean(m.fk_id_member && m.fk_id_member.fk_id_user)
-                const displayName = memberExists ? m.fk_id_member.fk_id_user.username : 'Usuario eliminado'
-                const nameClass = memberExists ? 'text-white mr-2' : 'text-red-300 mr-2 italic'
+                const authorId = m.fk_id_member?.fk_id_user?._id // se obtiene el id del autor
+                const isMine = authorId === user?._id // se compara con el id del usuario actual para determinar si es un mensaje propio
+                const memberExists = Boolean(m.fk_id_member && m.fk_id_member.fk_id_user) // se verifica si el miembro y su usuario existen para evitar errores al acceder a propiedades de objetos nulos
+                const displayName = memberExists ? m.fk_id_member.fk_id_user.username : 'Usuario eliminado' // se asigna un nombre de usuario o un mensaje alternativo si el usuario ha sido eliminado
+                const nameClass = memberExists ? 'text-white mr-2' : 'text-red-300 mr-2 italic' // se asigna una clase de estilo diferente para el nombre dependiendo de si el usuario existe o no
 
                 return (
                     <div key={m._id} className={`flex ${isMine ? 'justify-end' : 'justify-start'}`}>

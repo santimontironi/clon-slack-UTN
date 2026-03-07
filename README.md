@@ -14,11 +14,122 @@ Proyecto desarrollado como Trabajo Práctico Final de la Diplomatura Full Stack 
 
 **Contenido de este README**
 - Descripción
+- Arquitectura general y responsabilidades por carpeta
+- Flujos principales del sistema
+- Modelos y relaciones principales
 - Requisitos y puesta en marcha (frontend y backend)
 - Funcionalidades principales
 - Variables de entorno necesarias
 - Scripts importantes
 - Endpoints del backend (lista y descripciones)
+
+---
+
+## Arquitectura general
+
+La aplicación está separada en dos capas principales:
+
+- `frontend`: SPA en React con Vite. Las pantallas consumen servicios HTTP, y los contextos centralizan el estado compartido de autenticación, workspaces y mensajes.
+- `backend`: API REST en Express. Las rutas delegan la lógica a controllers, y los controllers usan repositories y modelos de MongoDB para persistencia.
+
+Flujo general de datos:
+
+`Screen / Component -> Service (axios) -> Endpoint Express -> Route -> Controller -> Repository / Model -> Response -> Context / Estado local`
+
+Detalles de implementación:
+
+- El frontend usa `axios` con `withCredentials: true`, por lo que las credenciales viajan por cookie.
+- El backend expone las rutas bajo los prefijos `/api/auth` y `/api/workspaces`.
+- Las rutas protegidas usan `verifyToken` para leer el JWT desde cookie y cargar `req.user`.
+- Las rutas internas de workspace usan `memberMiddleware` para validar pertenencia y cargar `req.member`.
+
+---
+
+## Responsabilidad de carpetas
+
+### Frontend (`frontend/src`)
+
+- `Screens/`: vistas principales del sistema, por ejemplo login, dashboard, workspace, invitaciones y gestión de miembros.
+- `components/`: componentes reutilizables de interfaz, organizados por dominio (`authComponents`, `channelComponents`, `workspaceComponents`, etc.).
+- `context/`: estado global del cliente.
+  - `AuthContext`: sesión, login, registro, logout y carga inicial del usuario autenticado.
+  - `WorkspaceContext`: workspaces del usuario, workspace activo, canales, miembros, invitaciones y canal seleccionado.
+  - `MessageContext`: mensajes del canal seleccionado y creación de mensajes.
+- `services/`: capa de acceso HTTP al backend mediante `axios`.
+
+### Backend (`backend`)
+
+- `routes/`: definición de endpoints y middlewares por recurso.
+- `controllers/`: lógica de negocio y validaciones principales.
+- `repository/`: operaciones de acceso a datos para desacoplar controllers de Mongoose.
+- `models/`: esquemas de MongoDB.
+- `middlewares/`: autenticación, autorización y carga de archivos.
+- `config/`: integración con MongoDB, Cloudinary y servicio de correo.
+
+---
+
+## Flujos principales del sistema
+
+### 1. Autenticación
+
+- El usuario se registra o inicia sesión desde una screen de autenticación.
+- El frontend llama a `authService`.
+- El backend responde y deja la sesión disponible por cookie.
+- Al montar la app, `AuthContext` ejecuta `dashboardUserService()` para reconstruir la sesión y poblar `user`.
+
+### 2. Workspaces
+
+- `WorkspaceContext` carga los workspaces del usuario al iniciar con `getMyWorkspacesService()`.
+- Crear workspace envía `multipart/form-data` para soportar imagen.
+- Si hay imagen, el backend la sube a Cloudinary antes de persistir el workspace.
+- El owner queda asociado al nuevo workspace a través de la lógica del repository.
+
+### 3. Invitaciones a workspace
+
+- Un owner o admin invita a un usuario indicando `email` y `role`.
+- El backend valida que el usuario exista, tenga email verificado y no sea ya miembro.
+- Luego genera un token JWT de invitación con expiración de 24 horas y envía un email con link al frontend.
+- La screen `AcceptInvitation` consume el token desde la URL.
+- El endpoint público `GET /api/workspaces/invitacion/:token` no solo valida la invitación: también agrega efectivamente al usuario como miembro si todo es correcto.
+
+### 4. Canales
+
+- Los canales pertenecen a un workspace.
+- Solo `owner` y `admin` pueden crearlos.
+- El frontend obtiene la lista desde `WorkspaceContext` y guarda el canal seleccionado en `selectedChannel`.
+
+### 5. Mensajes
+
+- `MessageContext` depende de `workspaceById` y `selectedChannel` para pedir mensajes.
+- Al enviar un mensaje, el frontend postea al canal actual y actualiza el estado local agregando el nuevo mensaje al array.
+- Cada mensaje queda asociado al canal y al miembro del workspace que lo envió.
+
+---
+
+## Modelos y relaciones principales
+
+- `User`: usuario de la plataforma. Incluye email, password, username y estado de verificación de email.
+- `Workspace`: espacio de trabajo. Tiene owner, título, descripción, imagen y estado activo.
+- `MembersWorkspace`: tabla de relación entre usuario y workspace. Define además el `role` del usuario dentro del workspace (`owner`, `admin`, `user`).
+- `Channel`: canal perteneciente a un workspace.
+- `ChannelMessage`: mensaje perteneciente a un canal y asociado al miembro que lo envió.
+
+Relaciones importantes:
+
+- Un `User` puede pertenecer a muchos `Workspace` a través de `MembersWorkspace`.
+- Un `Workspace` puede tener muchos `Channel`.
+- Un `Channel` puede tener muchos `ChannelMessage`.
+- Los permisos del sistema se apoyan en el rol guardado en `MembersWorkspace`.
+
+---
+
+## Decisiones de implementación útiles para mantenimiento
+
+- La sesión autenticada se reconstruye desde el frontend al cargar la app, no solo al hacer login.
+- Las invitaciones se resuelven con un token público enviado por email.
+- La aceptación de invitación hoy sucede en una request `GET`, porque el endpoint de verificación además crea el miembro nuevo.
+- La autorización por workspace no depende solo del JWT: además se valida membresía con `memberMiddleware`.
+- La subida de imagen del workspace se procesa en backend con `multer` y luego se delega a Cloudinary.
 
 ---
 
@@ -105,9 +216,8 @@ Coloca estas variables en un archivo `.env` en la carpeta `frontend`.
 
 ## Endpoints del backend
 
-Base URL: `http://localhost:3000` (ajustar si cambia `PORT`)
+Base URL local: `http://localhost:3000/api` (ajustar si cambia `PORT`)
 
--- Rutas de autenticación (`/auth`)
 
 - `POST /auth/register` — Registrar un nuevo usuario
   - Body: `{ name, email, password }`

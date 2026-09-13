@@ -9,7 +9,8 @@
   "scripts": {
     "test": "jest",
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "ping-db": "node utils/pingDB.js"
   },
   "jest": {
     "transform": {

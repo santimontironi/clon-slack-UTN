@@ -1,0 +1,29 @@
+name: MongoDB Keep Alive
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"
+  workflow_dispatch:
+
+jobs:
+  ping-mongodb:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Ping MongoDB
+        run: npm run ping-db
+        env:
+          MONGO_DB_URL: ${{ secrets.MONGO_DB_URL }}

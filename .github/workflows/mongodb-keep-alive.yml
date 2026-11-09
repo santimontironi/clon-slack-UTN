@@ -5,6 +5,10 @@ on:
     - cron: "0 */6 * * *"
   workflow_dispatch:
 
+permissions:            # NUEVO
+  contents: read
+  actions: write
+
 jobs:
   ping-mongodb:
     runs-on: ubuntu-latest
@@ -27,3 +31,11 @@ jobs:
         run: npm run ping-db
         env:
           MONGO_DB_URL: ${{ secrets.MONGO_DB_URL }}
+
+      - name: Mantener vivo el workflow    # NUEVO
+        run: |
+          WF="${GITHUB_WORKFLOW_REF%@*}"
+          WF="${WF##*/}"
+          gh api -X PUT "repos/${{ github.repository }}/actions/workflows/$WF/enable"
+        env:
+          GH_TOKEN: ${{ github.token }}
